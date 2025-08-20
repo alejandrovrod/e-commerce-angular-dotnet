@@ -1,0 +1,12 @@
+[build]
+command = "dotnet publish --configuration Release --output out"
+
+[deploy]
+startCommand = "dotnet out/ECommerce.ApiGateway.dll"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+
+[env]
+ASPNETCORE_ENVIRONMENT = "Production"
+ASPNETCORE_URLS = "http://0.0.0.0:$PORT"

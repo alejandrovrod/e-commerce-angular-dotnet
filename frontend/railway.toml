@@ -1,0 +1,13 @@
+[build]
+command = "npm ci && npm run build:prod"
+watchPatterns = ["src/**"]
+
+[deploy]
+startCommand = "npm run serve:railway"
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+
+[env]
+NODE_ENV = "production"
+PORT = "3000"

@@ -1,0 +1,14 @@
+[build]
+command = "dotnet publish ECommerce.User.API/ECommerce.User.API.csproj --configuration Release --output out"
+
+[deploy]
+startCommand = "dotnet out/ECommerce.User.API.dll"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+
+[env]
+ASPNETCORE_ENVIRONMENT = "Production"
+ASPNETCORE_URLS = "http://0.0.0.0:$PORT"
+ConnectionStrings__DefaultConnection = "$DATABASE_URL"
+JWT__SecretKey = "$JWT_SECRET_KEY"
+Redis__ConnectionString = "$REDIS_URL"

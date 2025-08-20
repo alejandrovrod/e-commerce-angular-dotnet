@@ -1,0 +1,125 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Frontend Angular
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+frontend/.nyc_output/
+frontend/e2e/reports/
+frontend/cypress/videos/
+frontend/cypress/screenshots/
+
+# Backend .NET
+backend/bin/
+backend/obj/
+backend/**/*.cache
+backend/**/*.dll
+backend/**/*.exe
+backend/**/*.pdb
+backend/**/*.user
+backend/**/*.userosscache
+backend/**/*.sln.docstates
+backend/**/.vs/
+backend/**/packages/
+backend/**/TestResults/
+backend/**/*.nupkg
+backend/**/*.snupkg
+
+# Build outputs
+**/dist/
+**/out/
+**/build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+**/.env
+**/.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output/
+
+# Docker
+.dockerignore
+Dockerfile*
+
+# Railway
+.railway/
+
+# Temporary folders
+tmp/
+temp/
+
+# Database
+*.db
+*.sqlite
+
+# Keys and certificates
+*.pem
+*.key
+*.crt
+*.csr
+*.cert
+
+# Secrets
+secrets.json
+appsettings.Development.json
+appsettings.Production.json
+
+# Testing
+/coverage/
+/e2e/reports/
+
+# Miscellaneous
+.sass-cache/
+/connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
