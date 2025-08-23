@@ -1,0 +1,16 @@
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\bin\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.deps.json
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\bin\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.dll
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\bin\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.dll
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.csproj.AssemblyReference.cache
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.AssemblyInfoInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.AssemblyInfo.cs
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.csproj.CoreCompileInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.sourcelink.json
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerc.2A668B50.Up2Date
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.dll
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\refint\ECommerce.BuildingBlocks.EventBus.dll
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\EventBus\obj\Debug\net9.0\ref\ECommerce.BuildingBlocks.EventBus.dll

@@ -1,0 +1,16 @@
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\bin\Debug\net9.0\ECommerce.Product.Domain.deps.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\bin\Debug\net9.0\ECommerce.Product.Domain.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\bin\Debug\net9.0\ECommerce.Product.Domain.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.csproj.AssemblyReference.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.AssemblyInfoInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.AssemblyInfo.cs
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.csproj.CoreCompileInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.sourcelink.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerc.CF4E8084.Up2Date
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\refint\ECommerce.Product.Domain.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ECommerce.Product.Domain.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Product\ECommerce.Product.Domain\obj\Debug\net9.0\ref\ECommerce.Product.Domain.dll

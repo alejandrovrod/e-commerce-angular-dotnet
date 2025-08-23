@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+ <html xmlns:msxsl="urn:schemas-microsoft-com:xslt"><head><meta content="en-us" http-equiv="Content-Language" /><meta content="text/html; charset=utf-16" http-equiv="Content-Type" /><title _locID="ConversionReport0">
+          Informe de migración
+        </title><style> 
+                    /* Body style, for the entire document */
+                    body
+                    {
+                        background: #F3F3F4;
+                        color: #1E1E1F;
+                        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    /* Header1 style, used for the main title */
+                    h1
+                    {
+                        padding: 10px 0px 10px 10px;
+                        font-size: 21pt;
+                        background-color: #E2E2E2;
+                        border-bottom: 1px #C1C1C2 solid; 
+                        color: #201F20;
+                        margin: 0;
+                        font-weight: normal;
+                    }
+
+                    /* Header2 style, used for "Overview" and other sections */
+                    h2
+                    {
+                        font-size: 18pt;
+                        font-weight: normal;
+                        padding: 15px 0 5px 0;
+                        margin: 0;
+                    }
+
+                    /* Header3 style, used for sub-sections, such as project name */
+                    h3
+                    {
+                        font-weight: normal;
+                        font-size: 15pt;
+                        margin: 0;
+                        padding: 15px 0 5px 0;
+                        background-color: transparent;
+                    }
+
+                    /* Color all hyperlinks one color */
+                    a
+                    {
+                        color: #1382CE;
+                    }
+
+                    /* Table styles */ 
+                    table
+                    {
+                        border-spacing: 0 0;
+                        border-collapse: collapse;
+                        font-size: 10pt;
+                    }
+
+                    table th
+                    {
+                        background: #E7E7E8;
+                        text-align: left;
+                        text-decoration: none;
+                        font-weight: normal;
+                        padding: 3px 6px 3px 6px;
+                    }
+
+                    table td
+                    {
+                        vertical-align: top;
+                        padding: 3px 6px 5px 5px;
+                        margin: 0px;
+                        border: 1px solid #E7E7E8;
+                        background: #F7F7F8;
+                    }
+
+                    /* Local link is a style for hyperlinks that link to file:/// content, there are lots so color them as 'normal' text until the user mouse overs */
+                    .localLink
+                    {
+                        color: #1E1E1F;
+                        background: #EEEEED;
+                        text-decoration: none;
+                    }
+
+                    .localLink:hover
+                    {
+                        color: #1382CE;
+                        background: #FFFF99;
+                        text-decoration: none;
+                    }
+
+                    /* Center text, used in the over views cells that contain message level counts */ 
+                    .textCentered
+                    {
+                        text-align: center;
+                    }
+
+                    /* The message cells in message tables should take up all avaliable space */
+                    .messageCell
+                    {
+                        width: 100%;
+                    }
+
+                    /* Padding around the content after the h1 */ 
+                    #content 
+                    {
+	                    padding: 0px 12px 12px 12px; 
+                    }
+
+                    /* The overview table expands to width, with a max width of 97% */ 
+                    #overview table
+                    {
+                        width: auto;
+                        max-width: 75%; 
+                    }
+
+                    /* The messages tables are always 97% width */
+                    #messages table
+                    {
+                        width: 97%;
+                    }
+
+                    /* All Icons */
+                    .IconSuccessEncoded, .IconInfoEncoded, .IconWarningEncoded, .IconErrorEncoded
+                    {
+                        min-width:18px;
+                        min-height:18px; 
+                        background-repeat:no-repeat;
+                        background-position:center;
+                    }
+
+                    /* Success icon encoded */
+                    .IconSuccessEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconSuccess#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABcElEQVR4Xq2TsUsCURzHv15g8ZJcBWlyiYYgCIWcb9DFRRwMW5TA2c0/QEFwFkxxUQdxVlBwCYWOi6IhWgQhBLHJUCkhLr/BW8S7gvrAg+N+v8/v+x68Z8MGy+XSCyABQAXgBgHGALoASkIIDWSLeLBetdHryMjd5IxQPWT4rn1c/P7+xxp72Cs9m5SZ0Bq2vPnbPFafK2zDvmNHypdC0BPkLlQhxJsCAhQoZwdZU5mwxh720qGo8MzTxTTKZDPCx2HoVzp6lz0Q9tKhyx0kGs8Ny+TkWRKk8lCROwEduhyg9l/6lunOPSfmH3NUH6uQ0KHLAe7JYvJjevm+DAMGJHToKtigE+vwvIidxLamb8IBY9e+C5LiXREkfho3TSd06HJA13/oh6T51MTsfQbHrsMynQ5dDihFjiK8JJAU9AKIWTp76dCVN7HWHrajmUEGvyF9nkbAE6gLIS7kTUyuf2gscLoJrElZo/Mvj+nPz/kLTmfnEwP3tB0AAAAASUVORK5CYII=);
+                    }
+
+                    /* Information icon encoded */
+                    .IconInfoEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconInformation#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHElEQVR4Xs2TsUoDQRRF7wwoziokjZUKadInhdhukR9YP8DMX1hYW+QvdsXa/QHBbcXC7W0CamWTQnclFutceIQJwwaWNLlwm5k5d94M76mmaeCrrmsLYOocY12FcxZFUeozCqKqqgYA8uevv1H6VuPxcwlfk5N92KHBxfFeCSAxxswlYAW/Xr989x/mv9gkhtyMDhcAxgzRsp7flj8B/HF1RsMXq+NZMkopaHe7lbKxQUEIGbKsYNoGn969060hZBkQex/W8oRQwsQaW2o3Ago2SVcJUzAgY3N0lTCZZm+zPS8HB51gMmS1DEYyOz9acKO1D8JWTlafKIMxdhvlfdyT94Vv5h7P8Ky7nQzACmhvKq3zk3PjW9asz9D/1oigecsioooAAAAASUVORK5CYII=);
+                    }
+
+                    /* Warning icon encoded */
+                    .IconWarningEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconWarning#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAx0lEQVR4XpWSMQ7CMAxFf4xAyBMLCxMrO8dhaBcuwdCJS3RJBw7SA/QGTCxdWJgiQYWKXJWKIXHIlyw5lqr34tQgEOdcBsCOx5yZK3hCCKdYXneQkh4pEfqzLfu+wVDSyyzFoJjfz9NB+pAF+eizx2Vruts0k15mPgvS6GYvpVtQhB61IB/dk6AF6fS4Ben0uIX5odtFe8Q/eW1KvFeH4e8khT6+gm5B+t3juyDt7n0jpe+CANTd+oTUjN/U3yVaABnSUjFz/gFq44JaVSCXeQAAAABJRU5ErkJggg==);
+                    }
+
+                    /* Error icon encoded */
+                    .IconErrorEncoded
+                    {
+                        /* Note: Do not delete the comment below. It is used to verify the correctness of the encoded image resource below before the product is released */
+                        /* [---XsltValidateInternal-Base64EncodedImage:IconError#Begin#background-image: url(data:image/png;base64,#Separator#);#End#] */
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4XqWTvUoEQRCE6wYPZUA80AfwAQz23uCMjA7MDRQEIzPBVEyNTQUFIw00vcQTTMzuAh/AxEQQT8HF/3G/oGGnEUGuoNnd6qoZuqltyKEsyzVJq5I6rnUp6SjGeGhESikzzlc1eL7opfuVbrqbU1Zw9NCgtQMaZpY0eNnaaL2fHusvTK5vKu7sjSS1Y4y3QUA6K3e3Mau5UFDyMP7tYF9o8cAHZv68vipoIJg971PZIZ5HiwdvYGGvFVFHmGmZ2MxwmQYPXubPl9Up0tfoMQGetXd6mRbvhBw+boZ6WF7Mbv1+GsHRk0fQmPAH1GfmZirbCfDJ61tw3Px8/8pZsPAG4jlVhcPgZ7adwNWBB68lkRQWFiTgFlbnLY3DGGM7izIJIyT/jjIvEJw6fdJTc6krDzh6aMwMP9bvDH4ADSsa9uSWVJkAAAAASUVORK5CYII=);
+                    }
+                 </style><script type="text/javascript" language="javascript"> 
+          
+            // Startup 
+            // Hook up the the loaded event for the document/window, to linkify the document content
+            var startupFunction = function() { linkifyElement("messages"); };
+            
+            if(window.attachEvent)
+            {
+              window.attachEvent('onload', startupFunction);
+            }
+            else if (window.addEventListener) 
+            {
+              window.addEventListener('load', startupFunction, false);
+            }
+            else 
+            {
+              document.addEventListener('load', startupFunction, false);
+            } 
+            
+            // Toggles the visibility of table rows with the specified name 
+            function toggleTableRowsByName(name)
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  if(!!currentName && currentName.indexOf(name) == 0)
+                  {
+                      var isVisible = allRows[i].style.display == ''; 
+                      isVisible ? allRows[i].style.display = 'none' : allRows[i].style.display = '';
+                  }
+               }
+            }
+            
+            function scrollToFirstVisibleRow(name) 
+            {
+               var allRows = document.getElementsByTagName('tr');
+               for (i=0; i < allRows.length; i++)
+               {
+                  var currentName = allRows[i].getAttribute('name');
+                  var isVisible = allRows[i].style.display == ''; 
+                  if(!!currentName && currentName.indexOf(name) == 0 && isVisible)
+                  {
+                     allRows[i].scrollIntoView(true); 
+                     return true; 
+                  }
+               }
+               
+               return false;
+            }
+            
+            // Linkifies the specified text content, replaces candidate links with html links 
+            function linkify(text)
+            {
+                 if(!text || 0 === text.length)
+                 {
+                     return text; 
+                 }
+
+                 // Find http, https and ftp links and replace them with hyper links 
+                 var urlLink = /(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+(:[a-zA-Z0-9]*)?\/?([a-zA-Z0-9\-\._\?\,\/\\\+&%\$#\=~;\{\}])*/gi;
+                 
+                 return text.replace(urlLink, '<a href="$&">$&</a>') ;
+            }
+            
+            // Linkifies the specified element by ID
+            function linkifyElement(id)
+            {
+                var element = document.getElementById(id);
+                if(!!element)
+                {
+                  element.innerHTML = linkify(element.innerHTML); 
+                }
+            }
+            
+            function ToggleMessageVisibility(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              toggleTableRowsByName("MessageRowClass" + projectName);
+              toggleTableRowsByName('MessageRowHeaderShow' + projectName);
+              toggleTableRowsByName('MessageRowHeaderHide' + projectName); 
+            }
+            
+            function ScrollToFirstVisibleMessage(projectName)
+            {
+              if(!projectName || 0 === projectName.length)
+              {
+                return; 
+              }
+              
+              // First try the 'Show messages' row
+              if(!scrollToFirstVisibleRow('MessageRowHeaderShow' + projectName))
+              {
+                // Failed to find a visible row for 'Show messages', try an actual message row 
+                scrollToFirstVisibleRow('MessageRowClass' + projectName); 
+              }
+            }
+           </script></head><body><h1 _locID="ConversionReport">
+          Informe de migración - </h1><div id="content"><h2 _locID="OverviewTitle">Información general</h2><div id="overview"><table><tr><th></th><th _locID="ProjectTableHeader">Proyecto</th><th _locID="PathTableHeader">Ruta de acceso</th><th _locID="ErrorsTableHeader">Errores</th><th _locID="WarningsTableHeader">Advertencias</th><th _locID="MessagesTableHeader">Mensajes</th></tr><tr><td class="IconWarningEncoded" /><td><strong><a href="#Solution"><span _locID="OverviewSolutionSpan">Solución</span></a></strong></td><td>ECommerce.sln</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#SolutionWarning">1</a></td><td class="textCentered"><a href="#" onclick="ScrollToFirstVisibleMessage('Solution'); return false;">2</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ApiGateway">ApiGateway</a></strong></td><td>ApiGateway</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#AppHost">AppHost</a></strong></td><td>AppHost</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#BuildingBlocks">BuildingBlocks</a></strong></td><td>BuildingBlocks</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Common">Common</a></strong></td><td>Common</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.ApiGateway">ECommerce.ApiGateway</a></strong></td><td>src\ApiGateway\ECommerce.ApiGateway.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.AppHost">ECommerce.AppHost</a></strong></td><td>src\AppHost\ECommerce.AppHost.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.BuildingBlocks.Common">ECommerce.BuildingBlocks.Common</a></strong></td><td>src\BuildingBlocks\Common\ECommerce.BuildingBlocks.Common.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.File.API">ECommerce.File.API</a></strong></td><td>src\Services\File\ECommerce.File.API\ECommerce.File.API.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.Notification.API">ECommerce.Notification.API</a></strong></td><td>src\Services\Notification\ECommerce.Notification.API\ECommerce.Notification.API.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.Order.API">ECommerce.Order.API</a></strong></td><td>src\Services\Order\ECommerce.Order.API\ECommerce.Order.API.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.Order.Domain">ECommerce.Order.Domain</a></strong></td><td>src\Services\Order\ECommerce.Order.Domain\ECommerce.Order.Domain.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.Payment.API">ECommerce.Payment.API</a></strong></td><td>src\Services\Payment\ECommerce.Payment.API\ECommerce.Payment.API.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.Payment.Domain">ECommerce.Payment.Domain</a></strong></td><td>src\Services\Payment\ECommerce.Payment.Domain\ECommerce.Payment.Domain.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.Product.API">ECommerce.Product.API</a></strong></td><td>src\Services\Product\ECommerce.Product.API\ECommerce.Product.API.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.Product.Domain">ECommerce.Product.Domain</a></strong></td><td>src\Services\Product\ECommerce.Product.Domain\ECommerce.Product.Domain.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.User.API">ECommerce.User.API</a></strong></td><td>src\Services\User\ECommerce.User.API\ECommerce.User.API.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.User.Application">ECommerce.User.Application</a></strong></td><td>src\Services\User\ECommerce.User.Application\ECommerce.User.Application.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.User.Domain">ECommerce.User.Domain</a></strong></td><td>src\Services\User\ECommerce.User.Domain\ECommerce.User.Domain.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#ECommerce.User.Infrastructure">ECommerce.User.Infrastructure</a></strong></td><td>src\Services\User\ECommerce.User.Infrastructure\ECommerce.User.Infrastructure.csproj</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#File">File</a></strong></td><td>File</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Notification">Notification</a></strong></td><td>Notification</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Order">Order</a></strong></td><td>Order</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Payment">Payment</a></strong></td><td>Payment</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Product">Product</a></strong></td><td>Product</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#Services">Services</a></strong></td><td>Services</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#src">src</a></strong></td><td>src</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr><tr><td class="IconSuccessEncoded" /><td><strong><a href="#User">User</a></strong></td><td>User</td><td class="textCentered"><a>0</a></td><td class="textCentered"><a>0</a></td><td class="textCentered"><a href="#">0</a></td></tr></table></div><h2 _locID="SolutionAndProjectsTitle">Solución y proyectos</h2><div id="messages"><a name="Solution" /><h3 _locID="ProjectDisplayNameHeader">Solución</h3><table><tr id="SolutionHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr name="WarningRowClassSolution"><td class="IconWarningEncoded"><a name="SolutionWarning" /></td><td class="messageCell"><strong>ECommerce.sln:
+        </strong><span>Visual Studio debe hacer cambios no funcionales en este proyecto para poder abrirlo en versiones posteriores a Visual Studio 2010 SP1 sin que su comportamiento se vea afectado.</span></td></tr><tr name="MessageRowHeaderShowSolution"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="ShowAdditionalMessages" href="#" name="SolutionMessage" onclick="ToggleMessageVisibility('Solution'); return false;">
+          Mostrar 2 mensajes adicionales
+        </a></td></tr><tr name="MessageRowClassSolution" style="display: none"><td class="IconInfoEncoded"><a name="SolutionMessage" /></td><td class="messageCell"><strong>ECommerce.sln:
+        </strong><span>Se realizó correctamente la copia de seguridad del archivo C:\Workspace\Cursor\e-commerce\backend\Backup\ECommerce.sln</span></td></tr><tr name="MessageRowClassSolution" style="display: none"><td class="IconInfoEncoded"><a name="SolutionMessage" /></td><td class="messageCell"><strong>ECommerce.sln:
+        </strong><span>La solución se migró correctamente</span></td></tr><tr style="display: none" name="MessageRowHeaderHideSolution"><td class="IconInfoEncoded" /><td class="messageCell"><a _locID="HideAdditionalMessages" href="#" name="SolutionMessage" onclick="ToggleMessageVisibility('Solution'); return false;">
+          Ocultar 2 mensajes adicionales
+        </a></td></tr></table><a name="ApiGateway" /><h3>ApiGateway</h3><table><tr id="ApiGatewayHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ApiGateway no registró mensajes.
+                  </td></tr></table><a name="AppHost" /><h3>AppHost</h3><table><tr id="AppHostHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">AppHost no registró mensajes.
+                  </td></tr></table><a name="BuildingBlocks" /><h3>BuildingBlocks</h3><table><tr id="BuildingBlocksHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">BuildingBlocks no registró mensajes.
+                  </td></tr></table><a name="Common" /><h3>Common</h3><table><tr id="CommonHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Common no registró mensajes.
+                  </td></tr></table><a name="ECommerce.ApiGateway" /><h3>ECommerce.ApiGateway</h3><table><tr id="ECommerce.ApiGatewayHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.ApiGateway no registró mensajes.
+                  </td></tr></table><a name="ECommerce.AppHost" /><h3>ECommerce.AppHost</h3><table><tr id="ECommerce.AppHostHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.AppHost no registró mensajes.
+                  </td></tr></table><a name="ECommerce.BuildingBlocks.Common" /><h3>ECommerce.BuildingBlocks.Common</h3><table><tr id="ECommerce.BuildingBlocks.CommonHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.BuildingBlocks.Common no registró mensajes.
+                  </td></tr></table><a name="ECommerce.File.API" /><h3>ECommerce.File.API</h3><table><tr id="ECommerce.File.APIHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.File.API no registró mensajes.
+                  </td></tr></table><a name="ECommerce.Notification.API" /><h3>ECommerce.Notification.API</h3><table><tr id="ECommerce.Notification.APIHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.Notification.API no registró mensajes.
+                  </td></tr></table><a name="ECommerce.Order.API" /><h3>ECommerce.Order.API</h3><table><tr id="ECommerce.Order.APIHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.Order.API no registró mensajes.
+                  </td></tr></table><a name="ECommerce.Order.Domain" /><h3>ECommerce.Order.Domain</h3><table><tr id="ECommerce.Order.DomainHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.Order.Domain no registró mensajes.
+                  </td></tr></table><a name="ECommerce.Payment.API" /><h3>ECommerce.Payment.API</h3><table><tr id="ECommerce.Payment.APIHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.Payment.API no registró mensajes.
+                  </td></tr></table><a name="ECommerce.Payment.Domain" /><h3>ECommerce.Payment.Domain</h3><table><tr id="ECommerce.Payment.DomainHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.Payment.Domain no registró mensajes.
+                  </td></tr></table><a name="ECommerce.Product.API" /><h3>ECommerce.Product.API</h3><table><tr id="ECommerce.Product.APIHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.Product.API no registró mensajes.
+                  </td></tr></table><a name="ECommerce.Product.Domain" /><h3>ECommerce.Product.Domain</h3><table><tr id="ECommerce.Product.DomainHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.Product.Domain no registró mensajes.
+                  </td></tr></table><a name="ECommerce.User.API" /><h3>ECommerce.User.API</h3><table><tr id="ECommerce.User.APIHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.User.API no registró mensajes.
+                  </td></tr></table><a name="ECommerce.User.Application" /><h3>ECommerce.User.Application</h3><table><tr id="ECommerce.User.ApplicationHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.User.Application no registró mensajes.
+                  </td></tr></table><a name="ECommerce.User.Domain" /><h3>ECommerce.User.Domain</h3><table><tr id="ECommerce.User.DomainHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.User.Domain no registró mensajes.
+                  </td></tr></table><a name="ECommerce.User.Infrastructure" /><h3>ECommerce.User.Infrastructure</h3><table><tr id="ECommerce.User.InfrastructureHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">ECommerce.User.Infrastructure no registró mensajes.
+                  </td></tr></table><a name="File" /><h3>File</h3><table><tr id="FileHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">File no registró mensajes.
+                  </td></tr></table><a name="Notification" /><h3>Notification</h3><table><tr id="NotificationHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Notification no registró mensajes.
+                  </td></tr></table><a name="Order" /><h3>Order</h3><table><tr id="OrderHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Order no registró mensajes.
+                  </td></tr></table><a name="Payment" /><h3>Payment</h3><table><tr id="PaymentHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Payment no registró mensajes.
+                  </td></tr></table><a name="Product" /><h3>Product</h3><table><tr id="ProductHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Product no registró mensajes.
+                  </td></tr></table><a name="Services" /><h3>Services</h3><table><tr id="ServicesHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">Services no registró mensajes.
+                  </td></tr></table><a name="src" /><h3>src</h3><table><tr id="srcHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">src no registró mensajes.
+                  </td></tr></table><a name="User" /><h3>User</h3><table><tr id="UserHeaderRow"><th></th><th class="messageCell" _locID="MessageTableHeader">Mensaje</th></tr><tr><td class="IconInfoEncoded" /><td class="messageCell" _locID="NoMessagesRow">User no registró mensajes.
+                  </td></tr></table></div></div></body></html>

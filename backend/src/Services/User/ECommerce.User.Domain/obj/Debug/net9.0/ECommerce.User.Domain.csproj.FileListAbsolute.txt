@@ -1,0 +1,16 @@
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\bin\Debug\net9.0\ECommerce.User.Domain.deps.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\bin\Debug\net9.0\ECommerce.User.Domain.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\bin\Debug\net9.0\ECommerce.User.Domain.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.csproj.AssemblyReference.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.AssemblyInfoInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.AssemblyInfo.cs
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.csproj.CoreCompileInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.sourcelink.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerc.24CAA90A.Up2Date
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\refint\ECommerce.User.Domain.dll
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ECommerce.User.Domain.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Domain\obj\Debug\net9.0\ref\ECommerce.User.Domain.dll

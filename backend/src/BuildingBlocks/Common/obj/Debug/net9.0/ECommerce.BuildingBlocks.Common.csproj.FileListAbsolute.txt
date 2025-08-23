@@ -1,0 +1,13 @@
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.deps.json
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.dll
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.csproj.AssemblyReference.cache
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.AssemblyInfoInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.AssemblyInfo.cs
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.csproj.CoreCompileInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.sourcelink.json
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.dll
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\refint\ECommerce.BuildingBlocks.Common.dll
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ECommerce.BuildingBlocks.Common.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\obj\Debug\net9.0\ref\ECommerce.BuildingBlocks.Common.dll
