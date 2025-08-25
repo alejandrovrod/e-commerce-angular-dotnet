@@ -9,3 +9,5 @@ public class GetFeaturedProductsQuery : IRequest<List<ProductDto>>
 }
 
 
+
+

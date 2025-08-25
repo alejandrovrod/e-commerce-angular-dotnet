@@ -23,6 +23,9 @@ C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Swashbuck
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Yarp.ReverseProxy.dll
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Serilog.Sinks.Seq.dll
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.json
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.staticwebassets.endpoints.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Aspire.StackExchange.Redis.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\HealthChecks.Redis.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Microsoft.Extensions.ServiceDiscovery.dll
@@ -56,15 +59,12 @@ C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\staticweb
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\staticwebassets.development.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\ECommerc.F35DF3A0.Up2Date
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\ECommerce.ApiGateway.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\refint\ECommerce.ApiGateway.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\ECommerce.ApiGateway.pdb
-C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.json
-C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.staticwebassets.endpoints.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.deps.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.runtimeconfig.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.pdb
-C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\ECommerc.F35DF3A0.Up2Date
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\ECommerce.ApiGateway.genruntimeconfig.cache
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\obj\Debug\net9.0\ref\ECommerce.ApiGateway.dll
-C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Serilog.Sinks.Seq.dll

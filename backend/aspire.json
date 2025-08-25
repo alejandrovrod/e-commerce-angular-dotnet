@@ -1,0 +1,18 @@
+{
+  "Aspire": {
+    "Dashboard": {
+      "Enabled": true,
+      "Port": 8080
+    },
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+      }
+    }
+  },
+  "Dashboard": {
+    "Enabled": true,
+    "Port": 8080
+  }
+}

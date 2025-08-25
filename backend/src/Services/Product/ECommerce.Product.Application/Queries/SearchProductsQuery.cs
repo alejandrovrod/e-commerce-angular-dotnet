@@ -11,3 +11,5 @@ public class SearchProductsQuery : IRequest<PaginatedResult<ProductDto>>
 }
 
 
+
+

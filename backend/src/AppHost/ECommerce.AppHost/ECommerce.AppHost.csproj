@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.3.1" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>5f3648b6-b6ae-4497-aed9-b567f40b9ac4</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ApiGateway\ECommerce.ApiGateway.csproj" />
+    <ProjectReference Include="..\..\Services\File\ECommerce.File.API\ECommerce.File.API.csproj" />
+    <ProjectReference Include="..\..\Services\Notification\ECommerce.Notification.API\ECommerce.Notification.API.csproj" />
+    <ProjectReference Include="..\..\Services\Order\ECommerce.Order.API\ECommerce.Order.API.csproj" />
+    <ProjectReference Include="..\..\Services\Payment\ECommerce.Payment.API\ECommerce.Payment.API.csproj" />
+    <ProjectReference Include="..\..\Services\Product\ECommerce.Product.API\ECommerce.Product.API.csproj" />
+    <ProjectReference Include="..\..\Services\User\ECommerce.User.API\ECommerce.User.API.csproj" />
+  </ItemGroup>
+
+</Project>

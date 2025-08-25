@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "name": "E-Commerce AppHost",
+  "description": "E-Commerce microservices application with Aspire",
+  "dashboard": {
+    "enabled": true,
+    "port": 8080,
+    "title": "E-Commerce Dashboard"
+  },
+  "services": [
+    {
+      "name": "apigateway",
+      "type": "project",
+      "path": "src/ApiGateway/ECommerce.ApiGateway.csproj",
+      "port": 7000
+    },
+    {
+      "name": "userservice",
+      "type": "project",
+      "path": "src/Services/User/ECommerce.User.API/ECommerce.User.API.csproj",
+      "port": 7001
+    },
+    {
+      "name": "productservice",
+      "type": "project",
+      "path": "src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj",
+      "port": 7002
+    },
+    {
+      "name": "orderservice",
+      "type": "project",
+      "path": "src/Services/Order/ECommerce.Order.API/ECommerce.Order.API.csproj",
+      "port": 7003
+    },
+    {
+      "name": "paymentservice",
+      "type": "project",
+      "path": "src/Services/Payment/ECommerce.Payment.API/ECommerce.Payment.API.csproj",
+      "port": 7004
+    },
+    {
+      "name": "fileservice",
+      "type": "project",
+      "path": "src/Services/File/ECommerce.File.API/ECommerce.File.API.csproj",
+      "port": 7005
+    },
+    {
+      "name": "notificationservice",
+      "type": "project",
+      "path": "src/Services/Notification/ECommerce.Notification.API/ECommerce.Notification.API.csproj",
+      "port": 7006
+    }
+  ],
+  "resources": [
+    {
+      "name": "redis",
+      "type": "redis",
+      "port": 6379
+    },
+    {
+      "name": "rabbitmq",
+      "type": "rabbitmq",
+      "port": 5672,
+      "managementPort": 15672
+    },
+    {
+      "name": "sqlserver",
+      "type": "sqlserver",
+      "port": 1433
+    }
+  ]
+}
