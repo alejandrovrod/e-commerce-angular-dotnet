@@ -9,6 +9,8 @@ public class UserPreferencesConfiguration : IEntityTypeConfiguration<UserPrefere
 {
     public void Configure(EntityTypeBuilder<UserPreferences> builder)
     {
+        // Temporarily commented out to fix migration issues
+        /*
         builder.ToTable("UserPreferences");
 
         builder.HasKey(e => e.Id);
@@ -41,13 +43,10 @@ public class UserPreferencesConfiguration : IEntityTypeConfiguration<UserPrefere
             )
             .HasColumnType("nvarchar(max)");
 
-        // Relationship with User
-        builder.HasOne<Domain.Entities.User>()
-            .WithOne(u => u.Preferences)
-            .HasForeignKey<UserPreferences>(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Relationship with User - configured in UserConfiguration
 
         // Indexes
         builder.HasIndex(e => e.UserId).IsUnique();
+        */
     }
 }

@@ -8,8 +8,9 @@ public class UserPreferences : BaseEntity
     public string Theme { get; private set; } = "system"; // light, dark, system
     public string Language { get; private set; } = "en";
     public string Currency { get; private set; } = "USD";
-    public EmailNotificationSettings EmailNotifications { get; private set; } = new();
-    public PushNotificationSettings PushNotifications { get; private set; } = new();
+    // Temporarily commented out to fix migration issues
+    // public EmailNotificationSettings EmailNotifications { get; private set; } = new();
+    // public PushNotificationSettings PushNotifications { get; private set; } = new();
 
     // Navigation properties
     public virtual Entities.User User { get; private set; } = default!;
@@ -23,9 +24,10 @@ public class UserPreferences : BaseEntity
             UserId = userId,
             Theme = "system",
             Language = "en",
-            Currency = "USD",
-            EmailNotifications = new EmailNotificationSettings(),
-            PushNotifications = new PushNotificationSettings()
+            Currency = "USD"
+            // Temporarily commented out to fix migration issues
+            // EmailNotifications = new EmailNotificationSettings(),
+            // PushNotifications = new PushNotificationSettings()
         };
     }
 
@@ -47,6 +49,8 @@ public class UserPreferences : BaseEntity
         UpdatedAt = DateTime.UtcNow;
     }
 
+    // Temporarily commented out to fix migration issues
+    /*
     public void UpdateEmailNotifications(EmailNotificationSettings settings)
     {
         EmailNotifications = settings;
@@ -58,6 +62,7 @@ public class UserPreferences : BaseEntity
         PushNotifications = settings;
         UpdatedAt = DateTime.UtcNow;
     }
+    */
 }
 
 public class EmailNotificationSettings

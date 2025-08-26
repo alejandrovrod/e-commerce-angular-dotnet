@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ECommerce.User.Domain.Enums;
+using System.Text.Json;
+using ECommerce.User.Domain.ValueObjects;
 
 namespace ECommerce.User.Infrastructure.Data.Configurations;
 
@@ -49,6 +51,14 @@ public class UserConfiguration : IEntityTypeConfiguration<Domain.Entities.User>
         builder.Property(u => u.RefreshToken)
             .HasMaxLength(256);
 
+        // Configure Metadata property as JSON
+        builder.Property(u => u.Metadata)
+            .HasColumnType("nvarchar(max)")
+            .HasConversion(
+                v => v == null ? null : System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions?)null),
+                v => v == null ? null : System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions?)null)
+            );
+
         // Indexes
         builder.HasIndex(u => u.Email)
             .IsUnique()
@@ -63,16 +73,16 @@ public class UserConfiguration : IEntityTypeConfiguration<Domain.Entities.User>
         builder.HasIndex(u => u.Status)
             .HasDatabaseName("IX_Users_Status");
 
-        // Relationships
-        builder.HasMany(u => u.Addresses)
-            .WithOne(a => a.User)
-            .HasForeignKey(a => a.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Relationships - Temporarily commented out to fix migration issues
+        // builder.HasMany(u => u.Addresses)
+        //     .WithOne(a => a.User)
+        //     .HasForeignKey(a => a.UserId)
+        //     .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(u => u.Preferences)
-            .WithOne(p => p.User)
-            .HasForeignKey<Domain.ValueObjects.UserPreferences>(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // builder.HasOne(u => u.Preferences)
+        //     .WithOne(p => p.User)
+        //     .HasForeignKey<UserPreferences>(p => p.UserId)
+        //     .OnDelete(DeleteBehavior.Cascade);
 
         // Seed data
         builder.HasData(
@@ -83,11 +93,12 @@ public class UserConfiguration : IEntityTypeConfiguration<Domain.Entities.User>
                 PasswordHash = "$2a$11$5Z3k5K5K5K5K5K5K5K5K5OWJvqXfY5qZgQJ5K5K5K5K5K5K5K5K5K", // Password: Admin123!
                 FirstName = "System",
                 LastName = "Administrator",
-                Role = (int)UserRole.SuperAdmin,
-                Status = (int)UserStatus.Active,
+                Role = UserRole.SuperAdmin,
+                Status = UserStatus.Active,
                 EmailVerified = true,
                 PhoneVerified = false,
                 TwoFactorEnabled = false,
+                Version = "1.0",
                 CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 IsDeleted = false

@@ -87,6 +87,7 @@ C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\ob
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\obj\Debug\net9.0\staticwebassets.development.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\obj\Debug\net9.0\ECommerc.0EA21FE2.Up2Date
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\obj\Debug\net9.0\ECommerce.Order.API.dll
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Order\ECommerce.Order.API\obj\Debug\net9.0\refint\ECommerce.Order.API.dll

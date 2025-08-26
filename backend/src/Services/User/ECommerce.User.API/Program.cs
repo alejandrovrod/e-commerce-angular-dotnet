@@ -1,5 +1,8 @@
 using ECommerce.User.Infrastructure;
 using ECommerce.User.Application;
+using ECommerce.User.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +11,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MassTransit;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using ECommerce.User.Application.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +22,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
-
-// Add Aspire service defaults - will add later
-// builder.AddServiceDefaults(); // Temporalmente comentado hasta resolver la referencia
 
 // Add services to the container
 builder.Services.AddControllers();
@@ -52,15 +53,18 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Add Application and Infrastructure layers - will implement later
-// builder.Services.AddApplicationServices();
-// builder.Services.AddInfrastructureServices(builder.Configuration);
+// Add Application and Infrastructure layers
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// Add Entity Framework - will configure later
-// builder.AddSqlServerDbContext<UserDbContext>("UsersDb");
+// Entity Framework is configured in InfrastructureServiceCollection
 
-// Add Redis - will configure later
-// builder.AddRedis("Redis");
+// Add Redis
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    var redisConfig = builder.Configuration.GetSection("Redis");
+    options.Configuration = $"{redisConfig["Host"]}:{redisConfig["Port"]},password={redisConfig["Password"]}";
+});
 
 // Add JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -84,34 +88,50 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// Add MassTransit for Event Bus with RabbitMQ - Temporarily disabled for demo
-// builder.Services.AddMassTransit(x =>
-// {
-//     x.UsingRabbitMq((context, cfg) =>
-//     {
-//         var connectionString = builder.Configuration.GetConnectionString("EventBus") ?? "amqp://admin:password123@localhost:5672";
-//         cfg.Host(connectionString);
-//         cfg.ConfigureEndpoints(context);
-//         
-//         // Configure retry policy for connection failures
-//         cfg.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
-//         cfg.UseCircuitBreaker(cb =>
-//         {
-//             cb.TrackingPeriod = TimeSpan.FromMinutes(1);
-//             cb.TripThreshold = 15;
-//             cb.ActiveThreshold = 10;
-//             cb.ResetInterval = TimeSpan.FromMinutes(5);
-//         });
-//     });
-// });
+// Add MassTransit for Event Bus with RabbitMQ
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        var rabbitMqConfig = builder.Configuration.GetSection("RabbitMQ");
+        var host = rabbitMqConfig["Host"] ?? "localhost";
+        var port = int.Parse(rabbitMqConfig["Port"] ?? "5672");
+        var username = rabbitMqConfig["Username"] ?? "guest";
+        var password = rabbitMqConfig["Password"] ?? "guest";
+        
+        var connectionString = $"amqp://{username}:{password}@{host}:{port}/";
+        cfg.Host(new Uri(connectionString));
+        
+        // Configure message topology for events
+        cfg.Message<UserRegisteredEvent>(e => e.SetEntityName("user-registered"));
+        
+        // Configure the endpoint for UserRegisteredEvent
+        cfg.ReceiveEndpoint("user-registered", e =>
+        {
+            // Configure the endpoint for UserRegisteredEvent
+        });
+        
+        cfg.ConfigureEndpoints(context);
+        
+        // Configure retry policy for connection failures
+        cfg.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
+        cfg.UseCircuitBreaker(cb =>
+        {
+            cb.TrackingPeriod = TimeSpan.FromMinutes(1);
+            cb.TripThreshold = 15;
+            cb.ActiveThreshold = 10;
+            cb.ResetInterval = TimeSpan.FromMinutes(5);
+        });
+    });
+});
 
-// // Make MassTransit startup optional for development
-// builder.Services.Configure<MassTransitHostOptions>(options =>
-// {
-//     options.WaitUntilStarted = false;
-//     options.StartTimeout = TimeSpan.FromSeconds(10);
-//     options.StopTimeout = TimeSpan.FromSeconds(30);
-// });
+// Make MassTransit startup optional for development
+builder.Services.Configure<MassTransitHostOptions>(options =>
+{
+    options.WaitUntilStarted = false;
+    options.StartTimeout = TimeSpan.FromSeconds(10);
+    options.StopTimeout = TimeSpan.FromSeconds(30);
+});
 
 // Add FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
@@ -147,10 +167,51 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+// Add network security middleware to block direct external access
+app.Use(async (context, next) =>
+{
+    var remoteIp = context.Connection.RemoteIpAddress;
+    var forwardedFor = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+    
+    // Only allow connections from localhost (API Gateway) or forwarded requests
+    if (remoteIp != null && 
+        !IPAddress.IsLoopback(remoteIp) && 
+        !remoteIp.Equals(IPAddress.Parse("127.0.0.1")) &&
+        !remoteIp.Equals(IPAddress.Parse("::1")) &&
+        string.IsNullOrEmpty(forwardedFor))
+    {
+        context.Response.StatusCode = 403;
+        await context.Response.WriteAsync("Direct external access is not allowed. Use the API Gateway.", cancellationToken: context.RequestAborted);
+        return;
+    }
+    
+    await next();
+});
 
-// Map Aspire default endpoints - will add later
-// app.MapDefaultEndpoints();
+// Add API Key authentication to block direct access
+app.Use(async (context, next) =>
+{
+    // Skip authentication for health checks
+    if (context.Request.Path.StartsWithSegments("/health"))
+    {
+        await next();
+        return;
+    }
+    
+    var apiKey = context.Request.Headers["X-API-Key"].FirstOrDefault();
+    var expectedApiKey = builder.Configuration["Security:ServiceApiKey"] ?? "ecommerce-service-secret-key";
+    
+    if (string.IsNullOrEmpty(apiKey) || apiKey != expectedApiKey)
+    {
+        context.Response.StatusCode = 401;
+        await context.Response.WriteAsync("API Key required. Direct access is not allowed.", cancellationToken: context.RequestAborted);
+        return;
+    }
+    
+    await next();
+});
+
+app.MapControllers();
 
 // Add health check endpoint
 app.MapHealthChecks("/health");

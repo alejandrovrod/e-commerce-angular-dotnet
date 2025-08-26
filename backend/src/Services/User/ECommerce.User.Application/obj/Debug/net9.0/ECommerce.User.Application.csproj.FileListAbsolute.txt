@@ -1,3 +1,9 @@
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.csproj.AssemblyReference.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.AssemblyInfoInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.AssemblyInfo.cs
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.csproj.CoreCompileInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.sourcelink.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\bin\Debug\net9.0\ECommerce.User.Application.deps.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\bin\Debug\net9.0\ECommerce.User.Application.dll
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\bin\Debug\net9.0\ECommerce.User.Application.pdb
@@ -7,12 +13,6 @@ C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Applicat
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\bin\Debug\net9.0\ECommerce.BuildingBlocks.EventBus.pdb
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\bin\Debug\net9.0\ECommerce.User.Domain.pdb
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.pdb
-C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.csproj.AssemblyReference.cache
-C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.GeneratedMSBuildEditorConfig.editorconfig
-C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.AssemblyInfoInputs.cache
-C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.AssemblyInfo.cs
-C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.csproj.CoreCompileInputs.cache
-C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.sourcelink.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerc.16F9AA5F.Up2Date
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\ECommerce.User.Application.dll
 C:\Workspace\Cursor\e-commerce\backend\src\Services\User\ECommerce.User.Application\obj\Debug\net9.0\refint\ECommerce.User.Application.dll

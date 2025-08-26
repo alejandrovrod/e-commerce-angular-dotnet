@@ -49,6 +49,7 @@ C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\
 C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\Debug\net9.0\staticwebassets.development.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\Debug\net9.0\ECommerc.88D3BB16.Up2Date
 C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\Debug\net9.0\ECommerce.File.API.dll
 C:\Workspace\Cursor\e-commerce\backend\src\Services\File\ECommerce.File.API\obj\Debug\net9.0\refint\ECommerce.File.API.dll

@@ -99,6 +99,9 @@ builder.Services.AddSwaggerGen(c =>
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
+    
+    // Add manual endpoints for User Service since Reverse Proxy endpoints are not auto-detected
+    c.SwaggerDoc("user-service", new() { Title = "User Service", Version = "1" });
 });
 
 var app = builder.Build();
@@ -132,6 +135,13 @@ app.Use(async (context, next) =>
         context.Request.Path,
         context.Connection.RemoteIpAddress);
     
+    // Log Reverse Proxy routing information
+    var routeEndpoint = context.GetEndpoint();
+    if (routeEndpoint != null)
+    {
+        Log.Information("Route matched: {RouteName}", routeEndpoint.DisplayName);
+    }
+    
     await next();
     
     Log.Information("Gateway Response: {StatusCode} for {Method} {Path}",
@@ -142,6 +152,23 @@ app.Use(async (context, next) =>
 
 // Map Controllers
 app.MapControllers();
+
+// Add API Key middleware for Reverse Proxy
+app.Use(async (context, next) =>
+{
+    // Check if this is a Reverse Proxy request
+    if (context.Request.Path.StartsWithSegments("/api"))
+    {
+        var apiKey = context.RequestServices
+            .GetRequiredService<IConfiguration>()
+            .GetValue<string>("Security:ServiceApiKey") ?? "ecommerce-service-secret-key";
+        
+        // Add X-API-Key header to the request
+        context.Request.Headers["X-API-Key"] = apiKey;
+    }
+    
+    await next();
+});
 
 // Map Reverse Proxy
 app.MapReverseProxy();

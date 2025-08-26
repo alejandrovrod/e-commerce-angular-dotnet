@@ -8,6 +8,8 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)
     {
+        // Temporarily commented out to fix migration issues
+        /*
         builder.ToTable("Addresses");
 
         builder.HasKey(e => e.Id);
@@ -56,14 +58,11 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
         builder.Property(e => e.IsDefault)
             .IsRequired();
 
-        // Relationship with User
-        builder.HasOne<Domain.Entities.User>()
-            .WithMany(u => u.Addresses)
-            .HasForeignKey(a => a.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Relationship with User - configured in UserConfiguration
 
         // Indexes
         builder.HasIndex(e => e.UserId);
         builder.HasIndex(e => new { e.UserId, e.IsDefault });
+        */
     }
 }

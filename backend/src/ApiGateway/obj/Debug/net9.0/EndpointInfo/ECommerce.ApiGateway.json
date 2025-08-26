@@ -5,51 +5,10 @@
     "version": "v1"
   },
   "paths": {
-    "/api/Auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/api/Documentation/user-service-endpoints": {
       "get": {
         "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Auth/test": {
-      "get": {
-        "tags": [
-          "Auth"
+          "Documentation"
         ],
         "responses": {
           "200": {
@@ -69,7 +28,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringStringStringDateTime<>f__AnonymousType13"
+                  "$ref": "#/components/schemas/StringStringStringDateTime<>f__AnonymousType17"
                 }
               }
             }
@@ -128,21 +87,7 @@
   },
   "components": {
     "schemas": {
-      "LoginRequest": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "StringStringStringDateTime<>f__AnonymousType13": {
+      "StringStringStringDateTime<>f__AnonymousType17": {
         "type": "object",
         "properties": {
           "service": {

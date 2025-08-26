@@ -52,6 +52,7 @@ C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.AP
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\staticwebassets.development.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerc.3F46022B.Up2Date
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.dll
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\refint\ECommerce.Payment.API.dll

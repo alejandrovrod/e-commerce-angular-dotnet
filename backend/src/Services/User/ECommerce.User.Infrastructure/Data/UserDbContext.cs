@@ -13,8 +13,9 @@ public class UserDbContext : DbContext
     }
 
     public DbSet<Domain.Entities.User> Users { get; set; } = default!;
-    public DbSet<Address> Addresses { get; set; } = default!;
-    public DbSet<UserPreferences> UserPreferences { get; set; } = default!;
+    // Temporarily commented out to fix migration issues
+    // public DbSet<Address> Addresses { get; set; } = default!;
+    // public DbSet<UserPreferences> UserPreferences { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,18 +23,21 @@ public class UserDbContext : DbContext
 
         // Apply configurations
         modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new AddressConfiguration());
-        modelBuilder.ApplyConfiguration(new UserPreferencesConfiguration());
+        // Temporarily commented out to fix migration issues
+        // modelBuilder.ApplyConfiguration(new AddressConfiguration());
+        // modelBuilder.ApplyConfiguration(new UserPreferencesConfiguration());
 
         // Global query filters for soft delete
         modelBuilder.Entity<Domain.Entities.User>().HasQueryFilter(e => !e.IsDeleted);
-        modelBuilder.Entity<Address>().HasQueryFilter(e => !e.IsDeleted);
-        modelBuilder.Entity<UserPreferences>().HasQueryFilter(e => !e.IsDeleted);
+        // Temporarily commented out to fix migration issues
+        // modelBuilder.Entity<Address>().HasQueryFilter(e => !e.IsDeleted);
+        // modelBuilder.Entity<UserPreferences>().HasQueryFilter(e => !e.IsDeleted);
 
         // Set table names
         modelBuilder.Entity<Domain.Entities.User>().ToTable("Users");
-        modelBuilder.Entity<Address>().ToTable("Addresses");
-        modelBuilder.Entity<UserPreferences>().ToTable("UserPreferences");
+        // Temporarily commented out to fix migration issues
+        // modelBuilder.Entity<Address>().ToTable("Addresses");
+        // modelBuilder.Entity<UserPreferences>().ToTable("UserPreferences");
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -1,4 +1,6 @@
+using System;
 using ECommerce.User.Domain.Enums;
+using System.Collections.Generic;
 
 namespace ECommerce.User.Application.DTOs;
 
@@ -35,7 +37,9 @@ public record AddressDto(
     string ZipCode,
     string Country,
     string? Phone,
-    bool IsDefault
+    bool IsDefault,
+    DateTime CreatedAt,
+    DateTime? UpdatedAt
 );
 
 public record UserPreferencesDto(
@@ -130,6 +134,8 @@ public record UpdateAddressRequestDto(
     bool IsDefault
 );
 
+
+
 public record ForgotPasswordRequestDto(
     string Email
 );
@@ -143,6 +149,41 @@ public record ResetPasswordRequestDto(
 
 public record RefreshTokenRequestDto(
     string RefreshToken
+);
+
+public record UpdateUserRoleRequestDto(string Role);
+
+public record UserStatisticsDto(
+    int TotalUsers,
+    int ActiveUsers,
+    int PendingUsers,
+    int SuspendedUsers,
+    Dictionary<string, int> UsersByRole,
+    int NewUsersThisMonth,
+    int NewUsersThisWeek
+);
+
+public record CreateUserAdminRequestDto(
+    string Email,
+    string Password,
+    string FirstName,
+    string LastName,
+    string? PhoneNumber,
+    string Role,
+    string Status
+);
+
+public record UpdateUserAdminRequestDto(
+    string FirstName,
+    string LastName,
+    string? PhoneNumber,
+    string Role,
+    string Status
+);
+
+public record BulkUpdateUserRolesRequestDto(
+    List<Guid> UserIds,
+    string Role
 );
 
 

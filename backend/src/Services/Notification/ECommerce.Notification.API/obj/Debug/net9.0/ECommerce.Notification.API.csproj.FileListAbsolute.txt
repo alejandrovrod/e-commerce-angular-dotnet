@@ -70,6 +70,7 @@ C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notif
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notification.API\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notification.API\obj\Debug\net9.0\staticwebassets.development.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notification.API\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notification.API\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notification.API\obj\Debug\net9.0\ECommerc.1A929B6A.Up2Date
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notification.API\obj\Debug\net9.0\ECommerce.Notification.API.dll
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Notification\ECommerce.Notification.API\obj\Debug\net9.0\refint\ECommerce.Notification.API.dll
