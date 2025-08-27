@@ -1,11 +1,15 @@
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.Clusters.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.Development.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.json
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.Logging.json
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.Routes.json
+C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\appsettings.Security.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.staticwebassets.endpoints.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.exe
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.deps.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.runtimeconfig.json
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.dll
-C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\ECommerce.ApiGateway.pdb
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Aspire.StackExchange.Redis.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\HealthChecks.Redis.dll
 C:\Workspace\Cursor\e-commerce\backend\src\ApiGateway\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

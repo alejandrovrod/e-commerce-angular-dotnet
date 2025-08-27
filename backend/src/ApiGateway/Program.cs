@@ -7,6 +7,17 @@ using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load modular configuration files
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Routes.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Clusters.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Security.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Logging.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
