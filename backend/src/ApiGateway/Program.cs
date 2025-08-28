@@ -165,21 +165,23 @@ app.Use(async (context, next) =>
 app.MapControllers();
 
 // Add API Key middleware for Reverse Proxy
-app.Use(async (context, next) =>
-{
-    // Check if this is a Reverse Proxy request
-    if (context.Request.Path.StartsWithSegments("/api"))
-    {
-        var apiKey = context.RequestServices
-            .GetRequiredService<IConfiguration>()
-            .GetValue<string>("Security:ServiceApiKey") ?? "ecommerce-service-secret-key";
-        
-        // Add X-API-Key header to the request
-        context.Request.Headers["X-API-Key"] = apiKey;
-    }
-    
-    await next();
-});
+// app.Use(async (context, next) =>
+// {
+//     // Check if this is a Reverse Proxy request
+//     if (context.Request.Path.StartsWithSegments("/api"))
+//     {
+//         var apiKey = context.RequestServices
+//             .GetRequiredService<IConfiguration>()
+//             .GetValue<string>("Security:ServiceApiKey") ?? "ecommerce-service-secret-key";
+//         
+//         // Add X-API-Key header to the request
+//         context.Request.Headers["X-API-Key"] = apiKey;
+//         
+//         Log.Information("Added X-API-Key header for request: {Path}", context.Request.Path);
+//     }
+//     
+//     await next();
+// });
 
 // Map Reverse Proxy
 app.MapReverseProxy();

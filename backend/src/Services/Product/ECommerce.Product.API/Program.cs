@@ -1,13 +1,15 @@
+using ECommerce.Product.Application;
+using ECommerce.Product.Infrastructure;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
-using MediatR;
-using FluentValidation;
-using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
+    .WriteTo.Console()
     .Enrich.WithProperty("ServiceName", "ProductService")
     .CreateLogger();
 
@@ -16,17 +18,38 @@ builder.Host.UseSerilog();
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen();
+
+// Add Application and Infrastructure layers
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// Add Redis Cache
+builder.Services.AddStackExchangeRedisCache(options =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Product Service API", Version = "1.0.0" });
+    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
 });
 
-// Add MediatR
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+// Add MassTransit for Event Bus
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        var rabbitMqConfig = builder.Configuration.GetSection("RabbitMQ");
+        var host = rabbitMqConfig["Host"] ?? "localhost";
+        var port = int.Parse(rabbitMqConfig["Port"] ?? "5672");
+        var username = rabbitMqConfig["Username"] ?? "guest";
+        var password = rabbitMqConfig["Password"] ?? "guest";
+        
+        var connectionString = $"amqp://{username}:{password}@{host}:{port}/";
+        cfg.Host(new Uri(connectionString));
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
-// Add FluentValidation
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+// Add Health Checks
+builder.Services.AddHealthChecks()
+    .AddCheck("self", () => HealthCheckResult.Healthy("Product Service is healthy"));
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -39,10 +62,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add Health Checks
-builder.Services.AddHealthChecks()
-    .AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy("Product Service is healthy"));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
@@ -52,24 +71,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection(); // Disabled for testing
 app.UseCors();
 
-app.UseAuthorization();
-
-app.MapControllers();
-
-// Health check endpoint
+// Add health check endpoint
 app.MapHealthChecks("/health");
 
-// Default endpoint
-app.MapGet("/", () => new
-{
-    Service = "Product Service",
-    Version = "1.0.0",
-    Environment = app.Environment.EnvironmentName,
-    Timestamp = DateTime.UtcNow
-});
+app.MapControllers();
 
 try
 {

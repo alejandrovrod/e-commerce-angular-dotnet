@@ -82,7 +82,7 @@ public class Product : BaseAuditableEntity
 
     public void UpdateInventory(int stock, int lowStockThreshold = 0, bool trackQuantity = true)
     {
-        Inventory = new Inventory(stock, lowStockThreshold, trackQuantity, Inventory.AllowBackorder);
+        Inventory = new Inventory(Id, stock, "Default");
         UpdatedAt = DateTime.UtcNow;
     }
 
@@ -134,6 +134,19 @@ public class Product : BaseAuditableEntity
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void SetDigitalAndShipping(bool isDigital, bool requiresShipping)
+    {
+        IsDigital = isDigital;
+        RequiresShipping = requiresShipping;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetTaxable(bool isTaxable)
+    {
+        IsTaxable = isTaxable;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void SetStatus(ProductStatus status)
     {
         Status = status;
@@ -173,7 +186,7 @@ public class Product : BaseAuditableEntity
     public void RecordSale(int quantity = 1)
     {
         Analytics.RecordSale(quantity);
-        Inventory.ReduceStock(quantity);
+        // Note: Stock consumption should be handled by the inventory service
         UpdatedAt = DateTime.UtcNow;
     }
 
@@ -183,9 +196,9 @@ public class Product : BaseAuditableEntity
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public bool IsInStock() => Inventory.IsInStock();
+    public bool IsInStock() => Inventory.AvailableQuantity > 0;
     
-    public bool IsLowStock() => Inventory.IsLowStock();
+    public bool IsLowStock() => Inventory.IsLowStock(10);
     
     public bool HasDiscount() => CompareAtPrice != null && CompareAtPrice.Amount > Price.Amount;
     

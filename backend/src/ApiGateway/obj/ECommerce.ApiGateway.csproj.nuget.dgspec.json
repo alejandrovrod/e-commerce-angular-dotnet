@@ -58,6 +58,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Aspire.Hosting": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Aspire.StackExchange.Redis": {
               "target": "Package",
               "version": "[9.0.0, )"

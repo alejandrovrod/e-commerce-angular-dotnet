@@ -15,11 +15,13 @@
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ECommerce.Product.Domain\ECommerce.Product.Domain.csproj" />
     <ProjectReference Include="..\ECommerce.Product.Application\ECommerce.Product.Application.csproj" />
+    <ProjectReference Include="..\ECommerce.Product.Infrastructure\ECommerce.Product.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Common\ECommerce.BuildingBlocks.Common.csproj" />
   </ItemGroup>
 

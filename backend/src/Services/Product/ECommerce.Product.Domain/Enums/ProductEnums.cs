@@ -17,11 +17,13 @@ public enum ProductType
     Subscription = 4
 }
 
-public enum ReviewStatus
+public enum InventoryStatus
 {
-    Pending = 1,
-    Approved = 2,
-    Rejected = 3
+    InStock = 1,
+    LowStock = 2,
+    OutOfStock = 3,
+    Backorder = 4,
+    Discontinued = 5
 }
 
 public enum SortBy

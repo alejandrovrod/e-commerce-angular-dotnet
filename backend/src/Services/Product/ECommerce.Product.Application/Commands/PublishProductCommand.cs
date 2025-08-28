@@ -11,3 +11,5 @@ public class PublishProductCommand : IRequest<ProductDto?>
 
 
 
+
+

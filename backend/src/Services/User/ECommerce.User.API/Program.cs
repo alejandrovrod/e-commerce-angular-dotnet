@@ -191,24 +191,40 @@ app.Use(async (context, next) =>
 // Add API Key authentication to block direct access
 app.Use(async (context, next) =>
 {
-    // Skip authentication for health checks
-    if (context.Request.Path.StartsWithSegments("/health"))
+    try
     {
+        // Skip authentication for health checks
+        if (context.Request.Path.StartsWithSegments("/health"))
+        {
+            await next();
+            return;
+        }
+        
+        var apiKey = context.Request.Headers["X-API-Key"].FirstOrDefault();
+        var expectedApiKey = builder.Configuration["Security:ServiceApiKey"] ?? "ecommerce-service-secret-key";
+        
+        if (string.IsNullOrEmpty(apiKey) || apiKey != expectedApiKey)
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync("API Key required. Direct access is not allowed.", cancellationToken: context.RequestAborted);
+            return;
+        }
+        
         await next();
-        return;
     }
-    
-    var apiKey = context.Request.Headers["X-API-Key"].FirstOrDefault();
-    var expectedApiKey = builder.Configuration["Security:ServiceApiKey"] ?? "ecommerce-service-secret-key";
-    
-    if (string.IsNullOrEmpty(apiKey) || apiKey != expectedApiKey)
+    catch (TaskCanceledException)
     {
-        context.Response.StatusCode = 401;
-        await context.Response.WriteAsync("API Key required. Direct access is not allowed.", cancellationToken: context.RequestAborted);
+        // Handle task cancellation gracefully (client disconnected, request aborted, etc.)
+        // Don't log this as an error as it's expected behavior
         return;
     }
-    
-    await next();
+    catch (Exception ex)
+    {
+        // Log other unexpected errors
+        Log.Error(ex, "Error in API Key middleware");
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("Internal server error", cancellationToken: context.RequestAborted);
+    }
 });
 
 app.MapControllers();
