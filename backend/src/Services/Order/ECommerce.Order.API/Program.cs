@@ -10,16 +10,20 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Add Aspire service defaults - will add later
-// builder.AddServiceDefaults();
-
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add SQL Server - will configure later
-// builder.AddSqlServerDbContext<object>("ecommerce-orders");
+// Add MediatR - register from both the API and Application assemblies
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(ECommerce.Order.Application.Commands.CreateOrder.CreateOrderCommand).Assembly);
+});
+
+// Add Repositories
+builder.Services.AddScoped<ECommerce.Order.Application.Interfaces.IOrderRepository, ECommerce.Order.Infrastructure.Repositories.OrderRepository>();
+builder.Services.AddScoped<ECommerce.Order.Application.Interfaces.IUnitOfWork, ECommerce.Order.Infrastructure.Repositories.UnitOfWork>();
 
 var app = builder.Build();
 

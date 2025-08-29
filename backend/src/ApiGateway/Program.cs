@@ -27,7 +27,7 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 // Add Aspire service defaults - will add later
-// builder.AddServiceDefaults(); // Temporalmente comentado hasta resolver la referencia
+//builder.AddServiceDefaults(); // Temporalmente comentado hasta resolver la referencia
 
 // Add services to the container
 builder.Services.AddControllers();

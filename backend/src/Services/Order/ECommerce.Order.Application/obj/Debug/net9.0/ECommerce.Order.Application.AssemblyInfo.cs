@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("ECommerce.ServiceDefaults")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("ECommerce.Order.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44881be8dac8aedd54f0771aa99172225fd84725")]
-[assembly: System.Reflection.AssemblyProductAttribute("ECommerce.ServiceDefaults")]
-[assembly: System.Reflection.AssemblyTitleAttribute("ECommerce.ServiceDefaults")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf6d4895c272718c580b781cf7b91e00152a92a5")]
+[assembly: System.Reflection.AssemblyProductAttribute("ECommerce.Order.Application")]
+[assembly: System.Reflection.AssemblyTitleAttribute("ECommerce.Order.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Generado por la clase WriteCodeFragment de MSBuild.
