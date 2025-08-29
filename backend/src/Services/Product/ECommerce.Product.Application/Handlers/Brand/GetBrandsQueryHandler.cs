@@ -1,48 +1,29 @@
 using MediatR;
 using ECommerce.BuildingBlocks.Common.Models;
 using ECommerce.Product.Application.DTOs;
-using ECommerce.Product.Domain.Repositories;
 using ECommerce.Product.Application.Queries.Brand;
+using ECommerce.Product.Domain.Repositories;
+using ECommerce.Product.Application.Interfaces;
 
 namespace ECommerce.Product.Application.Handlers.Brand;
 
 public class GetBrandsQueryHandler : IRequestHandler<GetBrandsQuery, ApiResponse<List<BrandDto>>>
 {
     private readonly IBrandRepository _brandRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetBrandsQueryHandler(IBrandRepository brandRepository)
+    public GetBrandsQueryHandler(IBrandRepository brandRepository, IUnitOfWork unitOfWork)
     {
         _brandRepository = brandRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ApiResponse<List<BrandDto>>> Handle(GetBrandsQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            List<ECommerce.Product.Domain.Entities.Brand> brands;
-
-            if (!string.IsNullOrEmpty(request.SearchTerm))
-            {
-                brands = await _brandRepository.SearchAsync(request.SearchTerm);
-            }
-            else if (request.IsActive.HasValue)
-            {
-                brands = request.IsActive.Value 
-                    ? await _brandRepository.GetActiveAsync()
-                    : await _brandRepository.GetAllAsync();
-            }
-            else
-            {
-                brands = await _brandRepository.GetAllAsync();
-            }
-
-            // Filter by active status if specified
-            if (request.IsActive.HasValue)
-            {
-                brands = brands.Where(b => b.IsActive == request.IsActive.Value).ToList();
-            }
-
-            // Map to DTOs
+            var brands = await _brandRepository.GetAllAsync();
+            
             var brandDtos = brands.Select(b => new BrandDto
             {
                 Id = b.Id,

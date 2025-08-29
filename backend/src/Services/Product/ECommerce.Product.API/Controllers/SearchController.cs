@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.BuildingBlocks.Common.Models;
 using MediatR;
+using ECommerce.Product.Application.Queries.Search;
 using ECommerce.Product.Application.DTOs;
+using ECommerce.Product.Domain.Enums;
 
 namespace ECommerce.Product.API.Controllers;
 
@@ -17,91 +19,69 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> Search([FromQuery] SearchProductsQuery query)
+    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> Search([FromQuery] string q, [FromQuery] string? category, [FromQuery] string? brand)
     {
-        // TODO: Implement SearchProductsQuery
-        var result = ApiResponse<List<ProductDto>>.SuccessResult(new List<ProductDto>());
+        var query = new SearchProductsQuery
+        {
+            Query = q,
+            Category = category,
+            Brand = brand
+        };
+        
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 
     [HttpGet("advanced")]
-    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> AdvancedSearch([FromQuery] AdvancedSearchQuery query)
+    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> AdvancedSearch(
+        [FromQuery] string? name,
+        [FromQuery] string? description,
+        [FromQuery] decimal? minPrice,
+        [FromQuery] decimal? maxPrice,
+        [FromQuery] string? category,
+        [FromQuery] string? brand,
+        [FromQuery] bool? isFeatured,
+        [FromQuery] bool? isDigital,
+        [FromQuery] ProductStatus? status)
     {
-        // TODO: Implement AdvancedSearchQuery
-        var result = ApiResponse<List<ProductDto>>.SuccessResult(new List<ProductDto>());
+        var query = new AdvancedSearchQuery
+        {
+            Name = name,
+            Description = description,
+            MinPrice = minPrice,
+            MaxPrice = maxPrice,
+            Category = category,
+            Brand = brand,
+            IsFeatured = isFeatured,
+            IsDigital = isDigital,
+            Status = status
+        };
+        
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 
     [HttpGet("suggestions")]
-    public async Task<ActionResult<ApiResponse<List<string>>>> GetSearchSuggestions([FromQuery] string query)
+    public async Task<ActionResult<ApiResponse<List<string>>>> GetSuggestions([FromQuery] string q)
     {
-        // TODO: Implement GetSearchSuggestionsQuery
-        var result = ApiResponse<List<string>>.SuccessResult(new List<string>());
-        return Ok(result);
-    }
-
-    [HttpGet("trending")]
-    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> GetTrendingProducts()
-    {
-        // TODO: Implement GetTrendingProductsQuery
-        var result = ApiResponse<List<ProductDto>>.SuccessResult(new List<ProductDto>());
+        var query = new GetSearchSuggestionsQuery { Query = q };
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 
     [HttpGet("popular")]
-    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> GetPopularProducts()
+    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> GetPopularProducts([FromQuery] int limit = 10)
     {
-        // TODO: Implement GetPopularProductsQuery
-        var result = ApiResponse<List<ProductDto>>.SuccessResult(new List<ProductDto>());
+        var query = new GetPopularProductsQuery { Limit = limit };
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 
-    [HttpGet("filters")]
-    public async Task<ActionResult<ApiResponse<SearchFiltersDto>>> GetSearchFilters()
+    [HttpGet("recent")]
+    public async Task<ActionResult<ApiResponse<List<ProductDto>>>> GetRecentProducts([FromQuery] int limit = 10)
     {
-        // TODO: Implement GetSearchFiltersQuery
-        var result = ApiResponse<SearchFiltersDto>.SuccessResult(new SearchFiltersDto());
+        var query = new GetRecentProductsQuery { Limit = limit };
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
-}
-
-// DTOs and Queries (temporary placeholders)
-public class SearchProductsQuery
-{
-    public string? Query { get; set; }
-    public Guid? CategoryId { get; set; }
-    public Guid? BrandId { get; set; }
-    public decimal? MinPrice { get; set; }
-    public decimal? MaxPrice { get; set; }
-    public int? MinRating { get; set; }
-    public bool? InStock { get; set; }
-    public string? SortBy { get; set; }
-    public string? SortOrder { get; set; }
-    public int Page { get; set; } = 1;
-    public int PageSize { get; set; } = 20;
-}
-
-public class AdvancedSearchQuery : SearchProductsQuery
-{
-    public List<string>? Tags { get; set; }
-    public List<string>? Attributes { get; set; }
-    public DateTime? CreatedAfter { get; set; }
-    public DateTime? CreatedBefore { get; set; }
-    public bool? IsFeatured { get; set; }
-    public bool? IsDigital { get; set; }
-}
-
-public class SearchFiltersDto
-{
-    public List<CategoryDto> Categories { get; set; } = new();
-    public List<BrandDto> Brands { get; set; } = new();
-    public PriceRangeDto PriceRange { get; set; } = new();
-    public List<string> Tags { get; set; } = new();
-    public List<string> Attributes { get; set; } = new();
-}
-
-public class PriceRangeDto
-{
-    public decimal Min { get; set; }
-    public decimal Max { get; set; }
 }

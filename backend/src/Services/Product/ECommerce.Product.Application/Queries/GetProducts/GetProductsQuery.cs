@@ -4,13 +4,13 @@ using ECommerce.Product.Application.DTOs;
 
 namespace ECommerce.Product.Application.Queries.GetProducts;
 
-public class GetProductsQuery : IRequest<ApiResponse<PagedResult<ProductDto>>>
+public class GetProductsQuery : IRequest<ApiResponse<List<ProductDto>>>
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
     public string? SearchTerm { get; set; }
     public Guid? CategoryId { get; set; }
-    public Guid? BrandId { get; set; }
+    public string? Brand { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
     public bool? InStock { get; set; }

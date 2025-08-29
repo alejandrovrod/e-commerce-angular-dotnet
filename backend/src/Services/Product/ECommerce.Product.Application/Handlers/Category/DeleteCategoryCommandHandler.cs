@@ -2,16 +2,19 @@ using MediatR;
 using ECommerce.BuildingBlocks.Common.Models;
 using ECommerce.Product.Domain.Repositories;
 using ECommerce.Product.Application.Commands.Category;
+using ECommerce.Product.Application.Interfaces;
 
 namespace ECommerce.Product.Application.Handlers.Category;
 
 public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, ApiResponse<bool>>
 {
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteCategoryCommandHandler(ICategoryRepository categoryRepository)
+    public DeleteCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ApiResponse<bool>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
@@ -40,7 +43,7 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
 
             // Delete category
             await _categoryRepository.DeleteAsync(category);
-            // Note: SaveChangesAsync is handled by the Unit of Work pattern or called from the controller
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return ApiResponse<bool>.SuccessResult(true);
         }

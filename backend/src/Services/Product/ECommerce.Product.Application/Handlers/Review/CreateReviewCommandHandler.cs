@@ -4,16 +4,19 @@ using ECommerce.Product.Application.DTOs;
 using ECommerce.Product.Domain.Entities;
 using ECommerce.Product.Domain.Repositories;
 using ECommerce.Product.Application.Commands.Review;
+using ECommerce.Product.Application.Interfaces;
 
 namespace ECommerce.Product.Application.Handlers.Review;
 
 public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, ApiResponse<ReviewDto>>
 {
     private readonly IReviewRepository _reviewRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateReviewCommandHandler(IReviewRepository reviewRepository)
+    public CreateReviewCommandHandler(IReviewRepository reviewRepository, IUnitOfWork unitOfWork)
     {
         _reviewRepository = reviewRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ApiResponse<ReviewDto>> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
@@ -37,7 +40,9 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, A
             
             // Save to repository
             await _reviewRepository.AddAsync(review);
-            // Note: SaveChangesAsync is handled by the Unit of Work pattern or called from the controller
+            
+            // Save changes to database using Unit of Work
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Map to DTO
             var reviewDto = new ReviewDto

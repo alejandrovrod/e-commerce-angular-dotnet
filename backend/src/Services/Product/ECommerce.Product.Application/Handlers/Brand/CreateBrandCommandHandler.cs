@@ -4,16 +4,19 @@ using ECommerce.Product.Application.DTOs;
 using ECommerce.Product.Domain.Entities;
 using ECommerce.Product.Domain.Repositories;
 using ECommerce.Product.Application.Commands.Brand;
+using ECommerce.Product.Application.Interfaces;
 
 namespace ECommerce.Product.Application.Handlers.Brand;
 
 public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, ApiResponse<BrandDto>>
 {
     private readonly IBrandRepository _brandRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateBrandCommandHandler(IBrandRepository brandRepository)
+    public CreateBrandCommandHandler(IBrandRepository brandRepository, IUnitOfWork unitOfWork)
     {
         _brandRepository = brandRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ApiResponse<BrandDto>> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
@@ -31,7 +34,9 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Api
             
             // Save to repository
             await _brandRepository.AddAsync(brand);
-            // Note: SaveChangesAsync is handled by the Unit of Work pattern or called from the controller
+            
+            // Save changes to database using Unit of Work
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             // Map to DTO
             var brandDto = new BrandDto

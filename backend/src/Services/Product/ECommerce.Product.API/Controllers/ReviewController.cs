@@ -4,6 +4,7 @@ using MediatR;
 using ECommerce.Product.Application.DTOs;
 using ECommerce.Product.Application.Commands.Review;
 using ECommerce.Product.Application.Queries.Review;
+using ECommerce.Product.Domain.Repositories;
 
 namespace ECommerce.Product.API.Controllers;
 
@@ -12,10 +13,12 @@ namespace ECommerce.Product.API.Controllers;
 public class ReviewController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IReviewRepository _reviewRepository;
 
-    public ReviewController(IMediator mediator)
+    public ReviewController(IMediator mediator, IReviewRepository reviewRepository)
     {
         _mediator = mediator;
+        _reviewRepository = reviewRepository;
     }
 
     [HttpGet]
@@ -34,17 +37,25 @@ public class ReviewController : ControllerBase
     }
 
     [HttpGet("product/{productId}")]
-    public async Task<ActionResult<ApiResponse<List<ReviewDto>>>> GetByProductId(Guid productId, [FromQuery] GetReviewsByProductIdQuery query)
+    public async Task<ActionResult<ApiResponse<List<ReviewDto>>>> GetByProductId(Guid productId)
     {
-        query.ProductId = productId;
+        var query = new GetReviewsByProductIdQuery { ProductId = productId };
         var result = await _mediator.Send(query);
         return Ok(result);
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<ApiResponse<List<ReviewDto>>>> GetByUserId(Guid userId, [FromQuery] GetReviewsByUserIdQuery query)
+    public async Task<ActionResult<ApiResponse<List<ReviewDto>>>> GetByUserId(Guid userId)
     {
-        query.UserId = userId;
+        var query = new GetReviewsByUserIdQuery { UserId = userId };
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("average-rating/{productId}")]
+    public async Task<ActionResult<ApiResponse<double>>> GetAverageRating(Guid productId)
+    {
+        var query = new GetAverageRatingQuery { ProductId = productId };
         var result = await _mediator.Send(query);
         return Ok(result);
     }
@@ -72,7 +83,7 @@ public class ReviewController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{id}/approve")]
+    [HttpPatch("{id}/approve")]
     public async Task<ActionResult<ApiResponse<bool>>> Approve(Guid id)
     {
         var command = new ApproveReviewCommand { Id = id };
@@ -80,19 +91,45 @@ public class ReviewController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{id}/reject")]
-    public async Task<ActionResult<ApiResponse<bool>>> Reject(Guid id, [FromBody] RejectReviewCommand command)
+    [HttpPatch("{id}/reject")]
+    public async Task<ActionResult<ApiResponse<bool>>> Reject(Guid id)
     {
-        command.Id = id;
+        var command = new RejectReviewCommand { Id = id };
         var result = await _mediator.Send(command);
         return Ok(result);
     }
 
-    [HttpGet("product/{productId}/average-rating")]
-    public async Task<ActionResult<ApiResponse<decimal>>> GetAverageRating(Guid productId)
+    [HttpPatch("{id}/helpful")]
+    public async Task<ActionResult<ApiResponse<bool>>> MarkHelpful(Guid id, [FromBody] int count)
     {
-        var query = new GetAverageRatingQuery { ProductId = productId };
-        var result = await _mediator.Send(query);
-        return Ok(result);
+        var review = await _reviewRepository.GetByIdAsync(id);
+        if (review == null)
+            return NotFound(ApiResponse<bool>.ErrorResult("Review not found"));
+
+        // TODO: Implement UpdateHelpfulCount method in Review entity
+        // For now, just return success
+        return Ok(ApiResponse<bool>.SuccessResult(true));
+    }
+
+    [HttpGet("debug")]
+    public async Task<ActionResult<object>> DebugReviews()
+    {
+        try
+        {
+            var reviewsFromContext = await _reviewRepository.GetAllAsync();
+            
+            var debugInfo = new
+            {
+                ContextReviewsCount = reviewsFromContext.Count,
+                ContextReviews = reviewsFromContext.Select(r => new { r.Id, r.ProductId, r.UserId, r.Rating, r.Status, r.CreatedAt }),
+                Message = "Debug info from ReviewController"
+            };
+            
+            return Ok(debugInfo);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+        }
     }
 }

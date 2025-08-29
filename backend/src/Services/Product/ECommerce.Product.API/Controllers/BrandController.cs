@@ -4,6 +4,7 @@ using MediatR;
 using ECommerce.Product.Application.DTOs;
 using ECommerce.Product.Application.Commands.Brand;
 using ECommerce.Product.Application.Queries.Brand;
+using ECommerce.Product.Domain.Repositories;
 
 namespace ECommerce.Product.API.Controllers;
 
@@ -12,10 +13,12 @@ namespace ECommerce.Product.API.Controllers;
 public class BrandController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IBrandRepository _brandRepository;
 
-    public BrandController(IMediator mediator)
+    public BrandController(IMediator mediator, IBrandRepository brandRepository)
     {
         _mediator = mediator;
+        _brandRepository = brandRepository;
     }
 
     [HttpGet]
@@ -54,5 +57,27 @@ public class BrandController : ControllerBase
         var command = new DeleteBrandCommand { Id = id };
         var result = await _mediator.Send(command);
         return Ok(result);
+    }
+
+    [HttpGet("debug")]
+    public async Task<ActionResult<object>> DebugBrands()
+    {
+        try
+        {
+            var brandsFromContext = await _brandRepository.GetAllAsync();
+            
+            var debugInfo = new
+            {
+                ContextBrandsCount = brandsFromContext.Count,
+                ContextBrands = brandsFromContext.Select(b => new { b.Id, b.Name, b.IsActive, b.CreatedAt }),
+                Message = "Debug info from BrandController"
+            };
+            
+            return Ok(debugInfo);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+        }
     }
 }

@@ -1,18 +1,21 @@
 using MediatR;
 using ECommerce.BuildingBlocks.Common.Models;
 using ECommerce.Product.Application.DTOs;
-using ECommerce.Product.Domain.Repositories;
 using ECommerce.Product.Application.Queries.Brand;
+using ECommerce.Product.Domain.Repositories;
+using ECommerce.Product.Application.Interfaces;
 
 namespace ECommerce.Product.Application.Handlers.Brand;
 
 public class GetBrandByIdQueryHandler : IRequestHandler<GetBrandByIdQuery, ApiResponse<BrandDto>>
 {
     private readonly IBrandRepository _brandRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetBrandByIdQueryHandler(IBrandRepository brandRepository)
+    public GetBrandByIdQueryHandler(IBrandRepository brandRepository, IUnitOfWork unitOfWork)
     {
         _brandRepository = brandRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ApiResponse<BrandDto>> Handle(GetBrandByIdQuery request, CancellationToken cancellationToken)
@@ -20,6 +23,7 @@ public class GetBrandByIdQueryHandler : IRequestHandler<GetBrandByIdQuery, ApiRe
         try
         {
             var brand = await _brandRepository.GetByIdAsync(request.Id);
+            
             if (brand == null)
             {
                 return ApiResponse<BrandDto>.ErrorResult("Brand not found");

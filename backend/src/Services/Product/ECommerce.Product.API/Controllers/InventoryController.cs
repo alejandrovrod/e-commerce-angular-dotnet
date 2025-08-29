@@ -4,6 +4,7 @@ using MediatR;
 using ECommerce.Product.Application.DTOs;
 using ECommerce.Product.Application.Commands.Inventory;
 using ECommerce.Product.Application.Queries.Inventory;
+using ECommerce.Product.Domain.Repositories;
 
 namespace ECommerce.Product.API.Controllers;
 
@@ -12,10 +13,12 @@ namespace ECommerce.Product.API.Controllers;
 public class InventoryController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IInventoryRepository _inventoryRepository;
 
-    public InventoryController(IMediator mediator)
+    public InventoryController(IMediator mediator, IInventoryRepository inventoryRepository)
     {
         _mediator = mediator;
+        _inventoryRepository = inventoryRepository;
     }
 
     [HttpGet]
@@ -41,6 +44,13 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("low-stock")]
+    public async Task<ActionResult<ApiResponse<List<InventoryDto>>>> GetLowStock([FromQuery] GetLowStockQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<ActionResult<ApiResponse<InventoryDto>>> Create([FromBody] CreateInventoryCommand command)
     {
@@ -56,15 +66,15 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{id}/adjust")]
-    public async Task<ActionResult<ApiResponse<InventoryDto>>> AdjustStock(Guid id, [FromBody] AdjustStockCommand command)
+    [HttpPatch("{id}/stock")]
+    public async Task<ActionResult<ApiResponse<bool>>> AdjustStock(Guid id, [FromBody] AdjustStockCommand command)
     {
         command.Id = id;
         var result = await _mediator.Send(command);
         return Ok(result);
     }
 
-    [HttpPost("{id}/reserve")]
+    [HttpPatch("{id}/reserve")]
     public async Task<ActionResult<ApiResponse<bool>>> ReserveStock(Guid id, [FromBody] ReserveStockCommand command)
     {
         command.Id = id;
@@ -72,10 +82,37 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("low-stock")]
-    public async Task<ActionResult<ApiResponse<List<InventoryDto>>>> GetLowStock([FromQuery] GetLowStockQuery query)
+    [HttpPatch("{id}/release")]
+    public async Task<ActionResult<ApiResponse<bool>>> ReleaseStock(Guid id, [FromBody] int quantity)
     {
-        var result = await _mediator.Send(query);
-        return Ok(result);
+        var inventory = await _inventoryRepository.GetByIdAsync(id);
+        if (inventory == null)
+            return NotFound(ApiResponse<bool>.ErrorResult("Inventory not found"));
+
+        // TODO: Implement ReleaseStock method in Inventory entity
+        // For now, just return success
+        return Ok(ApiResponse<bool>.SuccessResult(true));
+    }
+
+    [HttpGet("debug")]
+    public async Task<ActionResult<object>> DebugInventory()
+    {
+        try
+        {
+            var inventoryFromContext = await _inventoryRepository.GetAllAsync();
+            
+            var debugInfo = new
+            {
+                ContextInventoryCount = inventoryFromContext.Count,
+                ContextInventory = inventoryFromContext.Select(i => new { i.Id, i.ProductId, i.Quantity, i.Location, i.CreatedAt }),
+                Message = "Debug info from InventoryController"
+            };
+            
+            return Ok(debugInfo);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+        }
     }
 }

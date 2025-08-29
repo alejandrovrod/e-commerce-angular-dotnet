@@ -3,17 +3,20 @@ using ECommerce.BuildingBlocks.Common.Models;
 using ECommerce.Product.Application.DTOs;
 using ECommerce.Product.Domain.Repositories;
 using ECommerce.Product.Application.Commands.Category;
+using ECommerce.Product.Application.Interfaces;
 
 namespace ECommerce.Product.Application.Handlers.Category;
 
 public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, ApiResponse<CategoryDto>>
 {
     private readonly ICategoryRepository _categoryRepository;
+	private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateCategoryCommandHandler(ICategoryRepository categoryRepository)
+	public UpdateCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository;
-    }
+		_unitOfWork = unitOfWork;
+	}
 
     public async Task<ApiResponse<CategoryDto>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -39,10 +42,11 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
 
             // Save changes
             await _categoryRepository.UpdateAsync(category);
-            // Note: SaveChangesAsync is handled by the Unit of Work pattern or called from the controller
+			await _unitOfWork.SaveChangesAsync(cancellationToken);
+			// Note: SaveChangesAsync is handled by the Unit of Work pattern or called from the controller
 
-            // Map to DTO
-            var categoryDto = new CategoryDto
+			// Map to DTO
+			var categoryDto = new CategoryDto
             {
                 Id = category.Id,
                 Name = category.Name,

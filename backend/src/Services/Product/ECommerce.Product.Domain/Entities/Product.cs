@@ -146,6 +146,24 @@ public class Product : BaseAuditableEntity
         IsTaxable = isTaxable;
         UpdatedAt = DateTime.UtcNow;
     }
+    
+    public void UpdateSKU(string sku)
+    {
+        SKU = sku;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    
+    public void UpdateBrand(string brand)
+    {
+        Brand = brand;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    
+    public void UpdateCategory(Guid categoryId)
+    {
+        CategoryId = categoryId;
+        UpdatedAt = DateTime.UtcNow;
+    }
 
     public void SetStatus(ProductStatus status)
     {
