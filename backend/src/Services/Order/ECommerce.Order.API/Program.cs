@@ -1,4 +1,5 @@
 using Serilog;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,10 @@ builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ECommerce.Order.Application.Commands.CreateOrder.CreateOrderCommand).Assembly);
 });
+
+// Add Entity Framework with database connection
+builder.Services.AddDbContext<ECommerce.Order.Infrastructure.Data.OrderDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("OrdersDb")));
 
 // Add Repositories
 builder.Services.AddScoped<ECommerce.Order.Application.Interfaces.IOrderRepository, ECommerce.Order.Infrastructure.Repositories.OrderRepository>();

@@ -16,16 +16,20 @@ public class OrderDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
+        // Configure Order entity to handle BaseAuditableEntity properties
+        modelBuilder.Entity<ECommerce.Order.Domain.Entities.Order>(entity =>
+        {
+            // Configure the Metadata property from BaseAuditableEntity
+            entity.Property(e => e.Metadata)
+                .HasColumnType("nvarchar(max)")
+                .HasConversion(
+                    v => v == null ? null : System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions?)null),
+                    v => v == null ? null : System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions?)null)
+                );
+        });
 
-        // Apply configurations
-        modelBuilder.ApplyConfiguration(new OrderConfiguration());
-        modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
-        modelBuilder.ApplyConfiguration(new AddressConfiguration());
-        modelBuilder.ApplyConfiguration(new OrderPricingConfiguration());
-        modelBuilder.ApplyConfiguration(new PaymentInfoConfiguration());
-        modelBuilder.ApplyConfiguration(new OrderStatusHistoryConfiguration());
-
-        // Configure value objects
+        // Configure value objects as owned entities
         ConfigureValueObjects(modelBuilder);
     }
 
@@ -41,7 +45,7 @@ public class OrderDbContext : DbContext
                 address.Property(a => a.PostalCode).IsRequired().HasMaxLength(20);
                 address.Property(a => a.Country).IsRequired().HasMaxLength(100);
                 address.Property(a => a.AddressLine2).HasMaxLength(200);
-                address.Property(a => a.FullAddress).HasMaxLength(500);
+                // FullAddress is a computed property - don't configure it
             });
 
         modelBuilder.Entity<ECommerce.Order.Domain.Entities.Order>()
@@ -53,7 +57,7 @@ public class OrderDbContext : DbContext
                 address.Property(a => a.PostalCode).HasMaxLength(20);
                 address.Property(a => a.Country).HasMaxLength(100);
                 address.Property(a => a.AddressLine2).HasMaxLength(200);
-                address.Property(a => a.FullAddress).HasMaxLength(500);
+                // FullAddress is a computed property - don't configure it
             });
 
         // Configure OrderPricing as owned entity

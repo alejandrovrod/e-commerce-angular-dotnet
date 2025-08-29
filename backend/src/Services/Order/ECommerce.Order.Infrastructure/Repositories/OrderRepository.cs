@@ -1,64 +1,85 @@
+using Microsoft.EntityFrameworkCore;
 using ECommerce.Order.Domain.Entities;
 using ECommerce.Order.Domain.Enums;
 using ECommerce.Order.Application.Interfaces;
+using ECommerce.Order.Infrastructure.Data;
 
 namespace ECommerce.Order.Infrastructure.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
-    // Temporary in-memory storage until Entity Framework is properly configured
-    private static readonly List<ECommerce.Order.Domain.Entities.Order> _orders = new();
+    private readonly OrderDbContext _context;
 
-    public OrderRepository()
+    public OrderRepository(OrderDbContext context)
     {
-        // No dependency injection needed for now
+        _context = context;
     }
 
     public async Task<ECommerce.Order.Domain.Entities.Order?> GetByIdAsync(Guid id)
     {
-        return await Task.FromResult(_orders.FirstOrDefault(o => o.Id == id));
+        return await _context.Orders
+            .Include(o => o.Items)
+            .Include(o => o.StatusHistory)
+            .FirstOrDefaultAsync(o => o.Id == id);
     }
 
     public async Task<List<ECommerce.Order.Domain.Entities.Order>> GetAllAsync()
     {
-        return await Task.FromResult(_orders.OrderByDescending(o => o.CreatedAt).ToList());
+        return await _context.Orders
+            .Include(o => o.Items)
+            .Include(o => o.StatusHistory)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
     }
 
     public async Task<List<ECommerce.Order.Domain.Entities.Order>> GetByUserIdAsync(Guid userId)
     {
-        return await Task.FromResult(_orders.Where(o => o.UserId == userId).OrderByDescending(o => o.CreatedAt).ToList());
+        return await _context.Orders
+            .Include(o => o.Items)
+            .Include(o => o.StatusHistory)
+            .Where(o => o.UserId == userId)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
     }
 
     public async Task<List<ECommerce.Order.Domain.Entities.Order>> GetByStatusAsync(OrderStatus status)
     {
-        return await Task.FromResult(_orders.Where(o => o.Status == status).OrderByDescending(o => o.CreatedAt).ToList());
+        return await _context.Orders
+            .Include(o => o.Items)
+            .Include(o => o.StatusHistory)
+            .Where(o => o.Status == status)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
     }
 
     public async Task<List<ECommerce.Order.Domain.Entities.Order>> GetByDateRangeAsync(DateTime fromDate, DateTime toDate)
     {
-        return await Task.FromResult(_orders.Where(o => o.CreatedAt >= fromDate && o.CreatedAt <= toDate).OrderByDescending(o => o.CreatedAt).ToList());
+        return await _context.Orders
+            .Include(o => o.Items)
+            .Include(o => o.StatusHistory)
+            .Where(o => o.CreatedAt >= fromDate && o.CreatedAt <= toDate)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
     }
 
     public async Task<ECommerce.Order.Domain.Entities.Order?> GetByOrderNumberAsync(string orderNumber)
     {
-        return await Task.FromResult(_orders.FirstOrDefault(o => o.OrderNumber == orderNumber));
+        return await _context.Orders
+            .Include(o => o.Items)
+            .Include(o => o.StatusHistory)
+            .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber);
     }
 
     public async Task<ECommerce.Order.Domain.Entities.Order> AddAsync(ECommerce.Order.Domain.Entities.Order order)
     {
-        _orders.Add(order);
-        return await Task.FromResult(order);
+        var entry = await _context.Orders.AddAsync(order);
+        return entry.Entity;
     }
 
     public async Task<ECommerce.Order.Domain.Entities.Order> UpdateAsync(ECommerce.Order.Domain.Entities.Order order)
     {
-        var existingOrder = _orders.FirstOrDefault(o => o.Id == order.Id);
-        if (existingOrder != null)
-        {
-            var index = _orders.IndexOf(existingOrder);
-            _orders[index] = order;
-        }
-        return await Task.FromResult(order);
+        var entry = _context.Orders.Update(order);
+        return entry.Entity;
     }
 
     public async Task DeleteAsync(Guid id)
@@ -66,33 +87,31 @@ public class OrderRepository : IOrderRepository
         var order = await GetByIdAsync(id);
         if (order != null)
         {
-            _orders.Remove(order);
+            _context.Orders.Remove(order);
         }
-        await Task.CompletedTask;
     }
 
     public async Task<bool> ExistsAsync(Guid id)
     {
-        return await Task.FromResult(_orders.Any(o => o.Id == id));
+        return await _context.Orders.AnyAsync(o => o.Id == id);
     }
 
     public async Task<int> GetCountAsync()
     {
-        return await Task.FromResult(_orders.Count);
+        return await _context.Orders.CountAsync();
     }
 
     public async Task<List<ECommerce.Order.Domain.Entities.Order>> GetPaginatedAsync(int page, int pageSize)
     {
-        return await Task.FromResult(_orders
+        return await _context.Orders
             .OrderByDescending(o => o.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .ToList());
+            .ToListAsync();
     }
 
     public async Task SaveChangesAsync()
     {
-        // No-op for in-memory implementation
-        await Task.CompletedTask;
+        await _context.SaveChangesAsync();
     }
 }
