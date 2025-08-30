@@ -1,22 +1,61 @@
 using Serilog;
+using Microsoft.EntityFrameworkCore;
+using ECommerce.File.Infrastructure.Data;
+using ECommerce.File.Application.Interfaces;
+using ECommerce.File.Infrastructure.Repositories;
+using ECommerce.File.Infrastructure.UnitOfWork;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
-    .Enrich.WithProperty("ServiceName", "FileService")
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
     .CreateLogger();
 
 builder.Host.UseSerilog();
 
-// Add Aspire service defaults - will add later
-// builder.AddServiceDefaults();
-
 // Add services to the container
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Configure enums to be serialized as strings
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Entity Framework with database connection
+builder.Services.AddDbContext<FileDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FilesDb")));
+
+// Add MediatR
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(ECommerce.File.Application.Commands.CreateFile.CreateFileCommand).Assembly);
+});
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+// Add repositories and services
+builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -28,20 +67,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthorization();
+
+// Health check endpoint
+app.MapGet("/health", () => Results.Ok(new { Status = "Healthy", Service = "File Service", Timestamp = DateTime.UtcNow }));
+
 app.MapControllers();
-
-// Default endpoint
-app.MapGet("/", () => new
-{
-    Service = "File Service",
-    Version = "1.0.0",
-    Environment = app.Environment.EnvironmentName,
-    Timestamp = DateTime.UtcNow
-});
-
-// Health check
-app.MapGet("/health", () => Results.Ok(new { Status = "Healthy", Service = "FileService" }));
 
 try
 {

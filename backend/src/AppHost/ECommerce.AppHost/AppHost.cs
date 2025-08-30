@@ -15,14 +15,14 @@ var builder = DistributedApplication.CreateBuilder(args);
 //var orderService = builder.AddProject<Projects.ECommerce_Order_API>("orderservice")
 //    .WithHttpHealthCheck("/health");
 
-var paymentService = builder.AddProject<Projects.ECommerce_Payment_API>("paymentservice")
-    .WithHttpHealthCheck("/health");
+//var paymentService = builder.AddProject<Projects.ECommerce_Payment_API>("paymentservice")
+//    .WithHttpHealthCheck("/health");
 
 //var notificationService = builder.AddProject<Projects.ECommerce_Notification_API>("notificationservice")
 //    .WithHttpHealthCheck("/health");
 
-//var fileService = builder.AddProject<Projects.ECommerce_File_API>("fileservice")
-//    .WithHttpHealthCheck("/health");
+var fileService = builder.AddProject<Projects.ECommerce_File_API>("fileservice")
+    .WithHttpHealthCheck("/health");
 
 // Add API Gateway with all service references
 builder.AddProject<Projects.ECommerce_ApiGateway>("apigateway")
@@ -30,8 +30,8 @@ builder.AddProject<Projects.ECommerce_ApiGateway>("apigateway")
     //.WithReference(userService)
     //.WithReference(productService)
     //.WithReference(orderService);
-    .WithReference(paymentService);
+    //.WithReference(paymentService);
     //.WithReference(notificationService)
-    //.WithReference(fileService);
+    .WithReference(fileService);
 
 builder.Build().Run();

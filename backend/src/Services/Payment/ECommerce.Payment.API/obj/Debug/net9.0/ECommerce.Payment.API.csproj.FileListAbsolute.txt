@@ -1,11 +1,3 @@
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.csproj.AssemblyReference.cache
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\rpswa.dswa.cache.json
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.GeneratedMSBuildEditorConfig.editorconfig
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.AssemblyInfoInputs.cache
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.AssemblyInfo.cs
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.csproj.CoreCompileInputs.cache
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.MvcApplicationPartsAssemblyInfo.cache
-C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.sourcelink.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\bin\Debug\net9.0\appsettings.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\bin\Debug\net9.0\ECommerce.Payment.API.staticwebassets.endpoints.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\bin\Debug\net9.0\ECommerce.Payment.API.exe
@@ -157,7 +149,15 @@ C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.AP
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\bin\Debug\net9.0\ECommerce.Payment.Domain.pdb
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\bin\Debug\net9.0\ECommerce.BuildingBlocks.Common.pdb
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\bin\Debug\net9.0\ECommerce.Payment.Infrastructure.pdb
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.csproj.AssemblyReference.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.AssemblyInfoInputs.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.AssemblyInfo.cs
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.csproj.CoreCompileInputs.cache
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.MvcApplicationPartsAssemblyInfo.cs
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\ECommerce.Payment.API.sourcelink.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Workspace\Cursor\e-commerce\backend\src\Services\Payment\ECommerce.Payment.API\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
