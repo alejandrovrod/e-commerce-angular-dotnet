@@ -379,6 +379,14 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
+    // Configurar effect para reaccionar a los cambios del producto seleccionado
+    effect(() => {
+      const product = this.productStore.selectedProduct();
+      if (product && this.isEditMode) {
+        this.populateForm(product);
+      }
+    });
+
     this.productForm = this.fb.group({
       name: ['', [
         Validators.required,
@@ -450,6 +458,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         if (this.productId) {
           this.loadProduct(this.productId);
         }
+      } else {
+        this.isEditMode = false;
+        this.productId = null;
       }
     });
   }
@@ -468,24 +479,67 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   loadProduct(id: string): void {
     this.productStore.loadProductById(id);
-    
-    // Usar effect para reaccionar a los cambios del producto seleccionado
-    effect(() => {
-      const product = this.productStore.selectedProduct();
-      if (product) {
-        this.productForm.patchValue({
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          category: product.categoryId,
-          brand: product.brand,
-          isFeatured: product.isFeatured,
-          isDigital: product.isDigital,
-          requiresShipping: product.requiresShipping,
-          isTaxable: product.isTaxable,
-          sku: product.sku
-        });
-      }
+  }
+
+  private populateForm(product: ProductDto): void {
+    // Debug logging
+    console.log('Populating form with product data:', {
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
+      images: product.images,
+      tags: product.tags
+    });
+
+    // Limpiar arrays existentes
+    while (this.imagesArray.length !== 0) {
+      this.imagesArray.removeAt(0);
+    }
+    while ((this.productForm.get('tags') as FormArray).length !== 0) {
+      (this.productForm.get('tags') as FormArray).removeAt(0);
+    }
+
+    // Poblar el formulario con los datos del producto disponibles
+    this.productForm.patchValue({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      originalPrice: product.originalPrice || 0,
+      category: product.categoryId,
+      brand: product.brand,
+      stock: product.stock || 0, // Usar el stock del producto si está disponible
+      isActive: true, // No disponible en ProductDto, usar valor por defecto
+      isFeatured: product.isFeatured,
+      isDigital: product.isDigital,
+      requiresShipping: product.requiresShipping,
+      isTaxable: product.isTaxable,
+      sku: product.sku,
+      weight: 0, // No disponible en ProductDto
+      rating: 0, // No disponible en ProductDto
+      reviewCount: 0 // No disponible en ProductDto
+    });
+
+    // Poblar imágenes
+    if (product.images && product.images.length > 0) {
+      product.images.forEach(image => {
+        this.imagesArray.push(this.fb.control(image));
+      });
+    } else {
+      this.imagesArray.push(this.fb.control(''));
+    }
+
+    // Poblar tags
+    if (product.tags && product.tags.length > 0) {
+      product.tags.forEach(tag => {
+        (this.productForm.get('tags') as FormArray).push(this.fb.control(tag));
+      });
+    }
+
+    // Las dimensiones se mantienen con valores por defecto
+    this.productForm.get('dimensions')?.patchValue({
+      length: 0,
+      width: 0,
+      height: 0
     });
   }
 
@@ -533,12 +587,16 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       description: formValue.description,
       sku: formValue.sku,
       price: formValue.price,
+      originalPrice: formValue.originalPrice || undefined,
       brand: formValue.brand,
       categoryId: formValue.category,
       isFeatured: formValue.isFeatured,
       isDigital: formValue.isDigital,
       requiresShipping: formValue.requiresShipping,
-      isTaxable: formValue.isTaxable
+      isTaxable: formValue.isTaxable,
+      images: formValue.images || [],
+      tags: formValue.tags || [],
+      stock: formValue.stock || 0
     };
 
     try {

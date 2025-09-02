@@ -139,6 +139,9 @@ public class ProductRepository : IProductRepository
     public async Task<Domain.Entities.Product?> GetBySlugAsync(string slug)
     {
         return await _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.Inventory)
+            .Include(p => p.Reviews)
             .FirstOrDefaultAsync(p => p.Slug == slug);
     }
 

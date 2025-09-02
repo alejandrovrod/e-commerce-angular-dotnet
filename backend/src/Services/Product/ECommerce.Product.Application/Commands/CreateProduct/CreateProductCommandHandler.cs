@@ -74,7 +74,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             // Create inventory for the product first
             var inventory = new Domain.Entities.Inventory(
                 productId: Guid.Empty, // Will be set after product creation
-                quantity: 0,
+                quantity: request.Stock,
                 location: "Main Warehouse"
             );
 
@@ -89,11 +89,33 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
                 inventory
             );
 
+            // Establecer precio original si se proporciona
+            if (request.OriginalPrice.HasValue && request.OriginalPrice.Value > 0)
+            {
+                product.UpdatePricing(new Money(request.Price, "USD"), new Money(request.OriginalPrice.Value, "USD"));
+            }
+
             // Set additional properties
             product.SetStatus(request.IsFeatured ? Domain.Enums.ProductStatus.Active : Domain.Enums.ProductStatus.Draft);
             product.SetFeatured(request.IsFeatured);
             product.SetDigitalAndShipping(request.IsDigital, request.RequiresShipping);
             product.SetTaxable(request.IsTaxable);
+
+            // Add images
+            if (request.Images != null && request.Images.Any())
+            {
+                var images = request.Images
+                    .Where(img => !string.IsNullOrWhiteSpace(img))
+                    .Select((img, index) => (img, $"Image {index + 1} for {request.Name}"))
+                    .ToArray();
+                product.SetImages(images);
+            }
+
+            // Add tags
+            if (request.Tags != null && request.Tags.Any())
+            {
+                product.SetTags(request.Tags.ToArray());
+            }
 
             // Save product (this will also save the inventory due to the relationship)
             var createdProduct = await _productRepository.AddAsync(product);
@@ -127,7 +149,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
                 Name = createdProduct.Name,
                 Description = createdProduct.Description,
                 SKU = createdProduct.SKU,
-                Price = createdProduct.Price.Amount,
+                Price = createdProduct.Price?.Amount ?? 0,
+                OriginalPrice = createdProduct.CompareAtPrice?.Amount,
                 Brand = createdProduct.Brand,
                 CategoryId = createdProduct.CategoryId,
                 Status = createdProduct.Status,
@@ -135,6 +158,9 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
                 RequiresShipping = createdProduct.RequiresShipping,
                 IsTaxable = createdProduct.IsTaxable,
                 IsFeatured = createdProduct.IsFeatured,
+                Images = createdProduct.Images?.Select(img => img.Url).ToList() ?? new List<string>(),
+                Tags = createdProduct.Tags?.ToList() ?? new List<string>(),
+                Stock = createdProduct.Inventory?.Quantity ?? 0,
                 CreatedAt = createdProduct.CreatedAt,
                 UpdatedAt = createdProduct.UpdatedAt
             };

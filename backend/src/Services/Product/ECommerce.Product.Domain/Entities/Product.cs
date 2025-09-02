@@ -82,7 +82,14 @@ public class Product : BaseAuditableEntity
 
     public void UpdateInventory(int stock, int lowStockThreshold = 0, bool trackQuantity = true)
     {
-        Inventory = new Inventory(Id, stock, "Default");
+        if (Inventory != null)
+        {
+            Inventory.UpdateQuantity(stock);
+        }
+        else
+        {
+            Inventory = new Inventory(Id, stock, "Default");
+        }
         UpdatedAt = DateTime.UtcNow;
     }
 
@@ -126,6 +133,37 @@ public class Product : BaseAuditableEntity
             }
         }
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void ClearTags()
+    {
+        Tags.Clear();
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetTags(params string[] tags)
+    {
+        Tags.Clear();
+        AddTags(tags);
+    }
+
+    public void ClearImages()
+    {
+        Images.Clear();
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetImages(params (string url, string alt)[] images)
+    {
+        Images.Clear();
+        for (int i = 0; i < images.Length; i++)
+        {
+            var (url, alt) = images[i];
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                AddImage(url, alt, i == 0); // First image is primary
+            }
+        }
     }
 
     public void SetFeatured(bool isFeatured)

@@ -3,6 +3,7 @@ using ECommerce.BuildingBlocks.Common.Models;
 using MediatR;
 using ECommerce.Product.Application.DTOs;
 using ECommerce.Product.Application.Commands.CreateProduct;
+using ECommerce.Product.Application.Commands.UpdateProduct;
 using ECommerce.Product.Application.Queries.GetProducts;
 using ECommerce.Product.Domain.Repositories;
 
@@ -31,9 +32,14 @@ public class ProductController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<ProductDto>>> GetById(Guid id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await _productRepository.GetByIdWithDetailsAsync(id);
         if (product == null)
             return NotFound(ApiResponse<ProductDto>.ErrorResult("Product not found"));
+
+        // Debug logging
+        //_logger.LogInformation("Product data - Price: {Price}, Stock: {Stock}, Images: {Images}, Tags: {Tags}", 
+        //    product.Price?.Amount, product.Inventory?.Quantity, 
+        //    product.Images?.Count() ?? 0, product.Tags?.Count() ?? 0);
 
         var productDto = new ProductDto
         {
@@ -41,7 +47,8 @@ public class ProductController : ControllerBase
             Name = product.Name,
             Description = product.Description,
             SKU = product.SKU,
-            Price = product.Price.Amount,
+            Price = product.Price?.Amount ?? 0,
+            OriginalPrice = product.CompareAtPrice?.Amount,
             Brand = product.Brand,
             CategoryId = product.CategoryId,
             Status = product.Status,
@@ -49,6 +56,9 @@ public class ProductController : ControllerBase
             IsDigital = product.IsDigital,
             RequiresShipping = product.RequiresShipping,
             IsTaxable = product.IsTaxable,
+            Images = product.Images?.Select(img => img.Url).ToList() ?? new List<string>(),
+            Tags = product.Tags?.ToList() ?? new List<string>(),
+            Stock = product.Inventory?.Quantity ?? 0,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };
@@ -63,13 +73,19 @@ public class ProductController : ControllerBase
         if (product == null)
             return NotFound(ApiResponse<ProductDto>.ErrorResult("Product not found"));
 
+        // Debug logging
+        //_logger.LogInformation("Product data - Price: {Price}, Stock: {Stock}, Images: {Images}, Tags: {Tags}", 
+        //    product.Price?.Amount, product.Inventory?.Quantity, 
+        //    product.Images?.Count ?? 0, product.Tags?.Count ?? 0);
+
         var productDto = new ProductDto
         {
             Id = product.Id,
             Name = product.Name,
             Description = product.Description,
             SKU = product.SKU,
-            Price = product.Price.Amount,
+            Price = product.Price?.Amount ?? 0,
+            OriginalPrice = product.CompareAtPrice?.Amount,
             Brand = product.Brand,
             CategoryId = product.CategoryId,
             Status = product.Status,
@@ -77,6 +93,9 @@ public class ProductController : ControllerBase
             IsDigital = product.IsDigital,
             RequiresShipping = product.RequiresShipping,
             IsTaxable = product.IsTaxable,
+            Images = product.Images?.Select(img => img.Url).ToList() ?? new List<string>(),
+            Tags = product.Tags?.ToList() ?? new List<string>(),
+            Stock = product.Inventory?.Quantity ?? 0,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };
@@ -92,10 +111,17 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<ApiResponse<ProductDto>>> Update(Guid id, [FromBody] CreateProductCommand command)
+    public async Task<ActionResult<ApiResponse<ProductDto>>> Update(Guid id, [FromBody] UpdateProductCommand command)
     {
-        // TODO: Implement UpdateProductCommand
-        return BadRequest(ApiResponse<ProductDto>.ErrorResult("Update not implemented yet"));
+        command.Id = id; // Asegurar que el ID del comando coincida con el de la URL
+        var result = await _mediator.Send(command);
+        
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+        
+        return Ok(result);
     }
 
     [HttpDelete("{id}")]

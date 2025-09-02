@@ -9,6 +9,7 @@ export interface ProductDto {
   description: string;
   sku: string;
   price: number;
+  originalPrice?: number;
   brand: string;
   categoryId: string;
   status: ProductStatus;
@@ -16,6 +17,9 @@ export interface ProductDto {
   isDigital: boolean;
   requiresShipping: boolean;
   isTaxable: boolean;
+  images: string[];
+  tags: string[];
+  stock: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -25,12 +29,16 @@ export interface CreateProductCommand {
   description: string;
   sku: string;
   price: number;
+  originalPrice?: number;
   brand: string;
   categoryId: string;
   isFeatured: boolean;
   isDigital: boolean;
   requiresShipping: boolean;
   isTaxable: boolean;
+  images: string[];
+  tags: string[];
+  stock: number;
 }
 
 export interface ProductFilters {

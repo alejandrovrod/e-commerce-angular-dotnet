@@ -9,6 +9,7 @@ public class ProductDto
     public string Description { get; set; } = string.Empty;
     public string SKU { get; set; } = string.Empty;
     public decimal Price { get; set; }
+    public decimal? OriginalPrice { get; set; }
     public string Brand { get; set; } = string.Empty;
     public Guid CategoryId { get; set; }
     public ProductStatus Status { get; set; }
@@ -16,6 +17,9 @@ public class ProductDto
     public bool IsDigital { get; set; }
     public bool RequiresShipping { get; set; }
     public bool IsTaxable { get; set; }
+    public List<string> Images { get; set; } = new();
+    public List<string> Tags { get; set; } = new();
+    public int Stock { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }
