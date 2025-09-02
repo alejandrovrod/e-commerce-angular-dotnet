@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -29,16 +30,20 @@ import { ThemeService } from './core/services/theme.service';
         <app-loading />
       }
       
-      <!-- Header -->
-      <app-header />
+      <!-- Header - Solo mostrar si no es admin -->
+      @if (!isAdminRoute) {
+        <app-header />
+      }
       
       <!-- Main Content -->
       <main class="flex-1">
         <router-outlet />
       </main>
       
-      <!-- Footer -->
-      <app-footer />
+      <!-- Footer - Solo mostrar si no es admin -->
+      @if (!isAdminRoute) {
+        <app-footer />
+      }
       
       <!-- Global Notifications -->
       <app-notification />
@@ -50,9 +55,21 @@ export class AppComponent implements OnInit {
   private readonly authService = inject(AuthService);
   protected readonly loadingService = inject(LoadingService);
   private readonly themeService = inject(ThemeService);
+  private readonly router = inject(Router);
+
+  isAdminRoute = false;
 
   ngOnInit(): void {
     this.initializeApp();
+    this.setupRouteListener();
+  }
+
+  private setupRouteListener(): void {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.isAdminRoute = event.url.startsWith('/admin');
+      });
   }
 
   private async initializeApp(): Promise<void> {

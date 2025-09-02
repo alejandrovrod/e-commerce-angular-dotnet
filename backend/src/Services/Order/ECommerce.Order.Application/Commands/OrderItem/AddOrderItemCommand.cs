@@ -15,3 +15,5 @@ public class AddOrderItemCommand : IRequest<ApiResponse<OrderDto>>
     public decimal? Weight { get; set; }
 }
 
+
+

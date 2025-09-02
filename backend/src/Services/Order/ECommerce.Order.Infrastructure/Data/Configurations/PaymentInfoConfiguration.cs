@@ -12,3 +12,5 @@ public class PaymentInfoConfiguration : IEntityTypeConfiguration<ECommerce.Order
     }
 }
 
+
+

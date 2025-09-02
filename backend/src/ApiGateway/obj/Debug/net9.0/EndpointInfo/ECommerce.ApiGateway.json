@@ -17,6 +17,101 @@
         }
       }
     },
+    "/api/test": {
+      "get": {
+        "tags": [
+          "ECommerce.ApiGateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDateTime<>f__AnonymousType17"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/product/test": {
+      "get": {
+        "tags": [
+          "ECommerce.ApiGateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDateTime<>f__AnonymousType17"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/category/test": {
+      "get": {
+        "tags": [
+          "ECommerce.ApiGateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDateTime<>f__AnonymousType17"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/brand/test": {
+      "get": {
+        "tags": [
+          "ECommerce.ApiGateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDateTime<>f__AnonymousType17"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/inventory/test": {
+      "get": {
+        "tags": [
+          "ECommerce.ApiGateway"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDateTime<>f__AnonymousType17"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/": {
       "get": {
         "tags": [
@@ -28,7 +123,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringStringStringDateTime<>f__AnonymousType17"
+                  "$ref": "#/components/schemas/StringStringStringDateTime<>f__AnonymousType18"
                 }
               }
             }
@@ -87,7 +182,21 @@
   },
   "components": {
     "schemas": {
-      "StringStringStringDateTime<>f__AnonymousType17": {
+      "StringDateTime<>f__AnonymousType17": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringStringStringDateTime<>f__AnonymousType18": {
         "type": "object",
         "properties": {
           "service": {

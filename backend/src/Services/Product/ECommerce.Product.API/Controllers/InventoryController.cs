@@ -67,9 +67,23 @@ public class InventoryController : ControllerBase
     }
 
     [HttpPatch("{id}/stock")]
-    public async Task<ActionResult<ApiResponse<bool>>> AdjustStock(Guid id, [FromBody] AdjustStockCommand command)
+    public async Task<ActionResult<ApiResponse<bool>>> AdjustStock(Guid id, [FromBody] ECommerce.Product.Application.Commands.Inventory.AdjustStockCommand command)
     {
-        command.Id = id;
+        // Para este endpoint, el id es el ID del inventario, necesitamos obtener el ProductId
+        var inventory = await _inventoryRepository.GetByIdAsync(id);
+        if (inventory == null)
+        {
+            return NotFound(ApiResponse<bool>.ErrorResult("Inventory not found"));
+        }
+        
+        command.ProductId = inventory.ProductId;
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpPatch("adjust")]
+    public async Task<ActionResult<ApiResponse<bool>>> AdjustStockDirect([FromBody] ECommerce.Product.Application.Commands.Inventory.AdjustStockCommand command)
+    {
         var result = await _mediator.Send(command);
         return Ok(result);
     }
@@ -92,6 +106,21 @@ public class InventoryController : ControllerBase
         // TODO: Implement ReleaseStock method in Inventory entity
         // For now, just return success
         return Ok(ApiResponse<bool>.SuccessResult(true));
+    }
+
+    [HttpGet("history")]
+    public async Task<ActionResult<ApiResponse<List<InventoryMovementDto>>>> GetHistory([FromQuery] GetInventoryHistoryQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("history/{productId}")]
+    public async Task<ActionResult<ApiResponse<List<InventoryMovementDto>>>> GetProductHistory(Guid productId)
+    {
+        var query = new GetInventoryHistoryQuery { ProductId = productId };
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 
     [HttpGet("debug")]

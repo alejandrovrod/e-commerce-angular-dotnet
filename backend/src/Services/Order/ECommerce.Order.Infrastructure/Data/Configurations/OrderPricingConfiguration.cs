@@ -12,3 +12,5 @@ public class OrderPricingConfiguration : IEntityTypeConfiguration<ECommerce.Orde
     }
 }
 
+
+

@@ -15,3 +15,5 @@ public class GetOrdersQuery : IRequest<ApiResponse<List<OrderDto>>>
     public int PageSize { get; set; } = 20;
 }
 
+
+

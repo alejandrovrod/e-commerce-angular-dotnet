@@ -44,25 +44,75 @@ export interface UserPreferences {
   };
 }
 
+// Modelo simplificado para compatibilidad
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name?: string; // Para compatibilidad con AuthStore
+  firstName?: string; // Para compatibilidad con UserStore
+  lastName?: string; // Para compatibilidad con UserStore
+  role: UserRole;
+  status?: UserStatus;
+  avatar?: string;
+  // Propiedades opcionales para funcionalidad avanzada
   phone?: string;
   dateOfBirth?: Date;
   gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
-  avatar?: string;
-  role: UserRole;
-  status: UserStatus;
-  addresses: Address[];
-  preferences: UserPreferences;
-  emailVerified: boolean;
-  phoneVerified: boolean;
-  twoFactorEnabled: boolean;
+  addresses?: Address[];
+  preferences?: UserPreferences;
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
+  twoFactorEnabled?: boolean;
   lastLoginAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Helper para convertir entre modelos
+export function createSimpleUser(user: User): { id: string; email: string; name: string; role: string; avatar?: string } {
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+    role: user.role,
+    avatar: user.avatar
+  };
+}
+
+export function createFullUser(simpleUser: { id: string; email: string; name: string; role: string; avatar?: string }): User {
+  const [firstName, ...lastNameParts] = simpleUser.name.split(' ');
+  return {
+    id: simpleUser.id,
+    email: simpleUser.email,
+    firstName: firstName || '',
+    lastName: lastNameParts.join(' ') || '',
+    name: simpleUser.name,
+    role: simpleUser.role as UserRole,
+    status: UserStatus.Active,
+    avatar: simpleUser.avatar,
+    emailVerified: true,
+    phoneVerified: false,
+    twoFactorEnabled: false,
+    addresses: [],
+    preferences: {
+      theme: 'system',
+      language: 'es',
+      currency: 'USD',
+      emailNotifications: {
+        orderUpdates: true,
+        promotions: true,
+        newsletter: true,
+        productRecommendations: true
+      },
+      pushNotifications: {
+        orderUpdates: true,
+        promotions: true,
+        recommendations: true
+      }
+    },
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
 }
 
 export interface AuthTokens {

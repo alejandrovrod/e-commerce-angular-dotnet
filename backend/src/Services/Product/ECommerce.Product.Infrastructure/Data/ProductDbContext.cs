@@ -26,6 +26,7 @@ public class ProductDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<InventoryMovement> InventoryMovements { get; set; }
     public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

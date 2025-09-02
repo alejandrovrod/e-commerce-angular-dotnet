@@ -37,19 +37,14 @@ builder.Services.AddHttpClient();
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-// Add CORS
+// Add CORS - Very permissive for development
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:4200",
-            "https://localhost:4200",
-            "https://*.railway.app"
-        )
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials();
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -129,23 +124,52 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection(); // Disabled for testing
+// app.UseHttpsRedirection(); // Disabled for testing
+
+// CORS must be the FIRST middleware
 app.UseCors();
 
-// Use Rate Limiting
-app.UseRateLimiter();
+// Additional CORS middleware for debugging
+app.Use(async (context, next) =>
+{
+    var origin = context.Request.Headers.Origin.FirstOrDefault();
+    
+    Log.Information("CORS Debug - Origin: {Origin}, Method: {Method}, Path: {Path}", 
+        origin, context.Request.Method, context.Request.Path);
+    
+    // Add CORS headers to all responses
+    if (!string.IsNullOrEmpty(origin))
+    {
+        context.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+        context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        context.Response.Headers.Add("Access-Control-Allow-Headers", "*");
+        context.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+    }
+    
+    if (context.Request.Method == "OPTIONS")
+    {
+        Log.Information("Handling OPTIONS request");
+        context.Response.StatusCode = 200;
+        await context.Response.WriteAsync("");
+        return;
+    }
+    
+    await next();
+});
 
-// Authentication & Authorization
-app.UseAuthentication();
-app.UseAuthorization();
+// Authentication & Authorization - Temporarily disabled for CORS testing
+// app.UseAuthentication();
+// app.UseAuthorization();
 
 // Request Logging Middleware
 app.Use(async (context, next) =>
 {
-    Log.Information("Gateway Request: {Method} {Path} from {RemoteIp}",
-        context.Request.Method,
-        context.Request.Path,
-        context.Connection.RemoteIpAddress);
+    Log.Information("=== Gateway Request ===");
+    Log.Information("Method: {Method}", context.Request.Method);
+    Log.Information("Path: {Path}", context.Request.Path);
+    Log.Information("QueryString: {QueryString}", context.Request.QueryString);
+    Log.Information("Origin: {Origin}", context.Request.Headers.Origin.FirstOrDefault());
+    Log.Information("RemoteIp: {RemoteIp}", context.Connection.RemoteIpAddress);
     
     // Log Reverse Proxy routing information
     var routeEndpoint = context.GetEndpoint();
@@ -153,17 +177,35 @@ app.Use(async (context, next) =>
     {
         Log.Information("Route matched: {RouteName}", routeEndpoint.DisplayName);
     }
+    else
+    {
+        Log.Warning("No route matched for {Path}", context.Request.Path);
+    }
     
     await next();
     
-    Log.Information("Gateway Response: {StatusCode} for {Method} {Path}",
+    Log.Information("=== Gateway Response ===");
+    Log.Information("StatusCode: {StatusCode} for {Method} {Path}",
         context.Response.StatusCode,
         context.Request.Method,
         context.Request.Path);
+    
+    // Log response headers
+    foreach (var header in context.Response.Headers)
+    {
+        Log.Information("Response Header: {Key} = {Value}", header.Key, string.Join(", ", header.Value.ToList()));
+    }
 });
 
 // Map Controllers
 app.MapControllers();
+
+// Test endpoints for CORS
+app.MapGet("/api/test", () => new { message = "CORS test successful", timestamp = DateTime.UtcNow });
+app.MapGet("/api/product/test", () => new { message = "Product CORS test successful", timestamp = DateTime.UtcNow });
+app.MapGet("/api/category/test", () => new { message = "Category CORS test successful", timestamp = DateTime.UtcNow });
+app.MapGet("/api/brand/test", () => new { message = "Brand CORS test successful", timestamp = DateTime.UtcNow });
+app.MapGet("/api/inventory/test", () => new { message = "Inventory CORS test successful", timestamp = DateTime.UtcNow });
 
 // Add API Key middleware for Reverse Proxy
 // app.Use(async (context, next) =>
@@ -186,6 +228,9 @@ app.MapControllers();
 
 // Map Reverse Proxy
 app.MapReverseProxy();
+
+// Use Rate Limiting after Reverse Proxy - Temporarily disabled for CORS testing
+// app.UseRateLimiter();
 
 // Map Health Checks
 app.MapHealthChecks("/health");

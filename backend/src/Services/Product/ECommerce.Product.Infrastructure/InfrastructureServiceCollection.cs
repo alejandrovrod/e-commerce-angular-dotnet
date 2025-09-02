@@ -38,6 +38,7 @@ public static class InfrastructureServiceCollection
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IInventoryRepository, InventoryRepository>();
+        services.AddScoped<IInventoryMovementRepository, InventoryMovementRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
 
         // Add Services

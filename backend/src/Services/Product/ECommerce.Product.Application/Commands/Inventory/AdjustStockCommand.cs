@@ -4,9 +4,10 @@ using ECommerce.Product.Application.DTOs;
 
 namespace ECommerce.Product.Application.Commands.Inventory;
 
-public class AdjustStockCommand : IRequest<ApiResponse<InventoryDto>>
+public class AdjustStockCommand : IRequest<ApiResponse<bool>>
 {
-    public Guid Id { get; set; }
-    public int QuantityChange { get; set; }
+    public Guid ProductId { get; set; }
+    public int Quantity { get; set; }
     public string Reason { get; set; } = string.Empty;
+    public string? Notes { get; set; }
 }

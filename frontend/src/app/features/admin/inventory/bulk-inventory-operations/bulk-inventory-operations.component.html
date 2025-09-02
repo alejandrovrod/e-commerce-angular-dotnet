@@ -1,0 +1,174 @@
+<div class="max-w-7xl mx-auto space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+        Operaciones Masivas de Inventario
+      </h1>
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        Ajustar stock de múltiples productos de forma masiva
+      </p>
+    </div>
+    
+    <div class="flex items-center space-x-3">
+      <button
+        (click)="goBack()"
+        class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+      >
+        Volver
+      </button>
+    </div>
+  </div>
+
+  <!-- Formulario de Operaciones Masivas -->
+  <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+    <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+      Configurar Operación Masiva
+    </h2>
+    
+    <form [formGroup]="bulkForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Tipo de Operación -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Tipo de Operación
+        </label>
+        <select formControlName="operationType" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white">
+          <option value="adjust">Ajustar Stock</option>
+          <option value="reserve">Reservar Stock</option>
+          <option value="release">Liberar Stock</option>
+        </select>
+      </div>
+
+      <!-- Cantidad -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Cantidad
+        </label>
+        <input
+          type="number"
+          formControlName="quantity"
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+          placeholder="Ingrese la cantidad"
+        />
+      </div>
+
+      <!-- Razón -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Razón
+        </label>
+        <input
+          type="text"
+          formControlName="reason"
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+          placeholder="Ingrese la razón del ajuste"
+        />
+      </div>
+
+      <!-- Notas -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Notas (Opcional)
+        </label>
+        <textarea
+          formControlName="notes"
+          rows="3"
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+          placeholder="Notas adicionales"
+        ></textarea>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="flex items-center space-x-4">
+        <button
+          type="button"
+          (click)="selectAll()"
+          class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+        >
+          Seleccionar Todos
+        </button>
+        
+        <button
+          type="button"
+          (click)="deselectAll()"
+          class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+        >
+          Deseleccionar Todos
+        </button>
+        
+        <button
+          type="submit"
+          [disabled]="!bulkForm.valid || selectedProducts.length === 0"
+          class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Ejecutar Operación ({{ selectedProducts.length }} productos)
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lista de Productos -->
+  <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+        Productos Disponibles ({{ products().length }})
+      </h3>
+    </div>
+    
+    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+      @for (product of products(); track product.id) {
+        <div class="px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                [checked]="isProductSelected(product.id)"
+                (change)="toggleProductSelection(product.id)"
+                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              />
+              
+              <div class="ml-4">
+                <div class="flex items-center">
+                  <h4 class="text-sm font-medium text-gray-900 dark:text-white">
+                    {{ product.name }}
+                  </h4>
+                  <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                        [class]="getStockClass(getProductInventoryData(product.id)?.availableQuantity || 0)">
+                    {{ getProductInventoryData(product.id)?.availableQuantity || 0 }} unidades
+                  </span>
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  Precio: ${{ product.price | number:'1.2-2' }}
+                </p>
+              </div>
+            </div>
+            
+            <div class="text-right">
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                Categoría: {{ product.categoryId }}
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                Marca: {{ product.brand }}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Resumen de la Operación -->
+  @if (selectedProducts.length > 0) {
+    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+      <h4 class="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+        Resumen de la Operación
+      </h4>
+      <div class="text-sm text-blue-700 dark:text-blue-300">
+        <p>• Tipo: {{ bulkForm.get('operationType')?.value }}</p>
+        <p>• Cantidad: {{ bulkForm.get('quantity')?.value }}</p>
+        <p>• Productos seleccionados: {{ selectedProducts.length }}</p>
+        <p>• Razón: {{ bulkForm.get('reason')?.value }}</p>
+      </div>
+    </div>
+  }
+</div>

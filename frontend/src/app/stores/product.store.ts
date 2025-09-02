@@ -1,185 +1,150 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { Product, ProductCategory, ProductFilter, ProductSort } from '../core/models/product.model';
+import { Injectable, signal, computed, effect } from '@angular/core';
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  originalPrice?: number;
+  images: string[];
+  category: string;
+  tags: string[];
+  stock: number;
+  rating: number;
+  reviewCount: number;
+  isActive: boolean;
+  isFeatured: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ProductFilters {
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  rating?: number;
+  inStock?: boolean;
+  search?: string;
+}
 
 export interface ProductState {
   products: Product[];
-  categories: ProductCategory[];
-  featuredProducts: Product[];
-  selectedProduct: Product | null;
-  filters: ProductFilter;
-  sort: ProductSort;
+  filteredProducts: Product[];
+  categories: string[];
   isLoading: boolean;
   error: string | null;
-  pagination: {
-    currentPage: number;
-    pageSize: number;
-    totalItems: number;
-    totalPages: number;
-  };
-  searchQuery: string;
+  filters: ProductFilters;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductStore {
-  // Private state signals
+  // Signals para el estado reactivo
   private readonly _products = signal<Product[]>([]);
-  private readonly _categories = signal<ProductCategory[]>([]);
-  private readonly _featuredProducts = signal<Product[]>([]);
-  private readonly _selectedProduct = signal<Product | null>(null);
-  private readonly _filters = signal<ProductFilter>({});
-  private readonly _sort = signal<ProductSort>({ field: 'name', direction: 'asc' });
   private readonly _isLoading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
-  private readonly _pagination = signal({
-    currentPage: 1,
-    pageSize: 12,
-    totalItems: 0,
-    totalPages: 0
-  });
-  private readonly _searchQuery = signal<string>('');
-
-  // Public readonly signals
-  readonly products = this._products.asReadonly();
-  readonly categories = this._categories.asReadonly();
-  readonly featuredProducts = this._featuredProducts.asReadonly();
-  readonly selectedProduct = this._selectedProduct.asReadonly();
-  readonly filters = this._filters.asReadonly();
-  readonly sort = this._sort.asReadonly();
-  readonly isLoading = this._isLoading.asReadonly();
-  readonly error = this._error.asReadonly();
-  readonly pagination = this._pagination.asReadonly();
-  readonly searchQuery = this._searchQuery.asReadonly();
+  private readonly _filters = signal<ProductFilters>({});
 
   // Computed signals
-  readonly filteredProducts = computed(() => {
-    let filtered = [...this._products()];
+  public readonly products = this._products.asReadonly();
+  public readonly isLoading = this._isLoading.asReadonly();
+  public readonly error = this._error.asReadonly();
+  public readonly filters = this._filters.asReadonly();
+
+  public readonly filteredProducts = computed(() => {
+    const products = this._products();
     const filters = this._filters();
-    const searchQuery = this._searchQuery().toLowerCase();
-
-    // Apply search filter
-    if (searchQuery) {
-      filtered = filtered.filter(product => 
-        product.name.toLowerCase().includes(searchQuery) ||
-        product.description.toLowerCase().includes(searchQuery) ||
-        product.category.name.toLowerCase().includes(searchQuery)
-      );
-    }
-
-    // Apply category filter
-    if (filters.categoryId) {
-      filtered = filtered.filter(product => product.category.id === filters.categoryId);
-    }
-
-    // Apply price range filter
-    if (filters.minPrice !== undefined) {
-      filtered = filtered.filter(product => product.price >= filters.minPrice!);
-    }
-    if (filters.maxPrice !== undefined) {
-      filtered = filtered.filter(product => product.price <= filters.maxPrice!);
-    }
-
-    // Apply rating filter
-    if (filters.minRating !== undefined) {
-      filtered = filtered.filter(product => product.rating >= filters.minRating!);
-    }
-
-    // Apply availability filter
-    if (filters.inStock !== undefined) {
-      filtered = filtered.filter(product => 
-        filters.inStock ? product.stock > 0 : product.stock === 0
-      );
-    }
-
-    // Apply brand filter
-    if (filters.brands && filters.brands.length > 0) {
-      filtered = filtered.filter(product => 
-        filters.brands!.includes(product.brand)
-      );
-    }
-
-    return filtered;
-  });
-
-  readonly sortedProducts = computed(() => {
-    const products = [...this.filteredProducts()];
-    const sort = this._sort();
-
-    return products.sort((a, b) => {
-      let aValue: any = a[sort.field as keyof Product];
-      let bValue: any = b[sort.field as keyof Product];
-
-      // Handle nested properties
-      if (sort.field === 'category.name') {
-        aValue = a.category.name;
-        bValue = b.category.name;
+    
+    return products.filter(product => {
+      // Filtro por categoría
+      if (filters.category && product.category !== filters.category) {
+        return false;
       }
 
-      // Convert to comparable values
-      if (typeof aValue === 'string') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
+      // Filtro por precio mínimo
+      if (filters.minPrice && product.price < filters.minPrice) {
+        return false;
       }
 
-      let comparison = 0;
-      if (aValue < bValue) comparison = -1;
-      if (aValue > bValue) comparison = 1;
+      // Filtro por precio máximo
+      if (filters.maxPrice && product.price > filters.maxPrice) {
+        return false;
+      }
 
-      return sort.direction === 'desc' ? -comparison : comparison;
+      // Filtro por rating
+      if (filters.rating && product.rating < filters.rating) {
+        return false;
+      }
+
+      // Filtro por stock
+      if (filters.inStock && product.stock <= 0) {
+        return false;
+      }
+
+      // Filtro por búsqueda
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase();
+        return product.name.toLowerCase().includes(searchLower) ||
+               product.description.toLowerCase().includes(searchLower) ||
+               product.tags.some(tag => tag.toLowerCase().includes(searchLower));
+      }
+
+      return true;
     });
   });
 
-  readonly paginatedProducts = computed(() => {
-    const products = this.sortedProducts();
-    const pagination = this._pagination();
-    const startIndex = (pagination.currentPage - 1) * pagination.pageSize;
-    const endIndex = startIndex + pagination.pageSize;
-    
-    return products.slice(startIndex, endIndex);
-  });
-
-  readonly availableBrands = computed(() => {
-    const brands = new Set(this._products().map(product => product.brand));
-    return Array.from(brands).sort();
-  });
-
-  readonly priceRange = computed(() => {
+  public readonly categories = computed(() => {
     const products = this._products();
-    if (products.length === 0) return { min: 0, max: 0 };
+    const uniqueCategories = new Set(products.map(p => p.category));
+    return Array.from(uniqueCategories).sort();
+  });
+
+  public readonly featuredProducts = computed(() => {
+    return this._products().filter(p => p.isFeatured && p.isActive);
+  });
+
+  public readonly activeProducts = computed(() => {
+    return this._products().filter(p => p.isActive);
+  });
+
+  public readonly productsByCategory = computed(() => {
+    const products = this._products();
+    const result: Record<string, Product[]> = {};
     
-    const prices = products.map(product => product.price);
-    return {
-      min: Math.min(...prices),
-      max: Math.max(...prices)
-    };
+    products.forEach(product => {
+      if (!result[product.category]) {
+        result[product.category] = [];
+      }
+      result[product.category].push(product);
+    });
+    
+    return result;
   });
 
-  readonly hasProducts = computed(() => this._products().length > 0);
-  readonly hasFilters = computed(() => {
-    const filters = this._filters();
-    return !!(filters.categoryId || filters.minPrice !== undefined || 
-             filters.maxPrice !== undefined || filters.minRating !== undefined ||
-             filters.inStock !== undefined || (filters.brands && filters.brands.length > 0));
-  });
+  constructor() {
+    // Cargar productos de ejemplo al inicializar
+    this.loadSampleProducts();
+  }
 
-  // State management methods
+  // Actions
   setProducts(products: Product[]): void {
     this._products.set(products);
-    this.updatePaginationTotal(this.filteredProducts().length);
     this._error.set(null);
   }
 
-  setCategories(categories: ProductCategory[]): void {
-    this._categories.set(categories);
+  addProduct(product: Product): void {
+    this._products.update(products => [...products, product]);
   }
 
-  setFeaturedProducts(products: Product[]): void {
-    this._featuredProducts.set(products);
+  updateProduct(updatedProduct: Product): void {
+    this._products.update(products =>
+      products.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+    );
   }
 
-  setSelectedProduct(product: Product | null): void {
-    this._selectedProduct.set(product);
+  deleteProduct(productId: string): void {
+    this._products.update(products => products.filter(p => p.id !== productId));
   }
 
   setLoading(loading: boolean): void {
@@ -188,109 +153,110 @@ export class ProductStore {
 
   setError(error: string | null): void {
     this._error.set(error);
-    this._isLoading.set(false);
   }
 
-  setSearchQuery(query: string): void {
-    this._searchQuery.set(query);
-    this.resetPagination();
-  }
-
-  setFilters(filters: Partial<ProductFilter>): void {
+  setFilters(filters: Partial<ProductFilters>): void {
     this._filters.update(current => ({ ...current, ...filters }));
-    this.resetPagination();
   }
 
   clearFilters(): void {
     this._filters.set({});
-    this._searchQuery.set('');
-    this.resetPagination();
   }
 
-  setSort(sort: ProductSort): void {
-    this._sort.set(sort);
+  // Helpers
+  private loadSampleProducts(): void {
+    const sampleProducts: Product[] = [
+      {
+        id: '1',
+        name: 'Laptop Gaming Pro',
+        description: 'Potente laptop para gaming con gráficos dedicados',
+        price: 1299.99,
+        originalPrice: 1499.99,
+        images: ['/assets/images/laptop-1.jpg'],
+        category: 'Electronics',
+        tags: ['gaming', 'laptop', 'performance'],
+        stock: 15,
+        rating: 4.8,
+        reviewCount: 127,
+        isActive: true,
+        isFeatured: true,
+        createdAt: new Date('2024-01-15'),
+        updatedAt: new Date('2024-01-15')
+      },
+      {
+        id: '2',
+        name: 'Smartphone Ultra',
+        description: 'Smartphone de última generación con cámara profesional',
+        price: 899.99,
+        images: ['/assets/images/phone-1.jpg'],
+        category: 'Electronics',
+        tags: ['smartphone', 'camera', 'mobile'],
+        stock: 25,
+        rating: 4.6,
+        reviewCount: 89,
+        isActive: true,
+        isFeatured: false,
+        createdAt: new Date('2024-01-10'),
+        updatedAt: new Date('2024-01-10')
+      },
+      {
+        id: '3',
+        name: 'Auriculares Wireless',
+        description: 'Auriculares bluetooth con cancelación de ruido',
+        price: 199.99,
+        images: ['/assets/images/headphones-1.jpg'],
+        category: 'Electronics',
+        tags: ['headphones', 'wireless', 'noise-cancelling'],
+        stock: 50,
+        rating: 4.4,
+        reviewCount: 203,
+        isActive: true,
+        isFeatured: true,
+        createdAt: new Date('2024-01-05'),
+        updatedAt: new Date('2024-01-05')
+      }
+    ];
+
+    this._products.set(sampleProducts);
   }
 
-  setPagination(pagination: Partial<typeof this._pagination.value>): void {
-    this._pagination.update(current => ({ ...current, ...pagination }));
-  }
-
-  // Pagination methods
-  nextPage(): void {
-    const current = this._pagination();
-    if (current.currentPage < current.totalPages) {
-      this.setPagination({ currentPage: current.currentPage + 1 });
-    }
-  }
-
-  previousPage(): void {
-    const current = this._pagination();
-    if (current.currentPage > 1) {
-      this.setPagination({ currentPage: current.currentPage - 1 });
-    }
-  }
-
-  goToPage(page: number): void {
-    const current = this._pagination();
-    if (page >= 1 && page <= current.totalPages) {
-      this.setPagination({ currentPage: page });
-    }
-  }
-
-  resetPagination(): void {
-    this.setPagination({ currentPage: 1 });
-  }
-
-  // Utility methods
+  // Getters computados
   getProductById(id: string): Product | undefined {
-    return this._products().find(product => product.id === id);
+    return this._products().find(p => p.id === id);
   }
 
-  getCategoryById(id: string): ProductCategory | undefined {
-    return this._categories().find(category => category.id === id);
+  getProductsByCategory(category: string): Product[] {
+    return this._products().filter(p => p.category === category);
   }
 
-  addProduct(product: Product): void {
-    this._products.update(products => [...products, product]);
+  getProductsByTag(tag: string): Product[] {
+    return this._products().filter(p => p.tags.includes(tag));
   }
 
-  updateProduct(id: string, updates: Partial<Product>): void {
-    this._products.update(products => 
-      products.map(product => 
-        product.id === id ? { ...product, ...updates } : product
-      )
-    );
+  getProductsInPriceRange(min: number, max: number): Product[] {
+    return this._products().filter(p => p.price >= min && p.price <= max);
   }
 
-  removeProduct(id: string): void {
-    this._products.update(products => 
-      products.filter(product => product.id !== id)
-    );
+  // Métodos de utilidad
+  hasStock(productId: string): boolean {
+    const product = this.getProductById(productId);
+    return product ? product.stock > 0 : false;
   }
 
-  // Private methods
-  private updatePaginationTotal(totalItems: number): void {
-    const pageSize = this._pagination().pageSize;
-    const totalPages = Math.ceil(totalItems / pageSize);
-    this.setPagination({ totalItems, totalPages });
+  getStockCount(productId: string): number {
+    const product = this.getProductById(productId);
+    return product ? product.stock : 0;
   }
 
-  // Reset store
-  reset(): void {
-    this._products.set([]);
-    this._categories.set([]);
-    this._featuredProducts.set([]);
-    this._selectedProduct.set(null);
-    this._filters.set({});
-    this._sort.set({ field: 'name', direction: 'asc' });
-    this._isLoading.set(false);
-    this._error.set(null);
-    this._pagination.set({
-      currentPage: 1,
-      pageSize: 12,
-      totalItems: 0,
-      totalPages: 0
-    });
-    this._searchQuery.set('');
+  isOnSale(productId: string): boolean {
+    const product = this.getProductById(productId);
+    return product ? !!product.originalPrice && product.originalPrice > product.price : false;
+  }
+
+  getDiscountPercentage(productId: string): number {
+    const product = this.getProductById(productId);
+    if (!product || !product.originalPrice) return 0;
+    
+    return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
   }
 }

@@ -1,0 +1,255 @@
+<div class="max-w-7xl mx-auto space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+        Dashboard de Inventario
+      </h1>
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        Resumen completo del estado del inventario
+      </p>
+    </div>
+    
+    <div class="flex items-center space-x-3">
+      <button
+        (click)="refreshDashboard()"
+        [disabled]="isLoading()"
+        class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
+      >
+        <svg *ngIf="isLoading()" class="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Actualizar
+      </button>
+      
+      <button
+        (click)="goBack()"
+        class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+      >
+        Volver
+      </button>
+    </div>
+  </div>
+
+  <!-- Métricas Principales -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Total de Productos -->
+    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                Total de Productos
+              </dt>
+              <dd class="text-lg font-medium text-gray-900 dark:text-white">
+                {{ getTotalProducts() }}
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Valor Total del Inventario -->
+    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                Valor Total
+              </dt>
+              <dd class="text-lg font-medium text-gray-900 dark:text-white">
+                ${{ getTotalInventoryValue() | number:'1.2-2' }}
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos con Stock Bajo -->
+    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                Stock Bajo
+              </dt>
+              <dd class="text-lg font-medium text-gray-900 dark:text-white">
+                {{ lowStockProducts().length }}
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos Sin Stock -->
+    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                Sin Stock
+              </dt>
+              <dd class="text-lg font-medium text-gray-900 dark:text-white">
+                {{ outOfStockProducts().length }}
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráficos y Análisis -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Distribución por Categorías -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Productos por Categoría
+      </h3>
+      <div class="space-y-3">
+        @for (category of getCategoriesWithCounts(); track category.id) {
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full mr-3" [style.background-color]="getCategoryColor(category.id)"></div>
+              <span class="text-sm text-gray-900 dark:text-white">{{ category.name }}</span>
+            </div>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ category.count }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Top 10 Productos por Valor -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Top 10 Productos por Valor
+      </h3>
+      <div class="space-y-3">
+        @for (product of getTopProductsByValue(); track product.id) {
+          <div class="flex items-center justify-between">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                {{ product.name }}
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                Stock: {{ getProductInventoryData(product.id)?.availableQuantity || 0 }}
+              </p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-medium text-gray-900 dark:text-white">
+                ${{ (product.price * (getProductInventoryData(product.id)?.availableQuantity || 0)) | number:'1.2-2' }}
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Alertas y Acciones Rápidas -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Alertas Críticas -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Alertas Críticas
+      </h3>
+      @if (getCriticalAlerts().length === 0) {
+        <div class="text-center py-4">
+          <svg class="mx-auto h-8 w-8 text-green-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-sm text-gray-500 dark:text-gray-400">No hay alertas críticas</p>
+        </div>
+      } @else {
+        <div class="space-y-3">
+          @for (alert of getCriticalAlerts(); track alert.id) {
+            <div class="flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-red-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p class="text-sm font-medium text-red-800 dark:text-red-200">{{ alert.name }}</p>
+                  <p class="text-xs text-red-600 dark:text-red-300">Stock: {{ alert.stock }}</p>
+                </div>
+              </div>
+              <a [routerLink]="['/admin/inventory/adjust']" 
+                 [queryParams]="{productId: alert.id}"
+                 class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200">
+                Ajustar
+              </a>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Acciones Rápidas
+      </h3>
+      <div class="space-y-3">
+        <a routerLink="/admin/inventory/adjust" 
+           class="flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+          <svg class="h-5 w-5 text-blue-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <span class="text-sm font-medium text-blue-800 dark:text-blue-200">Ajustar Stock</span>
+        </a>
+        
+        <a routerLink="/admin/inventory/history" 
+           class="flex items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors">
+          <svg class="h-5 w-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          <span class="text-sm font-medium text-green-800 dark:text-green-200">Ver Historial</span>
+        </a>
+        
+        <a routerLink="/admin/inventory/alerts" 
+           class="flex items-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/30 transition-colors">
+          <svg class="h-5 w-5 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.586 2.586a2 2 0 002.828 0L12.828 7H4.828z" />
+          </svg>
+          <span class="text-sm font-medium text-yellow-800 dark:text-yellow-200">Ver Alertas</span>
+        </a>
+        
+        <a routerLink="/admin/products/new" 
+           class="flex items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
+          <svg class="h-5 w-5 text-purple-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <span class="text-sm font-medium text-purple-800 dark:text-purple-200">Nuevo Producto</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

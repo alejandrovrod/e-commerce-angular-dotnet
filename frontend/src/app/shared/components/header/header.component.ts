@@ -26,20 +26,10 @@ import { ThemeService } from '../../../core/services/theme.service';
 
           <!-- Navigation Links -->
           <div class="hidden md:flex items-center space-x-8">
-            <a routerLink="/home" 
+            <a routerLink="/shop" 
                routerLinkActive="text-primary-600" 
                class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">
-              Home
-            </a>
-            <a routerLink="/products" 
-               routerLinkActive="text-primary-600"
-               class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">
-              Products
-            </a>
-            <a routerLink="/categories" 
-               routerLinkActive="text-primary-600"
-               class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">
-              Categories
+              Shop
             </a>
             @if (userStore.isAdmin()) {
               <a routerLink="/admin" 
@@ -177,20 +167,10 @@ import { ThemeService } from '../../../core/services/theme.service';
         @if (showMobileMenu) {
           <div class="md:hidden border-t dark:border-gray-800 pt-4 pb-3">
             <div class="space-y-1">
-              <a routerLink="/home" 
+              <a routerLink="/shop" 
                  (click)="closeMobileMenu()"
                  class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                Home
-              </a>
-              <a routerLink="/products" 
-                 (click)="closeMobileMenu()"
-                 class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                Products
-              </a>
-              <a routerLink="/categories" 
-                 (click)="closeMobileMenu()"
-                 class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                Categories
+                Shop
               </a>
             </div>
           </div>
