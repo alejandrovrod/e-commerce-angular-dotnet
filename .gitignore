@@ -31,6 +31,10 @@ backend/**/TestResults/
 backend/**/*.nupkg
 backend/**/*.snupkg
 
+# Generated files
+**/GeneratedMSBuildEditorConfig.editorconfig
+**/AssemblyInfo.cs
+
 # Build outputs
 **/dist/
 **/out/
