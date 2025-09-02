@@ -34,6 +34,9 @@ backend/**/*.snupkg
 # Generated files
 **/GeneratedMSBuildEditorConfig.editorconfig
 **/AssemblyInfo.cs
+**/sourcelink.json
+**/MvcApplicationPartsAssemblyInfo.cs
+**/ProductDbContextModelSnapshot.cs
 
 # Build outputs
 **/dist/

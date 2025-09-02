@@ -3,17 +3,23 @@ using ECommerce.BuildingBlocks.Common.Models;
 using ECommerce.Product.Application.Commands.Inventory;
 using ECommerce.Product.Domain.Repositories;
 using ECommerce.Product.Application.Interfaces;
+using ECommerce.Product.Domain.Entities;
 
 namespace ECommerce.Product.Application.Handlers.Inventory;
 
 public class AdjustStockCommandHandler : IRequestHandler<ECommerce.Product.Application.Commands.Inventory.AdjustStockCommand, ApiResponse<bool>>
 {
     private readonly IInventoryRepository _inventoryRepository;
+    private readonly IInventoryMovementRepository _inventoryMovementRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AdjustStockCommandHandler(IInventoryRepository inventoryRepository, IUnitOfWork unitOfWork)
+    public AdjustStockCommandHandler(
+        IInventoryRepository inventoryRepository, 
+        IInventoryMovementRepository inventoryMovementRepository,
+        IUnitOfWork unitOfWork)
     {
         _inventoryRepository = inventoryRepository;
+        _inventoryMovementRepository = inventoryMovementRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -42,15 +48,24 @@ public class AdjustStockCommandHandler : IRequestHandler<ECommerce.Product.Appli
             // Usar el método de la entidad para ajustar el stock
             inventory.AdjustStock(request.Quantity, request.Reason);
 
+            // Crear el registro de movimiento en el historial
+            var movement = InventoryMovement.CreateAdjustment(
+                request.ProductId,
+                request.Quantity,
+                previousQuantity,
+                newQuantity,
+                request.Reason,
+                request.Notes,
+                null, // TODO: Obtener del contexto de usuario cuando esté disponible
+                "System" // TODO: Obtener del contexto de usuario cuando esté disponible
+            );
+
             // Guardar los cambios
             await _inventoryRepository.UpdateAsync(inventory);
-			await _unitOfWork.SaveChangesAsync();
+            await _inventoryMovementRepository.AddAsync(movement);
+            await _unitOfWork.SaveChangesAsync();
 
-
-			// TODO: En una implementación real, aquí se registraría el movimiento en la tabla de historial
-			// Por ahora, solo devolvemos éxito
-
-			return ApiResponse<bool>.SuccessResult(true, $"Stock ajustado exitosamente. Cantidad anterior: {previousQuantity}, Nueva cantidad: {newQuantity}");
+            return ApiResponse<bool>.SuccessResult(true, $"Stock ajustado exitosamente. Cantidad anterior: {previousQuantity}, Nueva cantidad: {newQuantity}");
         }
         catch (Exception ex)
         {
