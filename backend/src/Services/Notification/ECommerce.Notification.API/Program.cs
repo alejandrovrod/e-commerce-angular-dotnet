@@ -2,6 +2,13 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure port for Railway
+var port = Environment.GetEnvironmentVariable("PORT") ?? "7006";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
+// Log the port configuration
+Console.WriteLine($"Notification Service will start on port: {port}");
+
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)

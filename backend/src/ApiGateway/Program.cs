@@ -44,6 +44,20 @@ builder.Services.AddHttpClient();
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
+// Configure service URLs from environment variables
+var userServiceUrl = Environment.GetEnvironmentVariable("USER_SERVICE_URL") ?? "http://localhost:7001";
+var productServiceUrl = Environment.GetEnvironmentVariable("PRODUCT_SERVICE_URL") ?? "http://localhost:7002";
+var orderServiceUrl = Environment.GetEnvironmentVariable("ORDER_SERVICE_URL") ?? "http://localhost:7003";
+var paymentServiceUrl = Environment.GetEnvironmentVariable("PAYMENT_SERVICE_URL") ?? "http://localhost:7004";
+var fileServiceUrl = Environment.GetEnvironmentVariable("FILE_SERVICE_URL") ?? "http://localhost:7005";
+
+// Log service URLs
+Console.WriteLine($"User Service URL: {userServiceUrl}");
+Console.WriteLine($"Product Service URL: {productServiceUrl}");
+Console.WriteLine($"Order Service URL: {orderServiceUrl}");
+Console.WriteLine($"Payment Service URL: {paymentServiceUrl}");
+Console.WriteLine($"File Service URL: {fileServiceUrl}");
+
 // Add CORS - Very permissive for development
 builder.Services.AddCors(options =>
 {
