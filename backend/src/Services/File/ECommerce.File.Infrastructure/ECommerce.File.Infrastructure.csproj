@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ECommerce.File.Domain\ECommerce.File.Domain.csproj" />
     <ProjectReference Include="..\ECommerce.File.Application\ECommerce.File.Application.csproj" />
-    <ProjectReference Include="C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\ECommerce.BuildingBlocks.Common.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Common\ECommerce.BuildingBlocks.Common.csproj" />
   </ItemGroup>
 
 </Project>

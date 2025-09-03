@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="C:\Workspace\Cursor\e-commerce\backend\src\BuildingBlocks\Common\ECommerce.BuildingBlocks.Common.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Common\ECommerce.BuildingBlocks.Common.csproj" />
   </ItemGroup>
 
 </Project>
