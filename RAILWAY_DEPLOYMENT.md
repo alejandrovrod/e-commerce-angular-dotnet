@@ -1,162 +1,234 @@
-# 🚂 Railway Deployment - E-Commerce Platform
+# 🚀 Guía de Deployment en Railway
 
-## ✅ **Respuesta Rápida: SÍ, se puede deployar en Railway**
+## 📋 Prerrequisitos
 
-Esta solución de e-commerce está completamente preparada para Railway. He configurado todos los archivos necesarios.
+1. **Cuenta en Railway**: [railway.app](https://railway.app)
+2. **GitHub Repository**: Tu código debe estar en GitHub
+3. **Railway CLI** (opcional): `npm install -g @railway/cli`
 
-## 🎯 **Ventajas de Railway para este proyecto**
+## 🗄️ 1. Configurar Base de Datos
 
-### ✅ **Microservicios Nativos**
-- Railway maneja múltiples servicios perfectamente
-- Cada microservicio se deploya independientemente
-- Auto-scaling por servicio
+### PostgreSQL en Railway
+1. Ve a [Railway Dashboard](https://railway.app/dashboard)
+2. Clic en "New Project"
+3. Selecciona "Database" → "PostgreSQL"
+4. Copia las variables de conexión:
+   - `DATABASE_URL`
+   - `PGHOST`
+   - `PGPORT`
+   - `PGUSER`
+   - `PGPASSWORD`
+   - `PGDATABASE`
 
-### ✅ **Bases de Datos Integradas**
-- PostgreSQL para User/Order services
-- Redis para caching
-- MongoDB puede conectarse externamente (Atlas)
+## 🔧 2. Deployar API Gateway
 
-### ✅ **Configuración Automática**
-- Variables de entorno por servicio
-- SSL/HTTPS automático
-- Dominios personalizados
+### Opción A: Desde Railway Dashboard
+1. **Nuevo Servicio**: Clic en "New Service" → "GitHub Repo"
+2. **Seleccionar Repo**: Elige tu repositorio
+3. **Configurar Build**:
+   - **Root Directory**: `backend/src/ApiGateway`
+   - **Build Command**: `dotnet restore && dotnet publish -c Release -o out`
+   - **Start Command**: `dotnet out/ECommerce.ApiGateway.dll`
+4. **Variables de Entorno**:
+   ```
+   ASPNETCORE_ENVIRONMENT=Production
+   DATABASE_URL=${{Postgres.DATABASE_URL}}
+   PRODUCT_SERVICE_URL=${{ProductService.RAILWAY_PUBLIC_DOMAIN}}
+   FRONTEND_URL=${{Frontend.RAILWAY_PUBLIC_DOMAIN}}
+   ```
 
-## 🚀 **Deployment en 3 Pasos**
-
-### **Paso 1: Instalar Railway CLI**
+### Opción B: Railway CLI
 ```bash
+# Instalar Railway CLI
 npm install -g @railway/cli
+
+# Login
 railway login
+
+# Inicializar proyecto
+railway init
+
+# Deploy
+railway up --service api-gateway
 ```
 
-### **Paso 2: Configurar el Proyecto**
+## 🛍️ 3. Deployar Product Service
+
+### Configuración
+1. **Nuevo Servicio**: Clic en "New Service" → "GitHub Repo"
+2. **Configurar Build**:
+   - **Root Directory**: `backend/src/Services/Product/ECommerce.Product.API`
+   - **Build Command**: `dotnet restore && dotnet publish -c Release -o out`
+   - **Start Command**: `dotnet out/ECommerce.Product.API.dll`
+3. **Variables de Entorno**:
+   ```
+   ASPNETCORE_ENVIRONMENT=Production
+   DATABASE_URL=${{Postgres.DATABASE_URL}}
+   FRONTEND_URL=${{Frontend.RAILWAY_PUBLIC_DOMAIN}}
+   API_GATEWAY_URL=${{ApiGateway.RAILWAY_PUBLIC_DOMAIN}}
+   ```
+
+## 🌐 4. Deployar Frontend
+
+### Configuración
+1. **Nuevo Servicio**: Clic en "New Service" → "GitHub Repo"
+2. **Configurar Build**:
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm ci && npm run build:prod`
+   - **Start Command**: `npm run start:prod`
+3. **Variables de Entorno**:
+   ```
+   NODE_ENVIRONMENT=production
+   API_GATEWAY_URL=${{ApiGateway.RAILWAY_PUBLIC_DOMAIN}}
+   ```
+
+## 🔗 5. Configurar Variables de Entorno Globales
+
+En cada servicio, configura estas variables:
+
+### API Gateway
+```
+ASPNETCORE_ENVIRONMENT=Production
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+PRODUCT_SERVICE_URL=${{ProductService.RAILWAY_PUBLIC_DOMAIN}}
+FRONTEND_URL=${{Frontend.RAILWAY_PUBLIC_DOMAIN}}
+```
+
+### Product Service
+```
+ASPNETCORE_ENVIRONMENT=Production
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+FRONTEND_URL=${{Frontend.RAILWAY_PUBLIC_DOMAIN}}
+API_GATEWAY_URL=${{ApiGateway.RAILWAY_PUBLIC_DOMAIN}}
+```
+
+### Frontend
+```
+NODE_ENVIRONMENT=production
+API_GATEWAY_URL=${{ApiGateway.RAILWAY_PUBLIC_DOMAIN}}
+```
+
+## 🗃️ 6. Ejecutar Migraciones
+
+### Opción A: Desde Railway Dashboard
+1. Ve al servicio **Product Service**
+2. Clic en "Deployments" → "View Logs"
+3. Ejecuta en la consola:
 ```bash
-# Desde la raíz del proyecto
-chmod +x railway-deploy.sh
-./railway-deploy.sh
+dotnet ef database update --project ECommerce.Product.Infrastructure
 ```
 
-### **Paso 3: Configurar Variables**
-En el dashboard de Railway, configura:
-- `JWT_SECRET_KEY`
-- `STRIPE_PUBLIC_KEY` / `STRIPE_SECRET_KEY`
-- `SENDGRID_API_KEY`
-- URLs entre servicios
+### Opción B: Railway CLI
+```bash
+# Conectar al servicio
+railway connect ProductService
 
-## 📊 **Arquitectura en Railway**
-
-```
-Railway Dashboard
-├── 🎨 Frontend (Angular)     → https://frontend.railway.app
-├── 🌐 API Gateway            → https://api-gateway.railway.app
-├── 👤 User Service           → Internal URL
-├── 🛍️ Product Service        → Internal URL
-├── 📦 Order Service          → Internal URL
-├── 💳 Payment Service        → Internal URL
-├── 📧 Notification Service   → Internal URL
-├── 📁 File Service           → Internal URL
-├── 🗄️ PostgreSQL            → Internal connection
-└── ⚡ Redis                  → Internal connection
+# Ejecutar migraciones
+dotnet ef database update --project ECommerce.Product.Infrastructure
 ```
 
-## 💰 **Estimación de Costos**
+## 🔍 7. Verificar Deployment
 
-### **Desarrollo/Testing**
+### URLs de los Servicios
+- **Frontend**: `https://frontend-production-xxxx.up.railway.app`
+- **API Gateway**: `https://api-gateway-production-xxxx.up.railway.app`
+- **Product Service**: `https://product-service-production-xxxx.up.railway.app`
+
+### Health Checks
+- **API Gateway**: `https://api-gateway-production-xxxx.up.railway.app/health`
+- **Product Service**: `https://product-service-production-xxxx.up.railway.app/health`
+
+## 🚨 8. Troubleshooting
+
+### Problemas Comunes
+
+#### Error de CORS
+```json
+// En appsettings.Production.json
+"Cors": {
+  "AllowedOrigins": [
+    "https://frontend-production-xxxx.up.railway.app",
+    "https://*.railway.app"
+  ]
+}
+```
+
+#### Error de Base de Datos
+```bash
+# Verificar conexión
+railway connect ProductService
+dotnet ef database update
+```
+
+#### Error de Build
+```bash
+# Limpiar cache
+railway run --service ProductService dotnet clean
+railway run --service ProductService dotnet restore
+```
+
+## 📊 9. Monitoreo
+
+### Railway Dashboard
+- **Metrics**: CPU, Memory, Network
+- **Logs**: Logs en tiempo real
+- **Deployments**: Historial de deployments
+
+### Health Checks
+```bash
+# Verificar estado de servicios
+curl https://api-gateway-production-xxxx.up.railway.app/health
+curl https://product-service-production-xxxx.up.railway.app/health
+```
+
+## 🔄 10. CI/CD Automático
+
+### GitHub Actions (Opcional)
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy to Railway
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0'
+      - run: dotnet restore
+      - run: dotnet build
+      - run: dotnet test
+```
+
+## 💰 11. Costos
+
+### Railway Pricing
 - **Hobby Plan**: $5/mes por servicio
-- **Total estimado**: ~$50/mes para 10 servicios
+- **Pro Plan**: $20/mes por servicio
+- **Database**: Incluido en el plan
 
-### **Producción**
-- **Pro Plan**: $20/mes por servicio con más recursos
-- **Total estimado**: ~$200/mes para alta disponibilidad
+### Estimación de Costos
+- **PostgreSQL**: $5/mes
+- **API Gateway**: $5/mes
+- **Product Service**: $5/mes
+- **Frontend**: $5/mes
+- **Total**: ~$20/mes
 
-### **Optimización de Costos**
-1. **Combinar servicios pequeños** en un solo deployment
-2. **Usar tier gratuito** para servicios de desarrollo
-3. **Auto-scaling** para pagar solo lo que usas
+## 🎯 12. Próximos Pasos
 
-## 📁 **Archivos Creados para Railway**
+1. **Configurar Dominio Personalizado**
+2. **Implementar SSL/HTTPS**
+3. **Configurar Backup de Base de Datos**
+4. **Implementar Logging Centralizado**
+5. **Configurar Alertas de Monitoreo**
 
-### ✅ **Ya configurados:**
-- `frontend/railway.toml` - Configuración del frontend
-- `backend/src/ApiGateway/railway.toml` - API Gateway
-- `backend/src/Services/User/railway.toml` - User Service
-- `railway-deploy.sh` - Script de deployment automatizado
-- Configuraciones de ambiente para producción
+---
 
-## 🔧 **Características Específicas para Railway**
+## 📞 Soporte
 
-### **Frontend Optimizado**
-- Build de producción optimizado
-- Servidor HTTP estático eficiente
-- Variables de entorno para conectar con backend
-
-### **Backend Microservicios**
-- Health checks configurados
-- Logging estructurado
-- Service discovery automático
-
-### **Bases de Datos**
-- PostgreSQL para datos transaccionales
-- Redis para cache y sesiones
-- Connection strings automáticos
-
-## 🌟 **Beneficios Adicionales en Railway**
-
-### **CI/CD Automático**
-```bash
-# Solo necesitas hacer git push
-git add .
-git commit -m "Deploy to Railway"
-git push origin main
-# Railway deploya automáticamente
-```
-
-### **Monitoreo Integrado**
-- Logs en tiempo real
-- Métricas de performance
-- Alertas automáticas
-
-### **Escalabilidad**
-- Auto-scaling horizontal
-- Load balancing automático
-- CDN global integrado
-
-## 🔧 **Comandos Útiles**
-
-```bash
-# Ver estado de servicios
-railway status
-
-# Ver logs en tiempo real
-railway logs --tail
-
-# Configurar variables
-railway variables set KEY=VALUE
-
-# Conectar a base de datos
-railway connect postgresql
-
-# Deploy manual
-railway up
-
-# Rollback
-railway rollback
-```
-
-## 🎯 **Siguientes Pasos Recomendados**
-
-1. **✅ Configurar Railway CLI**
-2. **✅ Ejecutar script de deployment**
-3. **🔧 Configurar variables de entorno**
-4. **🗄️ Conectar bases de datos**
-5. **🌐 Configurar dominios personalizados**
-6. **📊 Configurar monitoreo**
-7. **🔒 Configurar SSL/HTTPS**
-
-## 📞 **¿Necesitas Ayuda?**
-
-Si quieres que proceda con el deployment específico o necesitas configurar algo particular, solo dime y te ayudo paso a paso.
-
-**Railway es una excelente opción para este proyecto** - es moderna, escalable y muy fácil de usar para microservicios con .NET y Angular.
-
-¿Te gustaría que proceda con alguna configuración específica o que ejecute el deployment?
+- **Railway Docs**: [docs.railway.app](https://docs.railway.app)
+- **Railway Discord**: [discord.gg/railway](https://discord.gg/railway)
+- **Railway Status**: [status.railway.app](https://status.railway.app)

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  ecommerce-apphost:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "18888:18888"  # AppHost
+      - "18889:18889"  # API Gateway
+      - "18890:18890"  # Product Service
+      - "18891:18891"  # User Service
+      - "18892:18892"  # Order Service
+      - "18893:18893"  # Payment Service
+      - "18894:18894"  # File Service
+      - "18895:18895"  # Notification Service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DATABASE_URL=${DATABASE_URL}
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
