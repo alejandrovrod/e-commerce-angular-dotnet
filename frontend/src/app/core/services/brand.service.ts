@@ -10,8 +10,11 @@ export interface BrandDto {
   logoUrl: string;
   website: string;
   isActive: boolean;
+  country?: string;
+  foundedYear?: number;
   createdAt: string;
   updatedAt?: string;
+  productCount: number;
   products?: any[];
 }
 
@@ -21,6 +24,8 @@ export interface CreateBrandCommand {
   logoUrl?: string;
   website?: string;
   isActive?: boolean;
+  country?: string;
+  foundedYear?: number;
 }
 
 export interface UpdateBrandCommand {
@@ -30,6 +35,8 @@ export interface UpdateBrandCommand {
   logoUrl?: string;
   website?: string;
   isActive: boolean;
+  country?: string;
+  foundedYear?: number;
 }
 
 export interface ApiResponse<T> {

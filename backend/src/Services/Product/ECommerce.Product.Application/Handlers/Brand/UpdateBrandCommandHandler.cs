@@ -36,7 +36,7 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Api
             }
 
             // Update brand
-            brand.Update(request.Name, request.Description, request.LogoUrl, request.Website);
+            brand.Update(request.Name, request.Description, request.LogoUrl, request.Website, request.Country, request.FoundedYear);
             brand.SetActive(request.IsActive);
 
             // Save changes
@@ -51,6 +51,8 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Api
                 Description = brand.Description,
                 LogoUrl = brand.LogoUrl,
                 Website = brand.Website,
+                Country = brand.Country,
+                FoundedYear = brand.FoundedYear,
                 IsActive = brand.IsActive,
                 CreatedAt = brand.CreatedAt,
                 UpdatedAt = brand.UpdatedAt

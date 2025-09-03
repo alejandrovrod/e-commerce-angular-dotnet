@@ -375,7 +375,9 @@ export class BrandFormComponent implements OnInit, OnDestroy {
           description: brand.description,
           logoUrl: brand.logoUrl,
           website: brand.website,
-          isActive: brand.isActive
+          isActive: brand.isActive,
+          country: brand.country,
+          foundedYear: brand.foundedYear
         };
         this.brandStore.updateBrand(updateCommand);
         this.uiStore.showSuccess('Marca actualizada', `${brand.name} ha sido actualizada correctamente`);
@@ -385,7 +387,9 @@ export class BrandFormComponent implements OnInit, OnDestroy {
           description: brand.description,
           logoUrl: brand.logoUrl,
           website: brand.website,
-          isActive: brand.isActive
+          isActive: brand.isActive,
+          country: brand.country,
+          foundedYear: brand.foundedYear
         };
         this.brandStore.createBrand(createCommand);
         this.uiStore.showSuccess('Marca creada', `${brand.name} ha sido creada correctamente`);

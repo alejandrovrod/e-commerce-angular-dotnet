@@ -192,22 +192,46 @@ export class AdminProductsComponent implements OnInit {
   getStatusBadgeClass(status: number): string {
     switch (status) {
       case 1: // Borrador
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+        return 'bg-gray-100 text-gray-800';
       case 2: // Activo
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+        return 'bg-green-100 text-green-800';
       case 3: // Inactivo
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+        return 'bg-red-100 text-red-800';
       case 4: // Sin Stock
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+        return 'bg-yellow-100 text-yellow-800';
       case 5: // Descontinuado
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+        return 'bg-gray-100 text-gray-800';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+        return 'bg-gray-100 text-gray-800';
+    }
+  }
+
+  getStatusBadgeStyle(status: number): any {
+    if (!this.isDarkMode) return {};
+    
+    switch (status) {
+      case 1: // Borrador
+        return { 'background-color': '#4b5563', 'color': '#ffffff' };
+      case 2: // Activo
+        return { 'background-color': '#16a34a', 'color': '#ffffff' };
+      case 3: // Inactivo
+        return { 'background-color': '#dc2626', 'color': '#ffffff' };
+      case 4: // Sin Stock
+        return { 'background-color': '#d97706', 'color': '#ffffff' };
+      case 5: // Descontinuado
+        return { 'background-color': '#4b5563', 'color': '#ffffff' };
+      default:
+        return { 'background-color': '#4b5563', 'color': '#ffffff' };
     }
   }
 
   // Exponer Math para el template
   Math = Math;
+
+  // Verificar si está en modo oscuro
+  get isDarkMode(): boolean {
+    return document.documentElement.classList.contains('dark');
+  }
 
   // Métodos del drawer de filtros
   openFiltersDrawer(): void {

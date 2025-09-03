@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { UserStore } from '../../stores/user.store';
 import { UIStore } from '../../stores/ui.store';
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -283,18 +284,18 @@ import { UIStore } from '../../stores/ui.store';
       </div>
 
       <!-- Main Content -->
-      <div class="transition-all duration-300 ease-in-out" 
+      <div class="main-content transition-all duration-300 ease-in-out" 
            [class.pl-64]="uiStore.sidebarOpen() && !isMobile()"
            [class.pl-16]="!uiStore.sidebarOpen() && !isMobile()"
            [class.pl-0]="isMobile()">
         <!-- Header -->
-        <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <header class="sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
           <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
             <!-- Mobile menu button -->
             <button
               *ngIf="isMobile()"
               (click)="toggleSidebar()"
-              class="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
+              class="p-2 rounded-md text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -311,23 +312,27 @@ import { UIStore } from '../../stores/ui.store';
             <!-- Right side actions -->
             <div class="flex items-center space-x-4">
               <!-- Theme toggle -->
-              <button
-                (click)="uiStore.toggleTheme()"
-                class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                title="Cambiar tema"
-              >
-                <svg *ngIf="uiStore.isLightMode()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                </svg>
-                <svg *ngIf="uiStore.isDarkMode()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                </svg>
-              </button>
+              <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500 dark:text-gray-400">{{ isDark() ? 'Oscuro' : 'Claro' }}</span>
+                <button
+                  (click)="toggleTheme()"
+                  class="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white transition-colors border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  title="Cambiar tema - Actual: {{ isDark() ? 'Oscuro' : 'Claro' }}"
+                >
+                  <svg *ngIf="!isDark()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                  </svg>
+                  <svg *ngIf="isDark()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                  </svg>
+                </button>
+
+              </div>
 
               <!-- Notifications -->
               <button
                 (click)="uiStore.openModal('notifications')"
-                class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors relative"
+                class="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white transition-colors relative border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 title="Notificaciones"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -355,15 +360,71 @@ import { UIStore } from '../../stores/ui.store';
     :host {
       display: block;
       min-height: 100vh;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+    }
+    
+    /* Corregir posibles problemas de layout */
+    .main-content {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+    
+    /* Eliminar sombras laterales */
+    .sidebar {
+      box-shadow: none;
+    }
+    
+    /* Asegurar que no haya scroll horizontal */
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+    }
+    
+    /* Forzar tema oscuro */
+    :host-context(.dark) {
+      background-color: #1f2937 !important;
+      color: #f9fafb !important;
+    }
+    
+    :host-context(.dark) .main-content {
+      background-color: #1f2937 !important;
+      color: #f9fafb !important;
+    }
+    
+    :host-context(.dark) header {
+      background-color: #374151 !important;
+      color: #f9fafb !important;
+    }
+    
+    :host-context(.dark) h1,
+    :host-context(.dark) h2,
+    :host-context(.dark) h3,
+    :host-context(.dark) h4,
+    :host-context(.dark) h5,
+    :host-context(.dark) h6 {
+      color: #ffffff !important;
+    }
+    
+    :host-context(.dark) p,
+    :host-context(.dark) span,
+    :host-context(.dark) div {
+      color: #f3f4f6 !important;
     }
   `]
 })
 export class AdminLayoutComponent implements OnInit {
   private router = inject(Router);
+  private isDarkMode = false;
   
   constructor(
     public userStore: UserStore,
-    public uiStore: UIStore
+    public uiStore: UIStore,
+    public themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -371,6 +432,9 @@ export class AdminLayoutComponent implements OnInit {
     console.log('🔧 Window width:', window.innerWidth);
     console.log('🔧 Is mobile:', this.isMobile());
     console.log('🔧 Initial sidebar state:', this.uiStore.sidebarOpen());
+    
+    // Inicializar tema
+    this.initializeTheme();
     
     // Verificar autenticación
     if (!this.userStore.isAuthenticated() || !this.userStore.isAdmin()) {
@@ -426,5 +490,78 @@ export class AdminLayoutComponent implements OnInit {
     if (url.includes('/analytics')) return 'Analytics';
     if (url.includes('/settings')) return 'Configuración';
     return 'Admin Panel';
+  }
+
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
+    const html = document.documentElement;
+    const body = document.body;
+    
+    console.log('🎨 Cambiando tema a:', this.isDarkMode ? 'dark' : 'light');
+    
+    // Forzar el cambio de tema
+    if (this.isDarkMode) {
+      html.setAttribute('data-theme', 'dark');
+      html.classList.add('dark');
+      body.classList.add('dark');
+      body.style.backgroundColor = '#1f2937';
+      body.style.color = '#f9fafb';
+    } else {
+      html.setAttribute('data-theme', 'light');
+      html.classList.remove('dark');
+      body.classList.remove('dark');
+      body.style.backgroundColor = '#f9fafb';
+      body.style.color = '#111827';
+    }
+    
+    // Guardar preferencia
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+    
+    console.log('🎨 Tema aplicado:', this.isDarkMode ? 'dark' : 'light');
+    console.log('🎨 HTML classes:', html.classList.toString());
+    console.log('🎨 Body classes:', body.classList.toString());
+  }
+
+  isDark(): boolean {
+    return this.isDarkMode;
+  }
+
+
+
+
+
+  private initializeTheme(): void {
+    // Cargar tema guardado o usar preferencia del sistema
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    this.isDarkMode = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    
+    const html = document.documentElement;
+    const body = document.body;
+    
+    // Limpiar clases y estilos existentes
+    html.classList.remove('dark', 'light');
+    body.classList.remove('dark', 'light');
+    html.removeAttribute('data-theme');
+    
+    // Aplicar tema inicial
+    if (this.isDarkMode) {
+      html.setAttribute('data-theme', 'dark');
+      html.classList.add('dark');
+      body.classList.add('dark');
+      body.style.backgroundColor = '#1f2937';
+      body.style.color = '#f9fafb';
+    } else {
+      html.setAttribute('data-theme', 'light');
+      html.classList.add('light');
+      body.classList.add('light');
+      body.style.backgroundColor = '#f9fafb';
+      body.style.color = '#111827';
+    }
+    
+    console.log('🎨 Tema inicializado:', this.isDarkMode ? 'dark' : 'light');
+    console.log('🎨 HTML classes:', html.classList.toString());
+    console.log('🎨 Body classes:', body.classList.toString());
   }
 }

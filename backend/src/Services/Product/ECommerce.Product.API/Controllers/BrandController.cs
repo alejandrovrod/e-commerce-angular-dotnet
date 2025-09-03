@@ -14,11 +14,13 @@ public class BrandController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IBrandRepository _brandRepository;
+    private readonly IProductRepository _productRepository;
 
-    public BrandController(IMediator mediator, IBrandRepository brandRepository)
+    public BrandController(IMediator mediator, IBrandRepository brandRepository, IProductRepository productRepository)
     {
         _mediator = mediator;
         _brandRepository = brandRepository;
+        _productRepository = productRepository;
     }
 
     [HttpGet]
@@ -65,11 +67,14 @@ public class BrandController : ControllerBase
         try
         {
             var brandsFromContext = await _brandRepository.GetAllAsync();
+            var productsFromContext = await _productRepository.GetAllAsync();
             
             var debugInfo = new
             {
                 ContextBrandsCount = brandsFromContext.Count,
                 ContextBrands = brandsFromContext.Select(b => new { b.Id, b.Name, b.IsActive, b.CreatedAt }),
+                ContextProductsCount = productsFromContext.Count(),
+                ContextProducts = productsFromContext.Take(10).Select(p => new { p.Id, p.Name, p.Brand, p.CreatedAt }),
                 Message = "Debug info from BrandController"
             };
             

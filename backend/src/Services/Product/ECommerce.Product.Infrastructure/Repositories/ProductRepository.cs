@@ -215,4 +215,16 @@ public class ProductRepository : IProductRepository
     {
         return await _context.Products.AnyAsync(p => p.Slug == slug);
     }
+
+    public async Task<int> CountProductsByBrandAsync(string brand)
+    {
+        var count = await _context.Products.CountAsync(p => p.Brand == brand);
+        Console.WriteLine($"🔍 CountProductsByBrandAsync: Brand='{brand}', Count={count}");
+        
+        // Debug: mostrar algunos productos para verificar
+        var sampleProducts = await _context.Products.Take(5).Select(p => new { p.Name, p.Brand }).ToListAsync();
+        Console.WriteLine($"🔍 Sample products: {string.Join(", ", sampleProducts.Select(p => $"{p.Name}:{p.Brand}"))}");
+        
+        return count;
+    }
 }

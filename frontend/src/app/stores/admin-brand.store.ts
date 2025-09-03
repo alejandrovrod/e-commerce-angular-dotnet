@@ -305,9 +305,9 @@ export class AdminBrandStore {
       slug: this.generateSlug(dto.name),
       isFeatured: false, // Por defecto no destacada
       sortOrder: 0,
-      productCount: dto.products?.length || 0,
-      country: undefined,
-      foundedYear: undefined
+      productCount: dto.productCount || 0,
+      country: dto.country,
+      foundedYear: dto.foundedYear
     };
   }
 

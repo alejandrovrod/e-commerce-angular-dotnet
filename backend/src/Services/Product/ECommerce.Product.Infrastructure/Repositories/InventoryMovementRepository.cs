@@ -72,12 +72,17 @@ public class InventoryMovementRepository : IInventoryMovementRepository
         int pageSize = 50,
         CancellationToken cancellationToken = default)
     {
+        Console.WriteLine($"GetFilteredAsync - ProductId: {productId}, MovementType: {movementType}");
+        
         var query = _context.InventoryMovements
             .Include(m => m.Product)
             .AsQueryable();
 
         if (productId.HasValue)
+        {
+            Console.WriteLine($"Filtering by ProductId: {productId.Value}");
             query = query.Where(m => m.ProductId == productId.Value);
+        }
 
         if (!string.IsNullOrEmpty(movementType))
             query = query.Where(m => m.MovementType == movementType);

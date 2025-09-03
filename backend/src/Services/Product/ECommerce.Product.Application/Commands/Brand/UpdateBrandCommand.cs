@@ -11,5 +11,7 @@ public class UpdateBrandCommand : IRequest<ApiResponse<BrandDto>>
     public string Description { get; set; } = string.Empty;
     public string LogoUrl { get; set; } = string.Empty;
     public string Website { get; set; } = string.Empty;
+    public string? Country { get; set; }
+    public int? FoundedYear { get; set; }
     public bool IsActive { get; set; }
 }

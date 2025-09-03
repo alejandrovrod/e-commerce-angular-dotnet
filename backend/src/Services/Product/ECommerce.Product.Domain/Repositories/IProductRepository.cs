@@ -15,6 +15,7 @@ public interface IProductRepository : IRepository<Entities.Product>
     Task<List<Entities.Product>> SearchAsync(string searchTerm, int page, int pageSize);
     Task<int> GetTotalCountAsync();
     Task<int> GetCountByCategoryAsync(Guid categoryId);
+    Task<int> CountProductsByBrandAsync(string brand);
     Task<bool> ExistsBySkuAsync(string sku);
     Task<bool> ExistsBySlugAsync(string slug);
 }

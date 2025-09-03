@@ -19,6 +19,9 @@ public class GetInventoryHistoryQueryHandler : IRequestHandler<GetInventoryHisto
     {
         try
         {
+            // Debug logging
+            Console.WriteLine($"GetInventoryHistoryQuery - ProductId: {request.ProductId}, MovementType: {request.MovementType}, DateFrom: {request.DateFrom}, DateTo: {request.DateTo}");
+            
             // Obtener movimientos reales de la base de datos
             var movements = await _inventoryMovementRepository.GetFilteredAsync(
                 productId: request.ProductId,
@@ -30,6 +33,8 @@ public class GetInventoryHistoryQueryHandler : IRequestHandler<GetInventoryHisto
                 pageSize: request.PageSize,
                 cancellationToken: cancellationToken
             );
+
+            Console.WriteLine($"Found {movements.Count} movements for ProductId: {request.ProductId}");
 
             // Mapear a DTOs
             var movementDtos = movements.Select(m => new InventoryMovementDto

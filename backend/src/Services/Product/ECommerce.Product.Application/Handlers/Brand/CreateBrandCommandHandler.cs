@@ -30,7 +30,7 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Api
             }
 
             // Create new brand
-            var brand = new ECommerce.Product.Domain.Entities.Brand(request.Name, request.Description, request.LogoUrl, request.Website);
+            var brand = new ECommerce.Product.Domain.Entities.Brand(request.Name, request.Description, request.LogoUrl, request.Website, request.Country, request.FoundedYear);
             
             // Save to repository
             await _brandRepository.AddAsync(brand);
@@ -46,6 +46,8 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Api
                 Description = brand.Description,
                 LogoUrl = brand.LogoUrl,
                 Website = brand.Website,
+                Country = brand.Country,
+                FoundedYear = brand.FoundedYear,
                 IsActive = brand.IsActive,
                 CreatedAt = brand.CreatedAt,
                 UpdatedAt = brand.UpdatedAt

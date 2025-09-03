@@ -10,11 +10,13 @@ namespace ECommerce.Product.Application.Handlers.Brand;
 public class GetBrandsQueryHandler : IRequestHandler<GetBrandsQuery, ApiResponse<List<BrandDto>>>
 {
     private readonly IBrandRepository _brandRepository;
+    private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetBrandsQueryHandler(IBrandRepository brandRepository, IUnitOfWork unitOfWork)
+    public GetBrandsQueryHandler(IBrandRepository brandRepository, IProductRepository productRepository, IUnitOfWork unitOfWork)
     {
         _brandRepository = brandRepository;
+        _productRepository = productRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -24,17 +26,32 @@ public class GetBrandsQueryHandler : IRequestHandler<GetBrandsQuery, ApiResponse
         {
             var brands = await _brandRepository.GetAllAsync();
             
-            var brandDtos = brands.Select(b => new BrandDto
+            var brandDtos = new List<BrandDto>();
+            
+            foreach (var brand in brands)
             {
-                Id = b.Id,
-                Name = b.Name,
-                Description = b.Description,
-                LogoUrl = b.LogoUrl,
-                Website = b.Website,
-                IsActive = b.IsActive,
-                CreatedAt = b.CreatedAt,
-                UpdatedAt = b.UpdatedAt
-            }).ToList();
+                // Contar productos que tienen esta marca
+                var productCount = await _productRepository.CountProductsByBrandAsync(brand.Name);
+                Console.WriteLine($"🔍 Brand: {brand.Name}, ProductCount: {productCount}");
+                
+                var brandDto = new BrandDto
+                {
+                    Id = brand.Id,
+                    Name = brand.Name,
+                    Description = brand.Description,
+                    LogoUrl = brand.LogoUrl,
+                    Website = brand.Website,
+                    Country = brand.Country,
+                    FoundedYear = brand.FoundedYear,
+                    IsActive = brand.IsActive,
+                    CreatedAt = brand.CreatedAt,
+                    UpdatedAt = brand.UpdatedAt,
+                    ProductCount = productCount,
+                    Products = new List<ProductDto>() // Lista vacía, solo necesitamos el conteo
+                };
+                
+                brandDtos.Add(brandDto);
+            }
 
             return ApiResponse<List<BrandDto>>.SuccessResult(brandDtos);
         }
