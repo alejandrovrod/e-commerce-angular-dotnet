@@ -1,4 +1,4 @@
-ay# Use the official .NET 9 SDK image for building and running
+# Use the official .NET 9 SDK image for building and running
 FROM mcr.microsoft.com/dotnet/sdk:9.0
 
 # Set working directory
