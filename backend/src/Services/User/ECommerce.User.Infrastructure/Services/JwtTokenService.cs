@@ -19,7 +19,7 @@ public class JwtTokenService : IJwtTokenService
         _userRepository = userRepository;
     }
 
-    public async Task<TokenResult> GenerateTokensAsync(Domain.Entities.User user)
+    public Task<TokenResult> GenerateTokensAsync(Domain.Entities.User user)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
         var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is required");
@@ -52,12 +52,12 @@ public class JwtTokenService : IJwtTokenService
         var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
         var refreshToken = GenerateRefreshToken();
 
-        return new TokenResult(
+        return Task.FromResult(new TokenResult(
             accessToken,
             refreshToken,
             token.ValidTo,
             "Bearer"
-        );
+        ));
     }
 
     public async Task<TokenResult> RefreshTokensAsync(string refreshToken)
@@ -71,7 +71,7 @@ public class JwtTokenService : IJwtTokenService
         return await GenerateTokensAsync(user);
     }
 
-    public async Task<bool> ValidateTokenAsync(string token)
+    public Task<bool> ValidateTokenAsync(string token)
     {
         try
         {
@@ -96,11 +96,11 @@ public class JwtTokenService : IJwtTokenService
             };
 
             var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-            return true;
+            return Task.FromResult(true);
         }
         catch
         {
-            return false;
+            return Task.FromResult(false);
         }
     }
 

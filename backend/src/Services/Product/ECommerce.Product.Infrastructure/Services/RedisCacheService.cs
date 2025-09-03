@@ -30,7 +30,7 @@ public class RedisCacheService : ICacheService
             if (string.IsNullOrEmpty(value))
             {
                 _logger.LogDebug("Cache miss for key: {Key}", key);
-                return default;
+                return default(T);
             }
 
             var result = JsonSerializer.Deserialize<T>(value, _jsonOptions);
@@ -40,7 +40,7 @@ public class RedisCacheService : ICacheService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting value from cache for key: {Key}", key);
-            return default;
+            return default(T);
         }
     }
 

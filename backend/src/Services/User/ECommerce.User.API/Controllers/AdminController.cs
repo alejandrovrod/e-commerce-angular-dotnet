@@ -5,6 +5,8 @@ using ECommerce.User.Application.DTOs;
 using ECommerce.BuildingBlocks.Common.Models;
 using System;
 using System.Collections.Generic;
+using ECommerce.User.Application.Queries;
+using ECommerce.User.Application.Commands;
 
 namespace ECommerce.User.API.Controllers;
 
@@ -43,8 +45,8 @@ public class AdminController : ControllerBase
         [FromQuery] string? searchTerm = null,
         [FromQuery] string? role = null,
         [FromQuery] string? status = null,
-        [FromQuery] string? sortBy = "CreatedAt",
-        [FromQuery] string? sortOrder = "desc",
+        [FromQuery] string sortBy = "CreatedAt",
+        [FromQuery] string sortOrder = "desc",
         CancellationToken cancellationToken = default)
     {
         var query = new GetUsersAdminQuery(page, pageSize, searchTerm, role, status, sortBy, sortOrder);
