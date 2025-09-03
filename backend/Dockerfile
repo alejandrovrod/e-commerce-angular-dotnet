@@ -22,9 +22,9 @@ ENV ASPNETCORE_URLS=http://+:18888
 
 # Create a startup script and use it
 RUN echo '#!/bin/bash' > /start.sh && \
-    echo 'echo "Starting ECommerce AppHost..."' >> /start.sh && \
+    echo 'echo "Starting ECommerce API Gateway..."' >> /start.sh && \
     echo 'cd /src' >> /start.sh && \
-    echo 'dotnet run --project src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj --configuration Release' >> /start.sh && \
+    echo 'dotnet run --project src/ApiGateway/ECommerce.ApiGateway.csproj --configuration Release' >> /start.sh && \
     chmod +x /start.sh
 
 # Use the startup script

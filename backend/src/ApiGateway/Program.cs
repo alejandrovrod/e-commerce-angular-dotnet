@@ -91,7 +91,8 @@ builder.Services.AddRateLimiter(options =>
 });
 
 // Add Health Checks
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    .AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy("API Gateway is healthy"));
 
 // Add OpenAPI/Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -232,8 +233,14 @@ app.MapReverseProxy();
 // Use Rate Limiting after Reverse Proxy - Temporarily disabled for CORS testing
 // app.UseRateLimiter();
 
-// Map Health Checks
-app.MapHealthChecks("/health");
+// Simple health check endpoint for Railway
+app.MapGet("/health", () => new
+{
+    Status = "Healthy",
+    Service = "E-Commerce API Gateway",
+    Timestamp = DateTime.UtcNow,
+    Environment = app.Environment.EnvironmentName
+});
 
 // Default endpoint
 app.MapGet("/", () => new
