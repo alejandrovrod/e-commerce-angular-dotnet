@@ -20,5 +20,5 @@ EXPOSE 18888 18889 18890 18891 18892 18893 18894 18895
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:18888
 
-# Start the AppHost directly (this works locally)
-ENTRYPOINT ["dotnet", "run", "--project", "src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj", "--configuration", "Release"]
+# Start the AppHost using a shell command
+CMD ["sh", "-c", "dotnet run --project src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj --configuration Release"]
