@@ -11,8 +11,9 @@ RUN dotnet restore ECommerce.sln
 # Build the application
 RUN dotnet build ECommerce.sln -c Release --no-restore
 
-# Publish the AppHost project
+# Publish the AppHost project and list contents
 RUN dotnet publish src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj -c Release -o ./publish
+RUN ls -la ./publish
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
