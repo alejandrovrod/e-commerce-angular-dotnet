@@ -11,9 +11,11 @@ RUN dotnet restore ECommerce.sln
 # Build the application
 RUN dotnet build ECommerce.sln -c Release --no-restore
 
-# Publish the AppHost project and list contents
-RUN dotnet publish src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj -c Release -o ./publish
-RUN ls -la ./publish
+# Publish the AppHost project with verbose output
+RUN dotnet publish src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj -c Release -o ./publish --verbosity normal
+RUN echo "Checking if publish directory exists:"
+RUN ls -la
+RUN ls -la ./publish || echo "Publish directory does not exist"
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
