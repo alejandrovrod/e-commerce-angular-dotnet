@@ -20,5 +20,8 @@ EXPOSE 18888 18889 18890 18891 18892 18893 18894 18895
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:18888
 
-# Start the AppHost directly (this works locally) - Railway fix
-ENTRYPOINT ["dotnet", "run", "--project", "src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj", "--configuration", "Release"]
+# Make start script executable
+RUN chmod +x start.sh
+
+# Start the AppHost using the script
+ENTRYPOINT ["./start.sh"]
