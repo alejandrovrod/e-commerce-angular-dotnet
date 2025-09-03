@@ -1,7 +1,5 @@
-# Use the official .NET 9 SDK image for building and running
-FROM mcr.microsoft.com/dotnet/sdk:9.0
-
-# Set working directory
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy everything
@@ -13,6 +11,16 @@ RUN dotnet restore ECommerce.sln
 # Build the application
 RUN dotnet build ECommerce.sln -c Release --no-restore
 
+# Publish the AppHost project
+RUN dotnet publish src/AppHost/ECommerce.AppHost/ECommerce.AppHost.csproj -c Release -o /app/publish
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+WORKDIR /app
+
+# Copy published app
+COPY --from=build /app/publish .
+
 # Expose ports
 EXPOSE 18888 18889 18890 18891 18892 18893 18894 18895
 
@@ -20,8 +28,5 @@ EXPOSE 18888 18889 18890 18891 18892 18893 18894 18895
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:18888
 
-# Make start script executable
-RUN chmod +x start.sh
-
-# Start the AppHost using the script
-ENTRYPOINT ["./start.sh"]
+# Start the published app
+ENTRYPOINT ["dotnet", "ECommerce.AppHost.dll"]
