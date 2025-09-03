@@ -1,0 +1,48 @@
+# Ignore build outputs
+**/bin/
+**/obj/
+**/out/
+
+# Ignore logs
+**/logs/
+*.log
+
+# Ignore temporary files
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.suo
+**/*.cache
+
+# Ignore Git
+.git/
+.gitignore
+
+# Ignore documentation
+*.md
+README.md
+
+# Ignore test files
+**/test/
+**/tests/
+**/*.Test/
+**/*.Tests/
+
+# Ignore package files
+**/packages/
+**/*.nupkg
+
+# Ignore IDE files
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.sln.DotSettings
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Railway specific files
+railway.json
+railway.toml
