@@ -8,6 +8,13 @@ using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure port for Railway
+var port = Environment.GetEnvironmentVariable("PORT") ?? "18888";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
+// Log the port configuration
+Console.WriteLine($"API Gateway will start on port: {port}");
+
 // Load modular configuration files
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
@@ -239,8 +246,12 @@ app.MapGet("/health", () => new
     Status = "Healthy",
     Service = "E-Commerce API Gateway",
     Timestamp = DateTime.UtcNow,
-    Environment = app.Environment.EnvironmentName
+    Environment = app.Environment.EnvironmentName,
+    Port = port
 });
+
+// Additional test endpoint
+app.MapGet("/ping", () => "pong");
 
 // Default endpoint
 app.MapGet("/", () => new
@@ -253,7 +264,9 @@ app.MapGet("/", () => new
 
 try
 {
-    Log.Information("Starting API Gateway");
+    Log.Information("Starting API Gateway on port {Port}", port);
+    Log.Information("Environment: {Environment}", app.Environment.EnvironmentName);
+    Log.Information("Health check endpoint available at: /health");
     app.Run();
 }
 catch (Exception ex)

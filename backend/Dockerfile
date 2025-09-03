@@ -14,11 +14,10 @@ RUN dotnet restore ECommerce.sln
 RUN dotnet build ECommerce.sln -c Release --no-restore
 
 # Expose ports
-EXPOSE 18888 18889 18890 18891 18892 18893 18894 18895
+EXPOSE 18888
 
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:18888
 
 # Create a startup script and use it
 RUN echo '#!/bin/bash' > /start.sh && \
