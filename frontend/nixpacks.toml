@@ -5,7 +5,7 @@ NODE_ENV = "production"
 
 [phases.install]
 cmds = [
-  "npm install"
+  "npm install --production=false"
 ]
 
 [phases.build]
