@@ -1,7 +1,4 @@
-# nixpacks.toml - Specific for Product Service
-
-# Fuerza el proveedor de .NET
-providers = ["dotnet"]
+# nixpacks.toml - Simplified for Product Service
 
 [variables]
 # Fija la versión del SDK que instalará Nixpacks
@@ -12,9 +9,6 @@ DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 # Para ASP.NET Core: expone en 0.0.0.0:8080
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
 
-# Si tu app necesita Globalization completa (fechas/idiomas), usa ICU:
-DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "false"
-
 [phases.setup]
 # SDK 9 + librerías nativas comunes para .NET
 nixPkgs = [
@@ -24,15 +18,10 @@ nixPkgs = [
   "openssl"
 ]
 
-# También exporta algunas como libs en LD_LIBRARY_PATH
-nixLibs = ["icu", "zlib", "openssl"]
-
 [phases.install]
 cmds = [
   "dotnet restore backend/ECommerce.sln --nologo"
 ]
-# Acelera builds cacheando el paquete NuGet
-cacheDirectories = ["~/.nuget/packages"]
 
 [phases.build]
 # Publica específicamente el Product Service
