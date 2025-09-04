@@ -4,6 +4,7 @@
 DOTNET_CLI_TELEMETRY_OPTOUT = "1"
 DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
+DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "false"
 
 [phases.setup]
 # Solo instalar dependencias básicas, .NET se instala con el script
@@ -23,15 +24,15 @@ cmds = [
 
 [phases.install]
 cmds = [
-  "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && dotnet restore backend/ECommerce.sln --nologo"
+  "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && export LD_LIBRARY_PATH=/nix/store/*-icu4c-*/lib:$LD_LIBRARY_PATH && dotnet restore backend/ECommerce.sln --nologo"
 ]
 
 [phases.build]
 # Publica específicamente el Product Service
 cmds = [
-  "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --no-restore -c Release -o out"
+  "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && export LD_LIBRARY_PATH=/nix/store/*-icu4c-*/lib:$LD_LIBRARY_PATH && dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --no-restore -c Release -o out"
 ]
 
 [start]
 # Ejecuta el Product Service
-cmd = "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && dotnet out/ECommerce.Product.API.dll"
+cmd = "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && export LD_LIBRARY_PATH=/nix/store/*-icu4c-*/lib:$LD_LIBRARY_PATH && dotnet out/ECommerce.Product.API.dll"
