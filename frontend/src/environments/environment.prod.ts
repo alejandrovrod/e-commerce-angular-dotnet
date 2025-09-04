@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: process.env['API_GATEWAY_URL'] || process.env['VITE_API_URL'] || 'https://tu-api-gateway.up.railway.app',
+  apiUrl: '${API_GATEWAY_URL}/api',
   stripePublishableKey: 'pk_test_your_stripe_key_here',
   features: {
     enableAnalytics: false,

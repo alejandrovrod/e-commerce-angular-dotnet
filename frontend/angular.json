@@ -62,7 +62,10 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "define": {
+                "API_GATEWAY_URL": "process.env.API_GATEWAY_URL || 'https://tu-api-gateway.up.railway.app'"
+              }
             },
             "development": {
               "buildOptimizer": false,
