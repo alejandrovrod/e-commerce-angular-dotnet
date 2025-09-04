@@ -1,21 +1,37 @@
 using Projects;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-// Para Railway: Solo ejecutar el API Gateway
-// Los microservicios se ejecutarán como servicios separados en Railway
+// Los microservicios se conectarán directamente a Railway
+// No necesitamos ejecutar Redis y RabbitMQ localmente
 
-// Disable Docker for Railway
-builder.Services.Configure<Microsoft.Extensions.Hosting.HostOptions>(options =>
-{
-    options.ServicesStartConcurrently = false;
-});
+// Add microservices
+var userService = builder.AddProject<Projects.ECommerce_User_API>("userservice")
+	.WithHttpHealthCheck("/health");
 
-// Add API Gateway only (no microservices)
+var productService = builder.AddProject<Projects.ECommerce_Product_API>("productservice")
+	.WithHttpHealthCheck("/health");
+
+var orderService = builder.AddProject<Projects.ECommerce_Order_API>("orderservice")
+	.WithHttpHealthCheck("/health");
+
+var paymentService = builder.AddProject<Projects.ECommerce_Payment_API>("paymentservice")
+	.WithHttpHealthCheck("/health");
+
+//var notificationService = builder.AddProject<Projects.ECommerce_Notification_API>("notificationservice")
+//    .WithHttpHealthCheck("/health");
+
+var fileService = builder.AddProject<Projects.ECommerce_File_API>("fileservice")
+	.WithHttpHealthCheck("/health");
+
+// Add API Gateway with all service references
 builder.AddProject<Projects.ECommerce_ApiGateway>("apigateway")
-    .WithHttpHealthCheck("/health")
-    .WithEnvironment("ASPNETCORE_URLS", "http://+:18888")
-    .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Production");
+	.WithHttpHealthCheck("/health")
+	.WithReference(userService)
+	.WithReference(productService)
+	.WithReference(orderService)
+	.WithReference(paymentService)
+	//.WithReference(notificationService)
+	.WithReference(fileService);
 
 builder.Build().Run();

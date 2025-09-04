@@ -9,12 +9,18 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure port for Railway
-var port = Environment.GetEnvironmentVariable("PORT") ?? "7004";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-
-// Log the port configuration
-Console.WriteLine($"Payment Service will start on port: {port}");
+// Configure port only for Railway deployment
+if (Environment.GetEnvironmentVariable("RAILWAY_ENVIRONMENT") != null)
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "7004";
+    var host = Environment.GetEnvironmentVariable("HOST") ?? "0.0.0.0";
+    builder.WebHost.UseUrls($"http://{host}:{port}");
+    Console.WriteLine($"Payment Service will start on port: {port} (Railway)");
+}
+else
+{
+    Console.WriteLine("Payment Service will use Aspire port configuration (Local)");
+}
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()

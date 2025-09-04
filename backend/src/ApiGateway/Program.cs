@@ -8,12 +8,18 @@ using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure port for Railway
-var port = Environment.GetEnvironmentVariable("PORT") ?? "18888";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-
-// Log the port configuration
-Console.WriteLine($"API Gateway will start on port: {port}");
+// Configure port only for Railway deployment
+if (Environment.GetEnvironmentVariable("RAILWAY_ENVIRONMENT") != null)
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "18888";
+    var host = Environment.GetEnvironmentVariable("HOST") ?? "0.0.0.0";
+    builder.WebHost.UseUrls($"http://{host}:{port}");
+    Console.WriteLine($"API Gateway will start on port: {port} (Railway)");
+}
+else
+{
+    Console.WriteLine("API Gateway will use Aspire port configuration (Local)");
+}
 
 // Load modular configuration files
 builder.Configuration
@@ -260,8 +266,7 @@ app.MapGet("/health", () => new
     Status = "Healthy",
     Service = "E-Commerce API Gateway",
     Timestamp = DateTime.UtcNow,
-    Environment = app.Environment.EnvironmentName,
-    Port = port
+    Environment = app.Environment.EnvironmentName
 });
 
 // Additional test endpoint
@@ -278,7 +283,7 @@ app.MapGet("/", () => new
 
 try
 {
-    Log.Information("Starting API Gateway on port {Port}", port);
+    Log.Information("Starting API Gateway");
     Log.Information("Environment: {Environment}", app.Environment.EnvironmentName);
     Log.Information("Health check endpoint available at: /health");
     app.Run();
