@@ -1,20 +1,22 @@
-# Use the official .NET 9 SDK image
-FROM mcr.microsoft.com/dotnet/sdk:9.0
+# Multi-stage build for .NET 9
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
 
-# Set working directory
+# Copy the entire solution
+COPY . .
+
+# Restore all dependencies
+RUN dotnet restore backend/ECommerce.sln
+
+# Build and publish the Product API
+RUN dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj -c Release -o /app/publish --no-restore
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
-# Copy the entire backend structure
-COPY . ./
-
-# Restore dependencies for the specific project and its references
-RUN dotnet restore backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj
-
-# Build the specific API project
-RUN dotnet build backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj -c Release --no-restore
-
-# Set working directory to the API project
-WORKDIR /app/backend/src/Services/Product/ECommerce.Product.API
+# Copy the published app
+COPY --from=build /app/publish .
 
 # Expose port
 EXPOSE 8080
@@ -24,4 +26,4 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
 
 # Run the application
-CMD ["dotnet", "run", "--configuration", "Release"]
+ENTRYPOINT ["dotnet", "ECommerce.Product.API.dll"]
