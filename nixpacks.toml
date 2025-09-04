@@ -1,7 +1,7 @@
 # nixpacks.toml - Specific for Product Service
 
-# Fuerza el proveedor de C#/.NET
-providers = ["csharp"]
+# Fuerza el proveedor de .NET
+providers = ["dotnet"]
 
 [variables]
 # Fija la versión del SDK que instalará Nixpacks
