@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . ./
 
 # Restore dependencies for the specific project and its references
-RUN dotnet restore src/Services/User/ECommerce.User.API/ECommerce.User.API.csproj
+RUN dotnet restore --project src/Services/User/ECommerce.User.API/ECommerce.User.API.csproj --configuration Release
 
 # Build the specific API project
 RUN dotnet build src/Services/User/ECommerce.User.API/ECommerce.User.API.csproj -c Release --no-restore
