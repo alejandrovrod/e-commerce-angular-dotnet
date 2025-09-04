@@ -1,0 +1,17 @@
+# nixpacks.toml - Angular frontend configuration
+
+[variables]
+NODE_ENV = "production"
+
+[phases.install]
+cmds = [
+  "npm ci"
+]
+
+[phases.build]
+cmds = [
+  "npm run build:prod"
+]
+
+[start]
+cmd = "npm run start:prod"
