@@ -7,14 +7,6 @@ WORKDIR /app
 # Copy the entire backend structure
 COPY . ./
 
-# Debug: List the contents to see what was copied
-RUN ls -la
-RUN ls -la backend/
-RUN ls -la backend/src/
-RUN ls -la backend/src/Services/
-RUN ls -la backend/src/Services/Product/
-RUN ls -la backend/src/Services/Product/ECommerce.Product.API/
-
 # Restore dependencies for the specific project and its references
 RUN dotnet restore backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj
 
