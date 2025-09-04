@@ -10,7 +10,7 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "node build-env.js && npm run build:prod"
+  "npm run build:railway"
 ]
 
 [start]
