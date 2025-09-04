@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: window.location.origin.replace('ec-web', 'tu-api-gateway') + '/api',
+  apiUrl: 'https://ec-api-gateway.up.railway.app/api',
   stripePublishableKey: 'pk_test_your_stripe_key_here',
   features: {
     enableAnalytics: false,

@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: '{{PLACEHOLDER_API_URL}}',
+  apiUrl: 'https://ec-api-gateway.up.railway.app',
   stripePublishableKey: 'pk_test_your_stripe_key_here',
   features: {
     enableAnalytics: false,
