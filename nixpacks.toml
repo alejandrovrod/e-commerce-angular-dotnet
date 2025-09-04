@@ -23,17 +23,13 @@ cmds = [
 
 [phases.install]
 cmds = [
-  "export PATH=$HOME/.dotnet:$PATH",
-  "export DOTNET_ROOT=$HOME/.dotnet",
-  "dotnet restore backend/ECommerce.sln --nologo"
+  "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && dotnet restore backend/ECommerce.sln --nologo"
 ]
 
 [phases.build]
 # Publica específicamente el Product Service
 cmds = [
-  "export PATH=$HOME/.dotnet:$PATH",
-  "export DOTNET_ROOT=$HOME/.dotnet",
-  "dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --no-restore -c Release -o out"
+  "export PATH=$HOME/.dotnet:$PATH && export DOTNET_ROOT=$HOME/.dotnet && dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --no-restore -c Release -o out"
 ]
 
 [start]
