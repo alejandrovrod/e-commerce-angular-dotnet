@@ -1,0 +1,45 @@
+# nixpacks.toml - Specific for Product Service
+
+# Fuerza el proveedor de C#/.NET
+providers = ["csharp"]
+
+[variables]
+# Fija la versión del SDK que instalará Nixpacks
+NIXPACKS_CSHARP_SDK_VERSION = "9.0"
+DOTNET_CLI_TELEMETRY_OPTOUT = "1"
+DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
+
+# Para ASP.NET Core: expone en 0.0.0.0:8080
+ASPNETCORE_URLS = "http://0.0.0.0:8080"
+
+# Si tu app necesita Globalization completa (fechas/idiomas), usa ICU:
+DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "false"
+
+[phases.setup]
+# SDK 9 + librerías nativas comunes para .NET
+nixPkgs = [
+  "dotnetCorePackages.dotnet_9.sdk",
+  "icu",
+  "zlib",
+  "openssl"
+]
+
+# También exporta algunas como libs en LD_LIBRARY_PATH
+nixLibs = ["icu", "zlib", "openssl"]
+
+[phases.install]
+cmds = [
+  "dotnet restore backend/ECommerce.sln --nologo"
+]
+# Acelera builds cacheando el paquete NuGet
+cacheDirectories = ["~/.nuget/packages"]
+
+[phases.build]
+# Publica específicamente el Product Service
+cmds = [
+  "dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --no-restore -c Release -o out"
+]
+
+[start]
+# Ejecuta el Product Service
+cmd = "dotnet out/ECommerce.Product.API.dll"
