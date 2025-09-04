@@ -4,7 +4,6 @@
     "builder": "DOCKERFILE"
   },
   "deploy": {
-    "startCommand": "dotnet run --project src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --configuration Release",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
