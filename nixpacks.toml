@@ -16,7 +16,7 @@ nixPkgs = [
 
 # Instalar .NET 9.0 usando el script oficial de Microsoft
 cmds = [
-  "curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 9.0.0",
+  "curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 9.0.100",
   "export PATH=$HOME/.dotnet:$PATH",
   "export DOTNET_ROOT=$HOME/.dotnet"
 ]
