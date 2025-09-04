@@ -1,8 +1,8 @@
-# nixpacks.toml - Simplified for Product Service
+# nixpacks.toml - .NET 9.0 compatible configuration
 
 [variables]
 # Fija la versión del SDK que instalará Nixpacks
-NIXPACKS_CSHARP_SDK_VERSION = "8.0"
+NIXPACKS_CSHARP_SDK_VERSION = "9.0"
 DOTNET_CLI_TELEMETRY_OPTOUT = "1"
 DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 
@@ -10,9 +10,9 @@ DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
 
 [phases.setup]
-# SDK 8 + librerías nativas comunes para .NET
+# Usar dotnet-sdk genérico que incluye .NET 9.0
 nixPkgs = [
-  "dotnetCorePackages.dotnet_8.sdk",
+  "dotnet-sdk",
   "icu",
   "zlib",
   "openssl"
