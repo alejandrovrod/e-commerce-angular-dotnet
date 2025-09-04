@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: '${API_GATEWAY_URL}/api',
+  apiUrl: 'PLACEHOLDER_API_URL',
   stripePublishableKey: 'pk_test_your_stripe_key_here',
   features: {
     enableAnalytics: false,

@@ -10,7 +10,7 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "npm run build:prod"
+  "npm run build:railway"
 ]
 
 [start]
