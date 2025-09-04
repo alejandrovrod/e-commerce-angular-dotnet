@@ -4,15 +4,17 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0
 # Set working directory
 WORKDIR /app
 
-# Copy csproj and restore dependencies
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy everything else
+# Copy the entire backend structure
 COPY . ./
 
-# Build the application
-RUN dotnet build -c Release --no-restore
+# Restore dependencies for the solution
+RUN dotnet restore backend/ECommerce.sln
+
+# Build the specific API Gateway project
+RUN dotnet build backend/src/ApiGateway/ECommerce.ApiGateway.csproj -c Release --no-restore
+
+# Set working directory to the API Gateway project
+WORKDIR /app/backend/src/ApiGateway
 
 # Expose port
 EXPOSE 8080
