@@ -1,21 +1,23 @@
-# nixpacks.toml - .NET 9.0 compatible configuration
+# nixpacks.toml - .NET 9.0 configuration
 
 [variables]
-# Fija la versión del SDK que instalará Nixpacks
-NIXPACKS_CSHARP_SDK_VERSION = "9.0"
 DOTNET_CLI_TELEMETRY_OPTOUT = "1"
 DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
-
-# Para ASP.NET Core: expone en 0.0.0.0:8080
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
 
 [phases.setup]
-# Usar dotnet-sdk genérico que incluye .NET 9.0
+# Instalar .NET 9.0 específicamente
 nixPkgs = [
-  "dotnet-sdk",
+  "dotnetCorePackages.dotnet_9.sdk",
   "icu",
   "zlib",
   "openssl"
+]
+
+# Forzar la instalación de .NET 9.0
+cmds = [
+  "curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 9.0.0",
+  "export PATH=$HOME/.dotnet:$PATH"
 ]
 
 [phases.install]
