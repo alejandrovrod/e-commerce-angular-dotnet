@@ -10,8 +10,8 @@ const apiGatewayUrl = process.env.API_GATEWAY_URL || process.env.VITE_API_URL ||
 
 // Reemplazar el placeholder con la URL real
 content = content.replace(
-  'PLACEHOLDER_API_URL',
-  `${apiGatewayUrl}/api`
+  '{{PLACEHOLDER_API_URL}}',
+  apiGatewayUrl
 );
 
 // Escribir el archivo actualizado
