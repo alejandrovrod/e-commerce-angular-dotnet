@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "dotnet ECommerce.ApiGateway.dll",
+    "startCommand": "dotnet run --project src/ApiGateway/ECommerce.ApiGateway.csproj --configuration Release",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
