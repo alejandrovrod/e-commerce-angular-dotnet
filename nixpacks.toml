@@ -6,18 +6,19 @@ DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
 
 [phases.setup]
-# Instalar .NET 9.0 específicamente
+# Solo instalar dependencias básicas, .NET se instala con el script
 nixPkgs = [
-  "dotnetCorePackages.dotnet_9.sdk",
+  "curl",
   "icu",
   "zlib",
   "openssl"
 ]
 
-# Forzar la instalación de .NET 9.0
+# Instalar .NET 9.0 usando el script oficial de Microsoft
 cmds = [
   "curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 9.0.0",
-  "export PATH=$HOME/.dotnet:$PATH"
+  "export PATH=$HOME/.dotnet:$PATH",
+  "export DOTNET_ROOT=$HOME/.dotnet"
 ]
 
 [phases.install]
