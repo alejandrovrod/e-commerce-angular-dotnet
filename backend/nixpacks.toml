@@ -2,10 +2,10 @@
 nixPkgs = ["dotnet-sdk"]
 
 [phases.install]
-cmds = ["dotnet restore src/ApiGateway/ECommerce.ApiGateway.csproj"]
+cmds = ["dotnet restore src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj"]
 
 [phases.build]
-cmds = ["dotnet publish src/ApiGateway/ECommerce.ApiGateway.csproj --no-restore -c Release -o out"]
+cmds = ["dotnet publish src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --no-restore -c Release -o out"]
 
 [start]
-cmd = "dotnet run --project src/ApiGateway/ECommerce.ApiGateway.csproj --configuration Release"
+cmd = "dotnet run --project src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj --configuration Release"
