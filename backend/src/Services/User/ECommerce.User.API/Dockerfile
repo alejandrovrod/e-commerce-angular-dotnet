@@ -1,30 +1,27 @@
-# Use the official .NET 9 SDK image for building and running
+# Use the official .NET 9 SDK image
 FROM mcr.microsoft.com/dotnet/sdk:9.0
 
 # Set working directory
-WORKDIR /src
+WORKDIR /app
 
-# Copy the User API project files
-COPY . .
+# Copy the entire backend structure
+COPY . ./
 
-# Restore dependencies
-RUN dotnet restore ECommerce.User.API.csproj
+# Restore dependencies for the specific project and its references
+RUN dotnet restore backend/src/Services/User/ECommerce.User.API/ECommerce.User.API.csproj
 
-# Build the application
-RUN dotnet build ECommerce.User.API.csproj -c Release --no-restore
+# Build the specific API project
+RUN dotnet build backend/src/Services/User/ECommerce.User.API/ECommerce.User.API.csproj -c Release --no-restore
+
+# Set working directory to the API project
+WORKDIR /app/backend/src/Services/User/ECommerce.User.API
 
 # Expose port
-EXPOSE 7001
+EXPOSE 8080
 
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:8080
 
-# Create a startup script
-RUN echo '#!/bin/bash' > /start.sh && \
-    echo 'echo "Starting User Service..."' >> /start.sh && \
-    echo 'cd /src' >> /start.sh && \
-    echo 'dotnet run --project ECommerce.User.API.csproj --configuration Release' >> /start.sh && \
-    chmod +x /start.sh
-
-# Use the startup script
-CMD ["/start.sh"]
+# Run the application
+CMD ["dotnet", "run", "--configuration", "Release"]

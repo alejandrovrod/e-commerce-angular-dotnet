@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy the entire backend structure
 COPY . ./
 
-# Restore dependencies for the solution
-RUN dotnet restore backend/ECommerce.sln
+# Restore dependencies for the specific project and its references
+RUN dotnet restore backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj
 
 # Build the specific API project
 RUN dotnet build backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj -c Release --no-restore

@@ -1,10 +1,10 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "DOCKERFILE"
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "backend/src/Services/User/ECommerce.User.API/Dockerfile"
   },
   "deploy": {
-    "startCommand": "dotnet run --project ECommerce.User.API.csproj --configuration Release",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",

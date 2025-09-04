@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy the entire backend structure
 COPY . ./
 
-# Restore dependencies for the solution
-RUN dotnet restore backend/ECommerce.sln
+# Restore dependencies for the specific project and its references
+RUN dotnet restore backend/src/ApiGateway/ECommerce.ApiGateway.csproj
 
 # Build the specific API Gateway project
 RUN dotnet build backend/src/ApiGateway/ECommerce.ApiGateway.csproj -c Release --no-restore
