@@ -8,13 +8,13 @@ WORKDIR /app
 COPY . ./
 
 # Restore dependencies for the specific project and its references
-RUN dotnet restore backend/src/ApiGateway/ECommerce.ApiGateway.csproj
+RUN dotnet restore src/ApiGateway/ECommerce.ApiGateway.csproj
 
 # Build the specific API Gateway project
-RUN dotnet build backend/src/ApiGateway/ECommerce.ApiGateway.csproj -c Release --no-restore
+RUN dotnet build src/ApiGateway/ECommerce.ApiGateway.csproj -c Release --no-restore
 
 # Set working directory to the API Gateway project
-WORKDIR /app/backend/src/ApiGateway
+WORKDIR /app/src/ApiGateway
 
 # Expose port
 EXPOSE 8080

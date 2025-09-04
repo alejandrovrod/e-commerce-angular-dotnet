@@ -8,13 +8,13 @@ WORKDIR /app
 COPY . ./
 
 # Restore dependencies for the specific project and its references
-RUN dotnet restore backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj
+RUN dotnet restore src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj
 
 # Build the specific API project
-RUN dotnet build backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj -c Release --no-restore
+RUN dotnet build src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj -c Release --no-restore
 
 # Set working directory to the API project
-WORKDIR /app/backend/src/Services/Product/ECommerce.Product.API
+WORKDIR /app/src/Services/Product/ECommerce.Product.API
 
 # Expose port
 EXPOSE 8080
