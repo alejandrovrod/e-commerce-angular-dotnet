@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["dotnet-sdk"]
+
+[phases.install]
+cmds = ["dotnet restore src/ApiGateway/ECommerce.ApiGateway.csproj"]
+
+[phases.build]
+cmds = ["dotnet publish src/ApiGateway/ECommerce.ApiGateway.csproj --no-restore -c Release -o out"]
+
+[start]
+cmd = "dotnet run --project src/ApiGateway/ECommerce.ApiGateway.csproj --configuration Release"
