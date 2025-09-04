@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . ./
 
 # Restore dependencies for the specific project and its references
-RUN dotnet restore --project src/ApiGateway/ECommerce.ApiGateway.csproj --configuration Release
+RUN dotnet restore src/ApiGateway/ECommerce.ApiGateway.csproj
 
 # Build the specific API Gateway project
 RUN dotnet build src/ApiGateway/ECommerce.ApiGateway.csproj -c Release --no-restore
