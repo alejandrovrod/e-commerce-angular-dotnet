@@ -4,6 +4,11 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using MassTransit;
+using System.Globalization;
+
+// FORZAR modo invariant - sobrescribe cualquier configuración de cultura
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 var builder = WebApplication.CreateBuilder(args);
 
