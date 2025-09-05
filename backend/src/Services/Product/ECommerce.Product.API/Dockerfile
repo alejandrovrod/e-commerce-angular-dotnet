@@ -12,10 +12,10 @@ RUN dotnet restore backend/ECommerce.sln
 RUN dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.Product.API.csproj -c Release -o /app/publish --no-restore
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-jammy AS final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 
 # Install ICU libraries for globalization support
-RUN apt-get update && apt-get install -y libicu70 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libicu-dev && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

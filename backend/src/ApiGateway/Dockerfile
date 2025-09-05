@@ -12,10 +12,10 @@ RUN dotnet restore ECommerce.ApiGateway.csproj
 RUN dotnet publish ECommerce.ApiGateway.csproj -c Release -o /app/publish --no-restore
 
 # Runtime stage with ICU support
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-jammy AS final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 
 # Install ICU libraries for globalization support
-RUN apt-get update && apt-get install -y libicu70 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libicu-dev && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
