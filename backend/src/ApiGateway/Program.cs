@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Yarp.ReverseProxy.Configuration;
+using ECommerce.ApiGateway.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,15 +19,17 @@ if (Environment.GetEnvironmentVariable("RAILWAY_ENVIRONMENT") != null)
 }
 else
 {
-    Console.WriteLine("API Gateway will use Aspire port configuration (Local)");
+
+	Console.WriteLine("API Gateway will use Aspire port configuration (Local)");
 }
+
 
 // Load modular configuration files
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile("appsettings.Routes.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("appsettings.Clusters.json", optional: false, reloadOnChange: true)
+    //.AddJsonFile("appsettings.Clusters.json", optional: false, reloadOnChange: true)
     .AddJsonFile("appsettings.Security.json", optional: false, reloadOnChange: true)
     .AddJsonFile("appsettings.Logging.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
@@ -46,23 +49,12 @@ builder.Host.UseSerilog();
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
+builder.Services.AddDynamicReverseProxy(builder.Configuration);
 
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+// Configure ReverseProxy programmatically with environment variables
+//builder.Services.AddReverseProxy()
+//    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-// Configure service URLs from environment variables
-var userServiceUrl = Environment.GetEnvironmentVariable("USER_SERVICE_URL") ?? "http://localhost:7001";
-var productServiceUrl = Environment.GetEnvironmentVariable("PRODUCT_SERVICE_URL") ?? "http://localhost:7002";
-var orderServiceUrl = Environment.GetEnvironmentVariable("ORDER_SERVICE_URL") ?? "http://localhost:7003";
-var paymentServiceUrl = Environment.GetEnvironmentVariable("PAYMENT_SERVICE_URL") ?? "http://localhost:7004";
-var fileServiceUrl = Environment.GetEnvironmentVariable("FILE_SERVICE_URL") ?? "http://localhost:7005";
-
-// Log service URLs
-Console.WriteLine($"User Service URL: {userServiceUrl}");
-Console.WriteLine($"Product Service URL: {productServiceUrl}");
-Console.WriteLine($"Order Service URL: {orderServiceUrl}");
-Console.WriteLine($"Payment Service URL: {paymentServiceUrl}");
-Console.WriteLine($"File Service URL: {fileServiceUrl}");
 
 // Add CORS - Very permissive for development
 builder.Services.AddCors(options =>
@@ -186,8 +178,8 @@ app.Use(async (context, next) =>
 });
 
 // Authentication & Authorization - Temporarily disabled for CORS testing
-// app.UseAuthentication();
-// app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 // Request Logging Middleware
 app.Use(async (context, next) =>
@@ -236,29 +228,29 @@ app.MapGet("/api/brand/test", () => new { message = "Brand CORS test successful"
 app.MapGet("/api/inventory/test", () => new { message = "Inventory CORS test successful", timestamp = DateTime.UtcNow });
 
 // Add API Key middleware for Reverse Proxy
-// app.Use(async (context, next) =>
-// {
-//     // Check if this is a Reverse Proxy request
-//     if (context.Request.Path.StartsWithSegments("/api"))
-//     {
-//         var apiKey = context.RequestServices
-//             .GetRequiredService<IConfiguration>()
-//             .GetValue<string>("Security:ServiceApiKey") ?? "ecommerce-service-secret-key";
-//         
-//         // Add X-API-Key header to the request
-//         context.Request.Headers["X-API-Key"] = apiKey;
-//         
-//         Log.Information("Added X-API-Key header for request: {Path}", context.Request.Path);
-//     }
-//     
-//     await next();
-// });
+app.Use(async (context, next) =>
+{
+    // Check if this is a Reverse Proxy request
+    if (context.Request.Path.StartsWithSegments("/api"))
+    {
+        var apiKey = context.RequestServices
+            .GetRequiredService<IConfiguration>()
+            .GetValue<string>("Security:ServiceApiKey") ?? "ecommerce-service-secret-key";
+
+        // Add X-API-Key header to the request
+        context.Request.Headers["X-API-Key"] = apiKey;
+
+        Log.Information("Added X-API-Key header for request: {Path}", context.Request.Path);
+    }
+
+    await next();
+});
 
 // Map Reverse Proxy
 app.MapReverseProxy();
 
 // Use Rate Limiting after Reverse Proxy - Temporarily disabled for CORS testing
-// app.UseRateLimiter();
+app.UseRateLimiter();
 
 // Simple health check endpoint for Railway
 app.MapGet("/health", () => new

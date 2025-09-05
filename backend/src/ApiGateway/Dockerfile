@@ -20,5 +20,12 @@ EXPOSE 8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
 
+# Install Node.js for the environment variable replacement script
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Replace environment variables in JSON files
+RUN node replace-env-vars.js
+
 # Run the application
 CMD ["dotnet", "run", "--configuration", "Release"]
