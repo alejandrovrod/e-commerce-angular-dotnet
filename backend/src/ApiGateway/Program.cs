@@ -6,11 +6,6 @@ using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Yarp.ReverseProxy.Configuration;
 using ECommerce.ApiGateway.Extensions;
-using System.Globalization;
-
-// Configure culture (temporarily disabled for invariant mode)
-// CultureInfo.DefaultThreadCurrentCulture = new("es-MX");
-// CultureInfo.DefaultThreadCurrentUICulture = new("es-MX");
 
 var builder = WebApplication.CreateBuilder(args);
 
