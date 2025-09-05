@@ -13,7 +13,7 @@ DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
 
 # FORZAR modo invariant - sobrescribe variable de entorno de Railway
-DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "true"
+DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "1"
 
 [phases.setup]
 # SDK 9 + librerías nativas comunes para .NET
