@@ -14,6 +14,9 @@ CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
+// Configurar SQL Client para usar cultura invariant
+AppContext.SetSwitch("System.Globalization.Invariant", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure port only for Railway deployment

@@ -24,6 +24,9 @@ public static class InfrastructureServiceCollection
             Console.WriteLine($"InfrastructureServiceCollection: Usando cadena de conexión hardcodeada: {connectionString}");
         }
         
+        // Agregar configuración de cultura invariant a la cadena de conexión
+        connectionString += ";Culture=InvariantCulture;";
+        
         services.AddDbContext<ProductDbContext>(options =>
             options.UseSqlServer(
                 connectionString,
