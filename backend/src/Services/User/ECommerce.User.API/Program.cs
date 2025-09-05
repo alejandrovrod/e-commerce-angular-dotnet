@@ -12,6 +12,11 @@ using FluentValidation.AspNetCore;
 using MassTransit;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ECommerce.User.Application.Events;
+using System.Globalization;
+
+// Configure culture
+CultureInfo.DefaultThreadCurrentCulture = new("es-MX");
+CultureInfo.DefaultThreadCurrentUICulture = new("es-MX");
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -6,6 +6,11 @@ using ECommerce.File.Infrastructure.Repositories;
 using ECommerce.File.Infrastructure.UnitOfWork;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Globalization;
+
+// Configure culture
+CultureInfo.DefaultThreadCurrentCulture = new("es-MX");
+CultureInfo.DefaultThreadCurrentUICulture = new("es-MX");
 
 var builder = WebApplication.CreateBuilder(args);
 
