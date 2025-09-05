@@ -12,7 +12,7 @@ DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 # Para ASP.NET Core: expone en 0.0.0.0:8080
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
 
-# Temporalmente habilitamos modo invariant para evitar errores de ICU:
+# FORZAR modo invariant - sobrescribe variable de entorno de Railway
 DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "true"
 
 [phases.setup]
@@ -20,13 +20,12 @@ DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "true"
 # (usa el atributo de nixpkgs para .NET 9)
 nixPkgs = [
   "dotnetCorePackages.dotnet_9.sdk",
-  "icu",
   "zlib",
   "openssl"
 ]
 
 # También exporta algunas como libs en LD_LIBRARY_PATH
-nixLibs = ["icu", "zlib", "openssl"]
+nixLibs = ["zlib", "openssl"]
 
 [phases.install]
 cmds = [
