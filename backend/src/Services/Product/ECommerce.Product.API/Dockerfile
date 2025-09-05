@@ -25,7 +25,7 @@ RUN apt-get update && \
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
 # Copia la app publicada
 COPY --from=build /app/publish .
