@@ -37,6 +37,13 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, ApiResp
             var products = await _productRepository.GetAllAsync();
             Console.WriteLine($"🔍 GetProductsQueryHandler: Productos obtenidos: {products.Count()}");
             
+            // Debug: verificar los primeros productos
+            var firstProducts = products.Take(3).ToList();
+            foreach (var product in firstProducts)
+            {
+                Console.WriteLine($"🔍 Producto: {product.Name}, Price: {product.Price?.Amount}, Brand: {product.Brand}");
+            }
+            
             // Apply filters
             if (!string.IsNullOrEmpty(request.SearchTerm))
             {
@@ -99,6 +106,8 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, ApiResp
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"🔍 ERROR en GetProductsQueryHandler: {ex.Message}");
+            Console.WriteLine($"🔍 Stack trace: {ex.StackTrace}");
             return ApiResponse<List<ProductDto>>.ErrorResult($"Error retrieving products: {ex.Message}");
         }
     }
