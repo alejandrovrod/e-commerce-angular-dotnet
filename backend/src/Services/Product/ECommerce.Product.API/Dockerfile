@@ -16,13 +16,18 @@ RUN dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
-# Install ICU libraries for globalization support
-RUN apt-get update && apt-get install -y libicu && rm -rf /var/lib/apt/lists/*
+# Install ICU libraries and locales for globalization support
+RUN apt-get update && \
+    apt-get install -y libicu-dev locales && \
+    locale-gen es_MX.UTF-8 && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+ENV LANG=es_MX.UTF-8
+ENV LC_ALL=es_MX.UTF-8
 
 # Copia la app publicada
 COPY --from=build /app/publish .

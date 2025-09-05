@@ -14,8 +14,11 @@ RUN dotnet publish ECommerce.File.API.csproj -c Release -o /app/publish --no-res
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 
-# Install ICU libraries for globalization support
-RUN apt-get update && apt-get install -y libicu && rm -rf /var/lib/apt/lists/*
+# Install ICU libraries and locales for globalization support
+RUN apt-get update && \
+    apt-get install -y libicu-dev locales && \
+    locale-gen es_MX.UTF-8 && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -28,6 +31,8 @@ EXPOSE 7005
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+ENV LANG=es_MX.UTF-8
+ENV LC_ALL=es_MX.UTF-8
 
 # Run the application
 ENTRYPOINT ["dotnet", "ECommerce.File.API.dll"]
