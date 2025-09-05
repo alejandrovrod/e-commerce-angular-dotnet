@@ -30,7 +30,12 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, ApiResp
     {
         try
         {
+            Console.WriteLine($"🔍 GetProductsQueryHandler: Iniciando consulta de productos");
+            Console.WriteLine($"🔍 GetProductsQueryHandler: Cultura actual: {System.Globalization.CultureInfo.CurrentCulture.Name}");
+            Console.WriteLine($"🔍 GetProductsQueryHandler: Cultura UI actual: {System.Globalization.CultureInfo.CurrentUICulture.Name}");
+            
             var products = await _productRepository.GetAllAsync();
+            Console.WriteLine($"🔍 GetProductsQueryHandler: Productos obtenidos: {products.Count()}");
             
             // Apply filters
             if (!string.IsNullOrEmpty(request.SearchTerm))
@@ -67,22 +72,27 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, ApiResp
                 .Take(request.PageSize)
                 .ToList();
 
-            var productDtos = paginatedProducts.Select(p => new ProductDto
+            Console.WriteLine($"🔍 GetProductsQueryHandler: Iniciando mapeo a DTOs");
+            var productDtos = paginatedProducts.Select(p => 
             {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                SKU = p.SKU,
-                Price = p.Price.Amount,
-                Brand = p.Brand,
-                CategoryId = p.CategoryId,
-                Status = p.Status,
-                IsFeatured = p.IsFeatured,
-                IsDigital = p.IsDigital,
-                RequiresShipping = p.RequiresShipping,
-                IsTaxable = p.IsTaxable,
-                CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt
+                Console.WriteLine($"🔍 GetProductsQueryHandler: Mapeando producto {p.Name}, Price: {p.Price?.Amount}");
+                return new ProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    SKU = p.SKU,
+                    Price = p.Price.Amount,
+                    Brand = p.Brand,
+                    CategoryId = p.CategoryId,
+                    Status = p.Status,
+                    IsFeatured = p.IsFeatured,
+                    IsDigital = p.IsDigital,
+                    RequiresShipping = p.RequiresShipping,
+                    IsTaxable = p.IsTaxable,
+                    CreatedAt = p.CreatedAt,
+                    UpdatedAt = p.UpdatedAt
+                };
             }).ToList();
 
             return ApiResponse<List<ProductDto>>.SuccessResult(productDtos);
