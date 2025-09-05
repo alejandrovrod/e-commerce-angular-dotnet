@@ -13,10 +13,6 @@ RUN dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
-
-# Install ICU libraries for globalization support
-RUN apt-get update && apt-get install -y libicu-dev && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
 # Copy the published app
@@ -28,7 +24,6 @@ EXPOSE 8080
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 # Run the application
 ENTRYPOINT ["dotnet", "ECommerce.Product.API.dll"]
