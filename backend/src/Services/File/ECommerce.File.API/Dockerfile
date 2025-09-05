@@ -1,6 +1,9 @@
 # Use the official .NET 9 SDK image for building and running
 FROM mcr.microsoft.com/dotnet/sdk:9.0
 
+# Install ICU libraries for globalization support
+RUN apt-get update && apt-get install -y icu-devtools libicu-dev && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /src
 
@@ -18,6 +21,7 @@ EXPOSE 7005
 
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 # Create a startup script
 RUN echo '#!/bin/bash' > /start.sh && \
