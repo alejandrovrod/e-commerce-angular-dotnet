@@ -12,8 +12,8 @@ DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1"
 # Para ASP.NET Core: expone en 0.0.0.0:8080
 ASPNETCORE_URLS = "http://0.0.0.0:8080"
 
-# Si tu app necesita Globalization completa (fechas/idiomas), usa ICU:
-DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "false"
+# Temporalmente habilitamos modo invariant para evitar errores de ICU:
+DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = "true"
 
 [phases.setup]
 # SDK 9 + librerías nativas comunes para .NET
