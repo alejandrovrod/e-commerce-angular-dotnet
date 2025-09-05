@@ -6,11 +6,6 @@ using ECommerce.Payment.Infrastructure.Repositories;
 using ECommerce.Payment.Infrastructure.UnitOfWork;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using System.Globalization;
-
-// Configure culture
-CultureInfo.DefaultThreadCurrentCulture = new("es-MX");
-CultureInfo.DefaultThreadCurrentUICulture = new("es-MX");
 
 var builder = WebApplication.CreateBuilder(args);
 
