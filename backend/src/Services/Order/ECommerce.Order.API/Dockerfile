@@ -15,7 +15,7 @@ RUN dotnet publish ECommerce.Order.API.csproj -c Release -o /app/publish --no-re
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 
 # Install ICU libraries for globalization support
-RUN apt-get update && apt-get install -y libicu-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libicu && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

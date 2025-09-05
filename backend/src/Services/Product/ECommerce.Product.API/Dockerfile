@@ -16,19 +16,13 @@ RUN dotnet publish backend/src/Services/Product/ECommerce.Product.API/ECommerce.
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
-# IMPORTANTE: asegurar ICU y desactivar Globalization Invariant
-# (en imágenes Debian/Ubuntu basta con instalar libicu)
-RUN apt-get update \
- && apt-get install -y --no-install-recommends libicu \
- && rm -rf /var/lib/apt/lists/*
+# Install ICU libraries for globalization support
+RUN apt-get update && apt-get install -y libicu && rm -rf /var/lib/apt/lists/*
 
-# Variables de entorno recomendadas
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
-    ASPNETCORE_ENVIRONMENT=Production \
-    ASPNETCORE_URLS=http://+:8080 \
-    # Opcional: fija locale si lo necesitas
-    LANG=es_MX.UTF-8 \
-    LC_ALL=es_MX.UTF-8
+# Set environment variables
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:8080
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 # Copia la app publicada
 COPY --from=build /app/publish .
