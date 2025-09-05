@@ -10,6 +10,10 @@ using System.Globalization;
 CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
+// Forzar cultura invariant en el hilo actual
+Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure port only for Railway deployment

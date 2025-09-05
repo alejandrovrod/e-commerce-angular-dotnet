@@ -31,7 +31,8 @@ public static class InfrastructureServiceCollection
                     .EnableRetryOnFailure(
                         maxRetryCount: 5,
                         maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null)));
+                        errorNumbersToAdd: null))
+            .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.AmbientTransactionWarning)));
 
         // Add Repositories
         services.AddScoped<IProductRepository, ProductRepository>();
