@@ -24,8 +24,7 @@ public static class InfrastructureServiceCollection
             Console.WriteLine($"InfrastructureServiceCollection: Usando cadena de conexión hardcodeada: {connectionString}");
         }
         
-        // Agregar configuración de cultura invariant a la cadena de conexión
-        connectionString += ";Culture=InvariantCulture;";
+        // La cultura se configura a nivel de aplicación, no en la cadena de conexión
         
         services.AddDbContext<ProductDbContext>(options =>
             options.UseSqlServer(
@@ -35,7 +34,8 @@ public static class InfrastructureServiceCollection
                         maxRetryCount: 5,
                         maxRetryDelay: TimeSpan.FromSeconds(30),
                         errorNumbersToAdd: null))
-            .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.AmbientTransactionWarning)));
+            .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.AmbientTransactionWarning))
+            .UseQueryTrackingBehavior(Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTracking));
 
         // Add Repositories
         services.AddScoped<IProductRepository, ProductRepository>();
